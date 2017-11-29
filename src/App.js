@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Calendar from "./datepicker.js"
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
+      <div className="container">
+         <Calendar />
         </div>
-        <p className="App-intro">
-        </p>
-      </div>
     );
   }
 }
