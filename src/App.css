@@ -18,6 +18,14 @@
   font-size: large;
 }
 
+.leaflet-container {
+  z-index:0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
