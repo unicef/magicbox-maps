@@ -4,12 +4,15 @@
   "private": true,
   "dependencies": {
     "leaflet": "^1.2.0",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-calendar-heatmap": "^1.6.2",
     "react-datepicker": "^0.61.0",
     "react-dom": "^16.2.0",
+    "react-google-charts": "^1.5.5",
     "react-leaflet": "^1.7.7",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "react-yearly-calendar": "^1.1.5"
   },
   "devDependencies": {},
   "scripts": {
