@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cal-heatmap": "^3.6.2",
+    "calendar-heatmap-mini": "^1.2.0",
     "react": "^16.2.0",
+    "react-calendar-heatmap": "^1.6.2",
     "react-datepicker": "^0.61.0",
     "react-dom": "^16.2.0",
     "react-scripts": "0.9.5"
