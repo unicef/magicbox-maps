@@ -11,8 +11,10 @@
     "react-dom": "^16.2.0",
     "react-google-charts": "^1.5.5",
     "react-leaflet": "^1.7.7",
+    "react-redux": "^5.0.6",
     "react-scripts": "0.9.5",
-    "react-yearly-calendar": "^1.1.5"
+    "react-yearly-calendar": "^1.1.5",
+    "redux": "^3.7.2"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-// import Calendar from "./datepicker.js"
+// import {connect} from 'react-redux'
 import MyMap from "./MyMap.js"
-import HeatmapCalendar from "./CalendarHeatmap.js"
 import YearlyCalendar from "./YearlyCalendar.js"
 
 class App extends Component {
@@ -10,7 +9,6 @@ class App extends Component {
     return (
       <div>
         <MyMap />
-         <HeatmapCalendar />
          <YearlyCalendar />
       </div>
     );

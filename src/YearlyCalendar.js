@@ -1,39 +1,19 @@
 import {Chart} from 'react-google-charts';
 import React from 'react'
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 
 class YearlyCalendar extends React.Component {
-  static propTypes = {
-    onDateSelection: PropTypes.func
-  }
-
-  onChange = Chart => {
-    const selectedDate = Chart.chart.getSelection()
-    var date = selectedDate[0].date
-    this.props.onDateSelection(date)
-  }
-
-  constructor(props){
-    super(props)
-    this.chartEvents=[
-      {
-        eventName : 'select',
-        callback  : this.onChange.bind(this)
-      }
-    ]
-  }
 
   render() {
-    const {
-      id,
-      calendar: { rows, columns }
-    } = this.props
+    console.log(this.props.dates);
+
+    const columns = [{ type: 'date', id: 'Date' }, { type: 'number', id: 'Won/Loss' }]
 
     return (
       <Chart
         chartType="Calendar"
         columns={columns}
-        rows={rows}
+        rows={this.props.dates}
         options={{
           title: this.props.source,
           chartPackages: ['calendar'],
@@ -46,4 +26,10 @@ class YearlyCalendar extends React.Component {
   }
 }
 
-export default YearlyCalendar;
+function mapStateToProps(state)  {
+  return {
+    dates: state.dates
+  }
+}
+
+export default connect(mapStateToProps)(YearlyCalendar);
