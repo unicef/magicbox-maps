@@ -17,7 +17,8 @@
     "react-redux": "^5.0.6",
     "react-scripts": "0.9.5",
     "react-yearly-calendar": "^1.1.5",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^4.12.1",

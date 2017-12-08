@@ -1,8 +1,15 @@
 import {Chart} from 'react-google-charts';
 import React from 'react'
 import {connect} from 'react-redux'
+import {fetchDates} from './actions/datepicker.js'
 
 class YearlyCalendar extends React.Component {
+
+  componentDidMount() {
+    console.log("fetching dates")
+    this.props.fetchDates()
+  }
+
 
   render() {
     console.log(this.props.dates);
@@ -13,7 +20,7 @@ class YearlyCalendar extends React.Component {
       <Chart
         chartType="Calendar"
         columns={columns}
-        rows={this.props.dates}
+        rows={this.props.dates.dateArray}
         options={{
           title: this.props.source,
           chartPackages: ['calendar'],
@@ -32,4 +39,12 @@ function mapStateToProps(state)  {
   }
 }
 
-export default connect(mapStateToProps)(YearlyCalendar);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchDates: (data) => {
+      dispatch(fetchDates(data))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(YearlyCalendar);
