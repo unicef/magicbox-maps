@@ -43,6 +43,13 @@ class MyMap extends Component {
 
     }
   }
+  geoFilter = (feature) => {
+    var alpha2 = alpha3ToAlpha2(feature.id);
+    if (displayCountries.indexOf(alpha2) > -1) {
+      return true
+    }
+    return false
+  }
   onEachFeature = (feature, layer) => {
     // if (this.props.countrySelected.admin1 === feature.id) {
     //   layer.setStyle({
@@ -99,7 +106,7 @@ class MyMap extends Component {
           data={allGeojson}
           style={this.countryStyle.bind(this)}
           onEachFeature={this.onEachFeature.bind(this)}
-          // filter={this.geoFilter.bind(this)}
+          filter={this.geoFilter.bind(this)}
         ></GeoJSON>
       </Map>
 
