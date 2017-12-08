@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div>
         <MyMap />
-         <YearlyCalendar />
+        {/* <YearlyCalendar /> */}
       </div>
     );
   }
