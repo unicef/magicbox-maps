@@ -24,10 +24,10 @@
     "eslint-config-google": "^0.9.1"
   },
   "scripts": {
-    "precommit": "./preCommitChecks.sh"
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "precommit": "./preCommitChecks.sh"
   }
 }
