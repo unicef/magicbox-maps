@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "husky": "^0.14.3",
     "i18n-iso-countries": "^3.3.0",
     "leaflet": "^1.2.0",
     "lodash": "^4.17.4",
@@ -18,7 +19,10 @@
     "react-yearly-calendar": "^1.1.5",
     "redux": "^3.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-config-google": "^0.9.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
