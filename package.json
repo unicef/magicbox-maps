@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "eslint": "^4.12.1",
-    "eslint-config-google": "^0.9.1"
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-react": "^7.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
