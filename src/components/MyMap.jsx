@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
-import allGeojson  from './data/allCountriesGEOJSON.js'
-import displayCountries from './data/displayCountries.js';
-
+import {
+  connect
+} from 'react-redux';
+import {
+  bindActionCreators
+} from 'redux'
+import allGeojson  from '../data/allCountriesGEOJSON.js'
+import InitialLoad from '../actions/initialLoad';
 
 import {
   GeoJSON,
@@ -21,22 +26,25 @@ class MyMap extends Component {
     lng: 0,
     zoom: 2,
   }
+  componentWillMount() {
+    this.props.initialLoad();
+  }
   countryStyle = (geoJsonFeature) => {
     //var layer = e.target;
     const displayCountry = {
       fill: true,
-      fillColor: "#0099FF",
+      fillColor: '#0099FF',
       fillOpacity: .5,
       stroke: false,
     }
     const nullDisplay = {
       fill: false,
-      fillColor: "#0099FF",
+      fillColor: '#0099FF',
       fillOpacity: 0,
       stroke: false,
     }
     var alpha2 =alpha3ToAlpha2(geoJsonFeature.id);
-    if (displayCountries.indexOf(alpha2) > -1) {
+    if (this.props.initialCountries.indexOf(alpha2) > -1) {
       return displayCountry;
     }else{
       return nullDisplay;
@@ -45,7 +53,7 @@ class MyMap extends Component {
   }
   geoFilter = (feature) => {
     var alpha2 = alpha3ToAlpha2(feature.id);
-    if (displayCountries.indexOf(alpha2) > -1) {
+    if (this.props.initialCountries.indexOf(alpha2) > -1) {
       return true
     }
     return false
@@ -92,14 +100,15 @@ class MyMap extends Component {
     });
   }
 
+
   render() {
     const position = [this.state.lat, this.state.lng]
     return (
-      <Map ref="map" center={position} zoom={this.state.zoom} zoomControl={false}>
-        <ZoomControl position="bottomleft" />
+      <Map ref='map' center={position} zoom={this.state.zoom} zoomControl={false}>
+        <ZoomControl position='bottomleft' />
         <TileLayer
           url='https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYXlhbmV6IiwiYSI6ImNqNHloOXAweTFveWwzM3A4M3FkOWUzM2UifQ.GfClkT4QxlFDC_xiI37x3Q'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors '
+          attribution='&copy; <a href=http://osm.org/copyright">OpenStreetMap</a> contributors '
         />
         <GeoJSON
           key={_.uniqueId()}
@@ -113,5 +122,17 @@ class MyMap extends Component {
     )
   }
 }
+function mapStateToProps(state) {
+  return {
+     initialCountries: state.initialCountries.initialCountries,
+  }
+}
 
-export default MyMap;
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({
+    initialLoad: InitialLoad,
+  }, dispatch)
+}
+
+// export default connect(mapStateToProps, matchDispatchToProps)(MyMap);
+export default connect(mapStateToProps, matchDispatchToProps)(MyMap);
