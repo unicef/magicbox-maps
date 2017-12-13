@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.1",
+    "eslint": "^4.13.1",
     "husky": "^0.14.3",
     "i18n-iso-countries": "^3.3.0",
     "leaflet": "^1.2.0",
