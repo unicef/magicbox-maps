@@ -79,23 +79,7 @@ class MyMap extends Component {
 
       },
       'click': (e) => {
-        console.log(e);
-        if (this.props.countrySelected.admin1 !== feature.id && this.props.countrySelected.country === 'BR') {
-          // var admin1 = e.target.feature.id;
-          // //console.log(e.target.feature.properties.UF);
-          // var admin1L = e.target.feature.properties.UF
-          // console.log(admin1);
-          // var alpha2 = 'BR'
-          // console.log("Calling: " + alpha2);
-          // this.props.loadSpinner(true);
-          // this.centerCountry(e.latlng, 6);
-          // this.props.clickedCountry(alpha2, this.props.sliderData.value, admin1, admin1L);
-          // toLoad = true;
-        }
 
-
-
-        //console.log(e);
       }
     });
   }
