@@ -1,18 +1,17 @@
-export default () => {
-  return [
-        [ new Date(2012, 3, 13), 37032 ],
-        [ new Date(2012, 3, 14), 38024 ],
-        [ new Date(2012, 3, 15), 38024 ],
-        [ new Date(2012, 3, 16), 38108 ],
-        [ new Date(2012, 3, 17), 38229 ],
-        // Many rows omitted for brevity.
-        [ new Date(2013, 9, 4), 38177 ],
-        [ new Date(2013, 9, 5), 38705 ],
-        [ new Date(2013, 9, 12), 38210 ],
-        [ new Date(2013, 9, 13), 38029 ],
-        [ new Date(2013, 9, 19), 38823 ],
-        [ new Date(2013, 9, 23), 38345 ],
-        [ new Date(2013, 9, 24), 38436 ],
-        [ new Date(2013, 9, 30), 38447 ]
-      ]
+function datepickerReducer(state = {dateArray: []}, action){
+
+  switch (action.type) {
+    case "FETCH_DATES":
+    // data point hard coded temporarily for visibility
+    let newDates = action.payload.map( array => [new Date(array[0], array[1], array[2]), 35000])
+    return Object.assign({}, state, {dateArray: newDates})
+    //
+    // case "FETCH_DATES_ERROR":
+    //   return state
+    //   console.log(error)
+
+    default:
+      return state
+  }
 }
+export default datepickerReducer
