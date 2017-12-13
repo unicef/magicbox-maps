@@ -29,5 +29,4 @@
     "precommit": "./preCommitChecks.sh"
   },
   "proxy": "http://localhost:3001"
-  }
 }
