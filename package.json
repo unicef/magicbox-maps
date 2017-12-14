@@ -29,5 +29,10 @@
     "eject": "react-scripts eject",
     "precommit": "./preCommitChecks.sh"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-react": "^7.5.1"
+  }
 }
