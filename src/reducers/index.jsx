@@ -1,4 +1,6 @@
-import {combineReducers} from 'redux';
+import {
+  combineReducers
+} from 'redux';
 import datesReducer from './reducer-dates';
 import initialLoadReducer from './initialLoadReducer';
 

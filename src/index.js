@@ -1,6 +1,4 @@
-import React from 'react'
 import ReactDOM from 'react-dom';
-import datesReducer from './reducers/reducer-dates';
 import thunk from 'redux-thunk';
 import App from './App';
 import {
