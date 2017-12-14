@@ -1,3 +1,3 @@
 module.exports = {
-  init_map_url: 'PUT_URL_ENDING',
+  init_map_url: 'PUT_URL_ENDING'
 }

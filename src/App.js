@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
+import {
+  Component
+} from 'react';
 import './App.css';
 // import {connect} from 'react-redux'
-import MyMap from "./components/MyMap.jsx"
-import YearlyCalendar from "./YearlyCalendar.js"
-
+import MyMap from './components/MyMap.jsx'
+/**
+ * Main App
+ */
 class App extends Component {
+  /**
+   * render - Render component
+   *
+   * @return {type}  description
+   */
   render() {
     return (
       <div>
