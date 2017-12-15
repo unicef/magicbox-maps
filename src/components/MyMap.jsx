@@ -2,6 +2,7 @@
 import React, {
   Component
 } from 'react'
+/* eslint-enable no-unused-vars*/
 import {
   connect
 } from 'react-redux';
@@ -45,11 +46,23 @@ class MyMap extends Component {
       zoom: 2
     }
   }
+
+  /**
+   * componentWillMount - Calls initialLoad which loads initial data
+   *
+   */
   componentWillMount() {
     this.props.initialLoad();
   }
-  countryStyle = (geoJsonFeature) => {
-    //var layer = e.target;
+
+
+  /**
+   * countryStyle - Specifies the style for the geojson
+   *
+   * @param  {type} geoJsonFeature description
+   * @return {type}                description
+   */
+  countryStyle(geoJsonFeature) {
     const displayCountry = {
       fill: true,
       fillColor: '#0099FF',
@@ -62,7 +75,7 @@ class MyMap extends Component {
       fillOpacity: 0,
       stroke: false
     }
-    var alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
+    let alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
     if (this.props.initialCountries.indexOf(alpha2) > -1) {
       return displayCountry;
     } else {
@@ -131,37 +144,39 @@ class MyMap extends Component {
     const position = [this.state.lat, this.state.lng]
     return (
       <Map ref='map'
-                center={position}
-                zoom={this.state.zoom}
-                zoomControl={false}>
-                <ZoomControl position='bottomleft' />
-                <TileLayer
-                  url={this.state.url}
-                  attribution={this.state.attribution}
-                />
-                <GeoJSON
-                  key={_.uniqueId()}
-                  data={allGeojson}
-                  style={this.countryStyle.bind(this)}
-                  onEachFeature={this.onEachFeature.bind(this)}
-                  filter={this.geoFilter.bind(this)}
-                  ></GeoJSON>
-                </Map>
+        center={position}
+        zoom={this.state.zoom}
+        zoomControl={false}>
+        <ZoomControl position='bottomleft' />
+        <TileLayer
+          url={this.state.url}
+          attribution={this.state.attribution}
+        />
+        <GeoJSON
+          key={_.uniqueId()}
+          data={allGeojson}
+          style={this.countryStyle.bind(this)}
+          onEachFeature={this.onEachFeature.bind(this)}
+          filter={this.geoFilter.bind(this)}
+        ></GeoJSON>
+      </Map>
     )
   }
 }
 
+
+/* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    initialCountries: state.initialCountries.initialCountries,
+    initialCountries: state.initialCountries.initialCountries
   }
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    initialLoad: InitialLoad,
+    initialLoad: InitialLoad
   }, dispatch)
 }
+/* eslint-enablerequire-jsdoc*/
 
-//export default connect(mapStateToProps, matchDispatchToProps)(MyMap);
 export default connect(mapStateToProps, matchDispatchToProps)(MyMap);
