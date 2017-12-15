@@ -2,6 +2,7 @@
 import React, {
   Component
 } from 'react';
+/* eslint-enable no-unused-vars*/
 import './App.css';
 // import {connect} from 'react-redux'
 import MyMap from './components/MyMap.jsx'
