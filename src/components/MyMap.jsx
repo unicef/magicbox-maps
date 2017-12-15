@@ -1,8 +1,16 @@
 /* eslint-disable no-unused-vars*/
-import React, {Component} from 'react'
+import React, {
+  Component
+} from 'react'
 /* eslint-enable no-unused-vars*/
-import allGeojson from './data/allCountriesGEOJSON.js'
-import displayCountries from './data/displayCountries.js';
+import {
+  connect
+} from 'react-redux';
+import {
+  bindActionCreators
+} from 'redux'
+import allGeojson from '../data/allCountriesGEOJSON.js'
+import InitialLoad from '../actions/initialLoad';
 
 import {
   GeoJSON,
@@ -28,11 +36,11 @@ class MyMap extends Component {
     super(props);
     this.state = {
       url: 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?' +
-      'access_token=' +
-      'pk.eyJ1IjoiYXlhbmV6IiwiYSI6ImNqNHloOXAweTFveWwzM3A4M3FkOWUzM2UifQ.' +
-      'GfClkT4QxlFDC_xiI37x3Q',
+        'access_token=' +
+        'pk.eyJ1IjoiYXlhbmV6IiwiYSI6ImNqNHloOXAweTFveWwzM3A4M3FkOWUzM2UifQ.' +
+        'GfClkT4QxlFDC_xiI37x3Q',
       attribution: '&copy; <a href=\'http://osm.org/copyright\'>OpenStreetMap</a>' +
-      ' contributors ',
+        ' contributors ',
       lat: 0,
       lng: 0,
       zoom: 2
@@ -40,12 +48,21 @@ class MyMap extends Component {
   }
 
   /**
-   * Returns style for leaflet polygon
-   * @param  {object} geoJsonFeature request object
-   * @return {object} style object
+   * componentWillMount - Calls initialLoad which loads initial data
+   *
+   */
+  componentWillMount() {
+    this.props.initialLoad();
+  }
+
+
+  /**
+   * countryStyle - Specifies the style for the geojson
+   *
+   * @param  {type} geoJsonFeature description
+   * @return {type}                description
    */
   countryStyle(geoJsonFeature) {
-    // var layer = e.target;
     const displayCountry = {
       fill: true,
       fillColor: '#0099FF',
@@ -59,7 +76,7 @@ class MyMap extends Component {
       stroke: false
     }
     let alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
-    if (displayCountries.indexOf(alpha2) > -1) {
+    if (this.props.initialCountries.indexOf(alpha2) > -1) {
       return displayCountry;
     } else {
       return nullDisplay;
@@ -73,7 +90,7 @@ class MyMap extends Component {
    */
   geoFilter(feature) {
     let alpha2 = alpha3ToAlpha2(feature.id);
-    if (displayCountries.indexOf(alpha2) > -1) {
+    if (this.props.initialCountries.indexOf(alpha2) > -1) {
       return true
     }
     return false
@@ -147,4 +164,19 @@ class MyMap extends Component {
   }
 }
 
-export default MyMap;
+
+/* eslint-disable require-jsdoc*/
+function mapStateToProps(state) {
+  return {
+    initialCountries: state.initialCountries.initialCountries
+  }
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({
+    initialLoad: InitialLoad
+  }, dispatch)
+}
+/* eslint-enablerequire-jsdoc*/
+
+export default connect(mapStateToProps, matchDispatchToProps)(MyMap);

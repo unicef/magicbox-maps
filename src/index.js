@@ -1,37 +1,22 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import App from './App';
-// import {Provider} from 'react-redux'
-// import {createStore} from 'redux';
-// import allReducers from './reducers'
-// import './index.css';
-//
-// const store = createStore(allReducers);
-//
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-//   document.getElementById('root')
-// );
-
+/* eslint-disable-next-line no-unused-vars*/
 import React from 'react'
 import ReactDOM from 'react-dom';
-import datesReducer from './reducers/reducer-dates';
 import thunk from 'redux-thunk';
 import App from './App';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import registerServiceWorker from './registerServiceWorker';
+import {
+  Provider
+} from 'react-redux'
+import allReducers from './reducers'
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
+import './index.css';
 
-const rootReducer = combineReducers({
-  dates: datesReducer
-})
-const store = createStore(rootReducer, applyMiddleware(thunk))
+const store = createStore(allReducers, applyMiddleware(thunk));
 
 ReactDOM.render(
-    <Provider store={store}>
-            <App />
-    </Provider>,
-    document.getElementById('root'));
-registerServiceWorker();
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));
