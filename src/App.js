@@ -1,10 +1,20 @@
-import React, { Component } from 'react';
+/* eslint-disable no-unused-vars*/
+import React, {
+  Component
+} from 'react';
+/* eslint-enable no-unused-vars*/
 import './App.css';
 // import {connect} from 'react-redux'
-import MyMap from "./MyMap.js"
-import YearlyCalendar from "./YearlyCalendar.js"
-
+import MyMap from './components/MyMap.jsx'
+/**
+ * Main App
+ */
 class App extends Component {
+  /**
+   * render - Render component
+   *
+   * @return {type}  description
+   */
   render() {
     return (
       <div>
