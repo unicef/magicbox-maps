@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars*/
+import React from 'react'
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import App from './App';
