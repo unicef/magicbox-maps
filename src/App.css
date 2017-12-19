@@ -6,37 +6,7 @@
   bottom: 0;
   width: 100%;
 }
-
-.react-calendar-heatmap text {
-  font-size: 10px;
-  fill: #aaa;
-  z-index: 0;
-}
-
-.react-calendar-heatmap .react-calendar-heatmap-small-text {
-  font-size: 5px;
-  z-index: 0;
-  position: sticky;
-  bottom: 0;
-  right: 0;
-
-}
-
-.react-calendar-heatmap rect:hover {
-  stroke: #555;
-  stroke-width: 1px;
-}
-
-/*
- * Default color scale
- */
-
-.react-calendar-heatmap .color-empty {
-  fill: #c4c2c2;
-  opacity: 0.6;
-}
-
-.react-calendar-heatmap .color-filled {
-  fill: #a00000;
-  opacity: 0.7;
+  /*Hide calendar until user clicks on country and dates are fetched*/
+.calendar-chart {
+  visibility:hidden;
 }

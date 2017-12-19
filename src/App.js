@@ -5,7 +5,8 @@ import React, {
 /* eslint-enable no-unused-vars*/
 import './App.css';
 // import {connect} from 'react-redux'
-import MyMap from './components/MyMap.jsx'
+import MyMap from './components/MyMap'
+import YearlyCalendar from './components/YearlyCalendar'
 /**
  * Main App
  */
@@ -19,7 +20,7 @@ class App extends Component {
     return (
       <div>
         <MyMap />
-        {/* <YearlyCalendar /> */}
+        <YearlyCalendar />
       </div>
     );
   }
