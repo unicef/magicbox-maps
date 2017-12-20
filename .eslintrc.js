@@ -10,12 +10,13 @@ module.exports = {
     "react"
   ],
   'rules': {
+    "arrow-parens": 0,
     "react/jsx-uses-vars": [2],
     // need to keep as it's known issue with a dependency of airbnb standards
     'jsx-a11y/href-no-hash': 0,
     'camelcase': 0, // allowing underscore case
     'semi': 0, // allowing lines with or without semi colon at the end
-    'arrow-body-style': ['error', 'always'], // because we return BIG BIG promises
+    'arrow-body-style': [2, "as-needed"], // because we return BIG BIG promises
     'no-shadow': ['error', {
       'builtinGlobals': true,
       'hoist': 'all'
