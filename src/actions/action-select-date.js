@@ -7,10 +7,6 @@ import axios from 'axios';
  */
 export const selectDate = function(date) {
   return function(dispatch) {
-    console.log('You selected', yearMonthDay(date));
-    console.log('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col/' +
-    yearMonthDay(date) +
-    '.csv')
     axios.get('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col/' +
     yearMonthDay(date) +
     '.csv')
@@ -43,6 +39,12 @@ function yearMonthDay(date) {
   prepend_zero(day);
 }
 
+/**
+ * prepend_zero
+ *
+ * @param  {Integer} number
+ * @return {String} year-month-day
+ */
 function prepend_zero(number) {
   if (number.toString().length == 1) {
     number = '0' + number;
