@@ -1,9 +1,23 @@
 import {Chart} from 'react-google-charts';
-import React from 'react'
+import React, { PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {fetchDates} from '../actions/action-fetch-dates'
+import {selectDate} from '../actions/action-select-date.js'
 
 class YearlyCalendar extends React.Component {
+  onChange = Chart => {
+    this.props.selectDate(Chart.chart.getSelection()[0].date)
+  }
+  constructor(props){
+    super(props)
+    this.chartEvents=[
+      {
+        eventName : 'select',
+        callback  : this.onChange.bind(this)
+      }
+    ]
+  }
+
   render = () => {
     const columns = [{ type: 'date', id: 'Date' }, { type: 'number', id: 'Won/Loss' }]
     if (new Date(this.props.dates.dateArray).getYear() == 1) {
@@ -13,7 +27,6 @@ class YearlyCalendar extends React.Component {
     return (
       <div style={{visibility: this.props.visibility}}>
         <Chart
-
           chartType="Calendar"
           columns={columns}
           rows={this.props.dates}
@@ -21,7 +34,7 @@ class YearlyCalendar extends React.Component {
             title: this.props.source,
             chartPackages: ['calendar'],
           }}
-          className='something'
+          chartEvents={this.chartEvents}
           width='1100px'
           height='200px'
           legend_toggle
@@ -35,9 +48,16 @@ class YearlyCalendar extends React.Component {
 function mapStateToProps(state) {
   return {
     dates: state.dates.dateArray,
+    date: state.date,
     visibility: state.dates.visibility
   }
 }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(YearlyCalendar);
-export default connect(mapStateToProps)(YearlyCalendar);
+function mapDispatchToProps(dispatch) {
+  return {
+    selectDate: (data) => {
+      dispatch(selectDate(data))
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(YearlyCalendar);

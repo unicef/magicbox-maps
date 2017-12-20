@@ -1,4 +1,4 @@
-function datepickerReducer(state = {
+function datesReducer(state = {
   // Set defualt junk dates
   dateArray: [[ new Date(1981, 3, 13), 37032 ]],
   visibility: 'hidden'
@@ -13,9 +13,9 @@ function datepickerReducer(state = {
         dateArray: newDates,
         visibility: 'visible'
       })
-      
+
     default:
       return state
   }
 }
-export default datepickerReducer
+export default datesReducer

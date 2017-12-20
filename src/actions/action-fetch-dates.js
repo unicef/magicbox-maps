@@ -20,7 +20,10 @@ export function fetchDates(data) {
           csv => csv.substring(0, csv.indexOf('.'))
             .split('-').map(value => parseInt(value))
         )
-        console.log(dates)
+        // The calendar chart takes the month as an index
+        dates.forEach( d => {
+          d[1]--;
+        })
         dispatch({
           type: 'FETCH_DATES',
           payload: dates
