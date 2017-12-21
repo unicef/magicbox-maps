@@ -6,10 +6,11 @@
  */
 export function adminStyle(props) {
   return function(geoJsonFeature) {
+    console.log(geoJsonFeature.properties.score)
     const displayCountry = {
       fill: true,
       fillColor: 'red',
-      fillOpacity: Math.random(),
+      fillOpacity: geoJsonFeature.properties.score || 0.5,
       stroke: false
     }
     return displayCountry

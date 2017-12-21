@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "alasql": "^0.4.4",
     "axios": "^0.17.1",
     "eslint": "^4.13.1",
     "husky": "^0.14.3",

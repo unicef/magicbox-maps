@@ -14,10 +14,12 @@ export const selectDate = function(date) {
         alert('There was an error trying to do the initial fetch')
       })
       .then(res => {
-        console.log(res.data)
         dispatch({
           type: 'DATE_SELECTED',
-          payload: date
+          payload: {
+            date: date,
+            mobility: res.data
+          }
         })
       })
   }

@@ -9,7 +9,7 @@ export default function(state = null, action) {
   switch (action.type) {
   case 'DATE_SELECTED':
     return Object.assign({}, state, {
-      date: action.payload
+      date: action.payload.date
     })
 
   default:
