@@ -88,6 +88,28 @@ class MyMap extends Component {
    * @param  {object} feature
    * @param  {object} layer
    */
+  onEachFeatureActive(feature, layer) {
+    layer.on({
+
+      'click': e => {
+        // An admin 0 has been clicked
+        if (feature.base_country) {
+          this.centerCountry(e.latlng, 6);
+          // Fetch dates for country
+          // this.props.fetchDates()
+        }
+        // this.onEachFeature(feature, layer)
+        this.props.selectCountry(e.target.feature);
+        this.props.fetchDates(e.target.feature);
+      }
+    });
+  }
+
+  /**
+   * onEach
+   * @param  {object} feature
+   * @param  {object} layer
+   */
   onEachFeature(feature, layer) {
     layer.on({
       'mouseover': (e) => {
@@ -141,9 +163,9 @@ class MyMap extends Component {
         ></GeoJSON>
         <GeoJSON
           key={_.uniqueId()}
-          data={this.props.activeCountry}
+          data={this.props.activeCountry.geojson}
           style={adminStyle(this.props)}
-          onEachFeature={this.onEachFeature.bind(this)}
+          onEachFeature={this.onEachFeatureActive.bind(this)}
           filter={this.geoFilter.bind(this)}
         ></GeoJSON>
       </Map>
@@ -157,7 +179,8 @@ function mapStateToProps(state) {
   return {
     initialCountries: state.initialCountries.initialCountries,
     allCountries: state.allCountries,
-    activeCountry: state.activeCountry.geojson
+    activeCountry: state.activeCountry,
+    random: state.activeCountry.rand
   }
 }
 
