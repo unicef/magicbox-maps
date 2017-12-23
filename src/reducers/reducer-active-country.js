@@ -42,36 +42,6 @@ function activeCountryReducer(state = {
     let diag_scores = diagonal.map(function(e) {
       return score(min, max, parseInt(e))
     })
-    //  mobility = bucketBy(action.payload.mobility);
-    //
-    // mobility.forEach((e, i) => {
-    //   if (i%10==0) {
-    //     console.log(i, 'index')
-    //   }
-    //   alasql('INSERT INTO mobilities VALUES ' + e)
-    // //
-    // //   alasql("INSERT INTO mobilities VALUES ('" +
-    // //   e.id_origin + "','" +
-    // //   e.id_destination + "','" + e.people + "')");
-    // })
-    // //
-    // console.log("HELP!!")
-    // let res = alasql('SELECT origin, people FROM mobilities ' +
-    // 'where origin = destination;');
-    // let range = alasql('select min(people) as min, max(people) ' +
-    // 'as max from mobilities where origin = destination');
-    //  min = range[0].min;
-    //  max = range[0].max
-    // let score_table = res.reduce((h, r) => {
-    //   h[r.origin] = score(min, max, r.people);
-    //   return h
-    // }, {})
-    // console.log('about to update mpio geojson')
-    //
-    // mpio.features.forEach(f => {
-    //   f.properties.score = score_table[f.properties.admin_id]
-    // })
-    // window.sql_scores = mpio.features.map(f => {return f.properties.score})
     return Object.assign({}, state, {
       geojson: Object.assign({}, mpio),
       diagonal: diag_scores
