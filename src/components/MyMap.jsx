@@ -11,8 +11,11 @@ import {
 } from 'redux'
 import InitialLoad from '../actions/initialLoad';
 import {selectCountry} from '../actions/action-select-country';
+import {selectAdmin} from '../actions/action-select-admin';
 import {countryStyle} from '../helpers/helper-countries-style';
 import {adminStyle} from '../helpers/helper-admins-style';
+import {onEachCountryFeature} from '../helpers/helper-country-onEach';
+import {onEachAdminFeature} from '../helpers/helper-admin-onEach';
 import {
   GeoJSON,
   Map,
@@ -75,70 +78,6 @@ class MyMap extends Component {
   }
 
   /**
-   * enterCountry
-   * @param  {object} latlng
-   * @param  {object} lev
-   */
-  centerCountry(latlng, lev) {
-    this.refs.map.leafletElement.flyTo(latlng, lev);
-  }
-
-  /**
-   * onEach
-   * @param  {object} feature
-   * @param  {object} layer
-   */
-  onEachFeatureActive(feature, layer) {
-    layer.on({
-
-      'click': e => {
-        // An admin 0 has been clicked
-        if (feature.base_country) {
-          this.centerCountry(e.latlng, 6);
-          // Fetch dates for country
-          // this.props.fetchDates()
-        }
-        // this.onEachFeature(feature, layer)
-        this.props.selectCountry(e.target.feature);
-        this.props.fetchDates(e.target.feature);
-      }
-    });
-  }
-
-  /**
-   * onEach
-   * @param  {object} feature
-   * @param  {object} layer
-   */
-  onEachFeature(feature, layer) {
-    layer.on({
-      'mouseover': (e) => {
-        layer.setStyle({
-          fillOpacity: 0.7
-        });
-      },
-      'mouseout': e => {
-        layer.setStyle({
-          fillOpacity: 0.5
-        })
-      },
-      'click': e => {
-        // An admin 0 has been clicked
-        if (feature.base_country) {
-          this.centerCountry(e.latlng, 6);
-          // Fetch dates for country
-          // this.props.fetchDates()
-        }
-        layer.setStyle({
-          fillColor: 'red'
-        });
-        // this.onEachFeature(feature, layer)
-        this.props.selectCountry(e.target.feature);
-        this.props.fetchDates(e.target.feature);
-      }
-    });
-  }
-  /**
    * Render
    * @return {object} JSX
    */
@@ -158,14 +97,14 @@ class MyMap extends Component {
           key={_.uniqueId()}
           data={this.props.allCountries}
           style={countryStyle(this.props)}
-          onEachFeature={this.onEachFeature.bind(this)}
+          onEachFeature={onEachCountryFeature(this)}
           filter={this.geoFilter.bind(this)}
         ></GeoJSON>
         <GeoJSON
           key={_.uniqueId()}
           data={this.props.activeCountry.geojson}
           style={adminStyle(this.props)}
-          onEachFeature={this.onEachFeatureActive.bind(this)}
+          onEachFeature={onEachAdminFeature(this.props)}
           filter={this.geoFilter.bind(this)}
         ></GeoJSON>
       </Map>
@@ -188,7 +127,8 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchDates: fetchDates,
     initialLoad: InitialLoad,
-    selectCountry: selectCountry
+    selectCountry: selectCountry,
+    selectAdmin: selectAdmin
   }, dispatch)
 }
 

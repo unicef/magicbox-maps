@@ -3,6 +3,12 @@ alasql('CREATE TABLE mobilities ' +
 '(origin string, destination string, people number)');
 
 const mpio = require('../../public/data/mpio');
+// List of scores to represent mobility toward each admin
+// Order is by geoFeature index
+let scores = []
+// Keep a running tally of admins that user wants to compare
+let selected_admins = {}
+
 /**
  * Returns style for leaflet polygon
  * @param  {object} state state
@@ -27,29 +33,78 @@ function activeCountryReducer(state = {
       geojson: mpio,
       admin_index: admin_index
     })
+  case 'ADMIN_SELECTED':
+    let admin_id = action.payload.target.feature.properties.admin_id
+    // Add or remove admin_id to selected_admins object
+    if (selected_admins[admin_id]) {
+      delete selected_admins[admin_id]
+    } else {
+      selected_admins[admin_id] = 1
+    }
+
+    // If there are no selected admins
+    // return scores: null
+    // Admin styles will default to diagonal
+    if (Object.keys(selected_admins).length == 0) {
+      return Object.assign({}, state, {
+        geojson: Object.assign({}, mpio),
+        scores: null,
+        selected_admins: selected_admins
+      })
+    }
+    // USE THIS LATER TO ENABLE USER TO CLICK ADMIN MULTIPLE TIMES
+    // TO INCREASE INTENSITY
+    // selected_admins[admin_id] = selected_admins[admin_id] ?
+    //   selected_admins[admin_id] + 1 : 1
+
+    // Combines all vectors for clicked admins
+    let combined_vectors = combine_vectors(state)
+
+    // Reduce scores to between 0 and 1
+    scores = get_scores(combined_vectors)
+    return Object.assign({}, state, {
+      geojson: Object.assign({}, mpio),
+      scores: scores,
+      selected_admins: selected_admins
+    })
+
   case 'DATE_SELECTED':
     let lookup = state.admin_index
     let mobility = action.payload.mobility;
     let matrix = getMatrix(mobility, lookup);
     let diagonal = get_diagonal(matrix)
-    let max = diagonal.reduce(function(a, b) {
-      return Math.max(a, b);
-    });
-    let min = diagonal.reduce(function(a, b) {
-      return Math.min(a, b);
-    });
 
-    let diag_scores = diagonal.map(function(e) {
-      return score(min, max, parseInt(e))
-    })
+    scores = get_scores(diagonal)
     return Object.assign({}, state, {
       geojson: Object.assign({}, mpio),
-      diagonal: diag_scores
+      diagonal: scores,
+      matrix: matrix
     })
 
   default:
     return state
   }
+}
+
+/**
+ * Combines all vectors for clicked admins
+ * @param  {Object} state
+ * @return {Array} diagonal
+ */
+function combine_vectors(state) {
+  let arys = Object.keys(selected_admins).map(admin_id => {
+    console.log('Admin ids', admin_id)
+    let admin_id_index = state.admin_index[admin_id]
+    let values = state.matrix[state.admin_index[admin_id]] || []
+    if (values.length > 1) {
+      values[admin_id_index] = 0;
+    }
+    return values
+  })
+  console.log(arys.length, arys)
+  return arys[0].map((_, i) =>
+    // sum elements at the same index in array of arrays into a single array
+    arys.reduce((p, item, j) => p + (arys[j][i] || 0), 0));
 }
 
 /**
@@ -76,7 +131,7 @@ function get_diagonal(matrix) {
 function getMatrix(mobility, lookup) {
   // var hash = {};
   let hw = Object.keys(lookup).length;
-  let thing = mobility.reduce((ary, row, i) => {
+  let matrix = mobility.reduce((ary, row, i) => {
     if (Array.isArray(ary[lookup[row.id_origin]])) {
       ary[lookup[row.id_origin]][lookup[row.id_destination]] =
       parseInt(row.people)
@@ -88,8 +143,25 @@ function getMatrix(mobility, lookup) {
 
     return ary
   }, Array(hw))
-  console.log(thing)
-  return thing
+  return matrix
+}
+
+/**
+ * Returns array of scores between 0 and 1
+ * @param  {Array} ary
+ * @return {Boolean} score
+ */
+function get_scores(ary) {
+  let max = ary.reduce(function(a, b) {
+    return Math.max(a, b);
+  });
+  let min = ary.reduce(function(a, b) {
+    return Math.min(a, b);
+  });
+
+  return ary.map(function(e) {
+    return score(min, max, parseInt(e))
+  })
 }
 
 /**
@@ -108,25 +180,4 @@ function score(min, max, number) {
   (top_bound - low_bound) + low_bound
 }
 
-// /**
-//  * Returns array in buckets
-//  * @param  {array} ary state
-//  * @return {boolean} boolean
-//  */
-// function bucketBy(ary) {
-//   let groupSize = 500;
-//   return ary.map(function(item, index) {
-//     return index % groupSize === 0 ?
-//       ary.slice(index, index + groupSize)
-//         .map(function(e) {
-//           return '(\'' + e.id_origin + '\', \'' +
-//             e.id_destination + '\', ' +
-//             e.people + ')'
-//         })
-//       : null;
-//   })
-//     .filter(function(item) {
-//       return item
-//     });
-// }
 export default activeCountryReducer
