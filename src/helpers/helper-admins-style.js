@@ -25,8 +25,9 @@ export function adminStyle(props) {
         if (selected_admins[admin_id]) {
           Object.assign(displayCountry, {
             fillColor: 'blue',
-            fillOpacity: (Object.keys(selected_admins).length > 1) ?
-              scores[admin_index[admin_id]] : 1
+            // fillOpacity: (Object.keys(selected_admins).length > 1) ?
+            //   scores[admin_index[admin_id]] : 1
+            fillOpacity: 1
           })
         }
       }
