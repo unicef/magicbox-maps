@@ -80,7 +80,7 @@ function activeCountryReducer(state = {
   // On date select, there may be admins selected from
   // from a previous date fetch
   case 'DATE_SELECTED':
-    // Create dictionary of admin_id to index feature in geojson
+    // Create dictionary of admin_id to index of feature in geojson
     let lookup = state.admin_index
     let mobility = action.payload.mobility;
     let matrix = getMatrix(mobility, lookup);

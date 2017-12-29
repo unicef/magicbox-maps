@@ -43,8 +43,11 @@ export function get_diagonal(matrix) {
  * @return {Object} matrix
  */
 export function getMatrix(mobility, lookup) {
-  // var hash = {};
+  // hw is for height and width of matrix, i.e. the number of geo features high and wide
   let hw = Object.keys(lookup).length;
+  // Mobility arrives in a two dimensional array
+  // where first array is colomn names [origin, destination, count]
+  // and each following array is a mobility [col_0_1_2-santibanko, col_0_1_3-santiblanko, 32]
   let matrix = mobility.reduce((ary, row, i) => {
     if (Array.isArray(ary[lookup[row.id_origin]])) {
       ary[lookup[row.id_origin]][lookup[row.id_destination]] =
