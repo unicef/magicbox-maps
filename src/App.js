@@ -10,7 +10,7 @@ import YearlyCalendar from './components/YearlyCalendar'
 /**
  * Main App
  */
-class App extends Component {
+class Dashboard extends Component {
   /**
    * render - Render component
    *
@@ -26,4 +26,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Dashboard;

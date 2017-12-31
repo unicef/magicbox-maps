@@ -7,7 +7,7 @@ const config = require('../config.js')
 const InitialLoad = function() {
   return function(dispatch) {
     // Fetch all countries for which we have data for schools (mobility later)
-    axios.get(window.location.href + config.init_map_url)
+    axios.get(window.location.origin + config.init_map_url)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })

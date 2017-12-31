@@ -1,8 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
+import config from './config'
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
+import {Route, Router} from 'react-router-dom';
+import Home from './Home/Home';
+import Callback from './Callback/Callback';
+import Auth from './Auth/Auth';
+import history from './history';
 import App from './App';
+import Shield from './Shield';
 import {
   Provider
 } from 'react-redux'
@@ -11,12 +18,44 @@ import {
   createStore,
   applyMiddleware
 } from 'redux';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+// import {makeMainRoutes} from './routes';
 
+import './index.css';
+const auth = new Auth();
+
+/**
+ * Returns score between 0 and 1
+ * @param  {Object} location
+ */
+const handleAuthentication = ({location}) => {
+  if (/access_token|id_token|error/.test(location.hash)) {
+    auth.handleAuthentication();
+  }
+}
 const store = createStore(allReducers, applyMiddleware(thunk));
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'));
+if (config.login_required) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router history={history}>
+        <div>
+          <Route path='/' render={(props) =>
+            <Shield auth={auth} {...props} />} />
+          <Route path='/home' render={(props) =>
+            <Home auth={auth} {...props} />} />
+          <Route path='/callback' render={(props) => {
+            handleAuthentication(props);
+            return <Callback {...props} />
+          }}/>
+        </div>
+      </Router>
+    </Provider>,
+    document.getElementById('root'));
+} else {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'));
+}
