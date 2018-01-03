@@ -80,8 +80,6 @@ function activeCountryReducer(state = initial_state, action) {
       // TO INCREASE INTENSITY
       // selected_admins[admin_id] = selected_admins[admin_id] ?
       //   selected_admins[admin_id] + 1 : 1
-
-
       // Combines all vectors for clicked admins
       combined_vectors = combine_vectors(
         state.admin_index,
