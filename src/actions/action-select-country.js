@@ -1,6 +1,7 @@
 import arrToGeo from '../helpers/helper-2d-geojson'
 import axios from 'axios';
 const config = require('../config.js')
+const mode = config.mode
 /**
  * selectCountry - Specifies the style for the geojson
  *
@@ -11,8 +12,8 @@ export const selectCountry = (country) => {
   console.log('You selected', country);
   return function(dispatch) {
     let geojson = null;
-    console.log(window.location.href + config.mode + '/countries/' + country);
-    axios.get(window.location.href + config.mode + '/countries/' + country)
+    axios.get(window.location.origin + '/' +
+    config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })

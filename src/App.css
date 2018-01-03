@@ -6,7 +6,3 @@
   bottom: 0;
   width: 100%;
 }
-  /*Hide calendar until user clicks on country and dates are fetched*/
-.calendar-chart {
-  visibility:hidden;
-}

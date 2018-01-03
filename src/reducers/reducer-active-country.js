@@ -40,11 +40,12 @@ let initial_state = {
 function activeCountryReducer(state = initial_state, action) {
   switch (action.type) {
     case 'COUNTRY_SELECTED':
+      // Create a lookup of admin_id to index in features array.
       let admin_index = mpio.features.reduce((h, f, i) => {
         h[f.properties.admin_id] = i;
         return h;
       }, {});
-      // Create a lookup of admin_id to index in features array.
+      
       if (config.mode != 'schools') {
         return Object.assign({}, state, {
           geojson: mpio,
