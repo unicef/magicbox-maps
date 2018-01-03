@@ -34,8 +34,9 @@ export function countryStyle(props) {
         // If a country has been clicked on...
         // and this is that country...
         // Don't display. That will happen with the activeCountry layer
+        console.log('helper', activeCountry.geojson.features);
         if (activeCountry.geojson.features.length > 0 &&
-          alpha2.match(activeCountry.geojson.properties.alpha2)
+          alpha2.match(activeCountry.selectedCountry)
         ) {
           return nullDisplay;
         }
