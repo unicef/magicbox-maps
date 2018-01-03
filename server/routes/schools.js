@@ -4,7 +4,7 @@ const express = require('express');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 const mb_url = 'http://magicboxstaging.azurewebsites.net/api/v1';
-const acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
+let acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
 const Request = require('superagent');
 const magicbox_url = config.magicbox_url; // Magic box API rul
 const refreshToken = config.refreshToken; // Permanent Refresh Token
