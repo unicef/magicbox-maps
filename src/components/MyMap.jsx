@@ -10,23 +10,33 @@ import {
   bindActionCreators
 } from 'redux'
 import InitialLoad from '../actions/initialLoad';
-import {selectCountry} from '../actions/action-select-country';
-import {selectAdmin} from '../actions/action-select-admin';
-import {countryStyle} from '../helpers/helper-countries-style';
-import {adminStyle} from '../helpers/helper-admins-style';
-import {onEachCountryFeature} from '../helpers/helper-country-onEach';
-import {onEachAdminFeature} from '../helpers/helper-admin-onEach';
+import {
+  selectCountry
+} from '../actions/action-select-country';
+import {
+  selectAdmin
+} from '../actions/action-select-admin';
+import {
+  countryStyle
+} from '../helpers/helper-countries-style';
+import {
+  onEachCountryFeature
+} from '../helpers/helper-country-onEach';
+import {
+  pointToLayer
+} from '../helpers/helper-country-point';
 import {
   GeoJSON,
   Map,
   ZoomControl,
   TileLayer
 } from 'react-leaflet'
-// import L from 'leaflet';
 import {
   alpha3ToAlpha2
 } from 'i18n-iso-countries';
-import {fetchDates} from '../actions/action-fetch-dates.js'
+import {
+  fetchDates
+} from '../actions/action-fetch-dates.js'
 const _ = require('lodash');
 
 /**
@@ -61,9 +71,10 @@ class MyMap extends Component {
   }
 
   /**
-   * Returns style for leaflet polygon
-   * @param  {object} feature request object
-   * @return {boolean} boolean
+   * geoFilter - filters geojson file
+   *
+   * @param  {type} feature features
+   * @return {type}         description
    */
   geoFilter(feature) {
     // If at country level
@@ -77,12 +88,14 @@ class MyMap extends Component {
     return true
   }
 
+
   /**
    * Render
    * @return {object} JSX
    */
   render() {
     const position = [this.state.lat, this.state.lng]
+    // console.log(this.props.activeCountry.geojson);
     return (
       <Map ref='map'
         center={position}
@@ -100,12 +113,17 @@ class MyMap extends Component {
           onEachFeature={onEachCountryFeature(this)}
           filter={this.geoFilter.bind(this)}
         ></GeoJSON>
-        <GeoJSON
+        {/* <GeoJSON
           key={_.uniqueId()}
           data={this.props.activeCountry.geojson}
           style={adminStyle(this.props)}
           onEachFeature={onEachAdminFeature(this.props)}
           filter={this.geoFilter.bind(this)}
+        ></GeoJSON> */}
+        <GeoJSON
+          key={_.uniqueId()}
+          data={this.props.activeCountry.geojson}
+          pointToLayer={pointToLayer}
         ></GeoJSON>
       </Map>
     )
