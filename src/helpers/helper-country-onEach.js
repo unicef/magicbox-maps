@@ -33,6 +33,7 @@ export function onEachCountryFeature(myMapObj) {
         // this.onEachFeature(feature, layer)
         // myMapObj.props.selectCountry(e.target.feature);
         if (config.mode != 'schools') {
+          myMapObj.props.selectCountry(e.target.feature);
           myMapObj.props.fetchDates(e.target.feature);
         } else {
           let alpha2 = alpha3ToAlpha2(e.target.feature.id);

@@ -45,7 +45,7 @@ function activeCountryReducer(state = initial_state, action) {
         h[f.properties.admin_id] = i;
         return h;
       }, {});
-      
+
       if (config.mode != 'schools') {
         return Object.assign({}, state, {
           geojson: mpio,
@@ -53,7 +53,6 @@ function activeCountryReducer(state = initial_state, action) {
         })
       } else {
         return action.payload
-
       }
 
     case 'ADMIN_SELECTED':

@@ -13,6 +13,8 @@ import InitialLoad from '../actions/initialLoad';
 import {
   selectCountry
 } from '../actions/action-select-country';
+import {adminStyle} from '../helpers/helper-admins-style';
+import {onEachAdminFeature} from '../helpers/helper-admin-onEach';
 import {
   selectAdmin
 } from '../actions/action-select-admin';
@@ -113,16 +115,16 @@ class MyMap extends Component {
           onEachFeature={onEachCountryFeature(this)}
           filter={this.geoFilter.bind(this)}
         ></GeoJSON>
-        {/* <GeoJSON
+        <GeoJSON
           key={_.uniqueId()}
           data={this.props.activeCountry.geojson}
           style={adminStyle(this.props)}
           onEachFeature={onEachAdminFeature(this.props)}
           filter={this.geoFilter.bind(this)}
-        ></GeoJSON> */}
+        ></GeoJSON>
         <GeoJSON
           key={_.uniqueId()}
-          data={this.props.activeCountry.geojson}
+          data={this.props.activeCountry.points}
           pointToLayer={pointToLayer}
         ></GeoJSON>
       </Map>
@@ -136,8 +138,7 @@ function mapStateToProps(state) {
   return {
     initialCountries: state.initialCountries.initialCountries,
     allCountries: state.allCountries,
-    activeCountry: state.activeCountry,
-    random: state.activeCountry.rand
+    activeCountry: state.activeCountry
   }
 }
 

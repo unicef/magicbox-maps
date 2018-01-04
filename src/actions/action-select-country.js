@@ -10,8 +10,13 @@ const mode = config.mode
  */
 export const selectCountry = (country) => {
   console.log('You selected', country);
+  if (mode != 'schools') {
+    return {
+      type: 'COUNTRY_SELECTED',
+      payload: country
+    }
+  }
   return function(dispatch) {
-    let geojson = null;
     axios.get(window.location.origin + '/' +
     config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
@@ -20,12 +25,11 @@ export const selectCountry = (country) => {
       .then(response => {
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
-        geojson = arrToGeo(headersList, jsonData)
-        console.log('action', geojson);
+        const points = arrToGeo(headersList, jsonData)
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {
-            geojson: geojson,
+            points: points,
             selectedCountry: country
           }
         })

@@ -26,17 +26,17 @@ export function countryStyle(props) {
     // from valid countries array.
     if (geoJsonFeature.base_country) {
       let alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
-      if (alpha2 === 'CO') {
-        console.log('COLLL!', activeCountry.geojson.features.length)
-      }
       // Check if this country is one for which we have data.
       if (props.initialCountries.indexOf(alpha2) > -1) {
         // If a country has been clicked on...
         // and this is that country...
         // Don't display. That will happen with the activeCountry layer
-        console.log('helper', activeCountry.geojson.features);
-        if (activeCountry.geojson.features.length > 0 &&
-          alpha2.match(activeCountry.selectedCountry)
+        let selectedCountry = activeCountry.selectedCountry ||
+        activeCountry.geojson.properties.alpha2
+        // Points are schools, geojson is mobility now
+        let geometry = activeCountry.points || activeCountry.geojson
+        if (geometry.features.length > 0 &&
+          alpha2.match(selectedCountry)
         ) {
           return nullDisplay;
         }
