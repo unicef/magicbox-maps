@@ -1,5 +1,6 @@
 import axios from 'axios';
 const config = require('../config.js')
+const mode = config.mode
 /**
  * InitialLoad - Calls initialLoad which loads initial data
  * @return {function} function
@@ -7,7 +8,8 @@ const config = require('../config.js')
 const InitialLoad = function() {
   return function(dispatch) {
     // Fetch all countries for which we have data for schools (mobility later)
-    axios.get(window.location.origin + config.init_map_url)
+    axios.get(window.location.origin + '/' +
+    config.initial_url_key[mode] + '/countries/')
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })

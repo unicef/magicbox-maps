@@ -12,12 +12,14 @@ export function adminStyle(props) {
     let scores = active_country.scores || active_country.diagonal
     const displayCountry = {
       fill: true,
+      color: 'yellow',
+      weight: '0.1',
       fillColor: 'red',
       fillOpacity: scores ?
         (scores[admin_index[admin_id]]
         || 0)
-        : Math.random(),
-      stroke: false
+        : Math.random()
+      // stroke: true
     }
 
     if (selected_admins) {

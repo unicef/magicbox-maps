@@ -8,6 +8,7 @@
     "axios": "^0.17.1",
     "bootstrap": "^3.3.7",
     "eslint": "^4.13.1",
+    "geojson": "^0.5.0",
     "husky": "^0.14.3",
     "i18n-iso-countries": "^3.3.0",
     "leaflet": "^1.2.0",
@@ -26,7 +27,8 @@
     "react-scripts": "0.9.5",
     "react-yearly-calendar": "^1.1.5",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "superagent": "^3.8.2"
   },
   "scripts": {
     "start": "react-scripts start",
