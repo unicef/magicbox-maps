@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import popUpString from './helper-country-message';
 /**
  * getStyle - sets style for dot
  *
@@ -41,5 +42,5 @@ export function pointToLayer(feature, latlng) {
     fillOpacity: .8,
     radius: 3,
     stroke: false
-  }).bindPopup('MESSAGE') // Change marker to circle
+  }).bindPopup(popUpString(feature.properties)) // Change marker to circle
 }
