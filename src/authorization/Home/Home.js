@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, {Component} from 'react';
-import App from '../App';
+import App from '../../App';
 /**
  * App
  * @return {Component}

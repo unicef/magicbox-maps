@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, {Component} from 'react';
 import {Navbar, Button} from 'react-bootstrap';
-import './App.css';
+import '../App.css';
 
 /**
  * App
@@ -35,7 +35,6 @@ class App extends Component {
    */
   render() {
     const {isAuthenticated} = this.props.auth;
-
     return (
       <div>
         <Navbar fluid>
