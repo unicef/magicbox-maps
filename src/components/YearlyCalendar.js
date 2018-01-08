@@ -25,7 +25,7 @@ class YearlyCalendar extends React.Component {
     }
 
     return (
-      <div style={{visibility: this.props.visibility}}>
+      <div className='calendar-component' style={{visibility: this.props.visibility}}>
         <Chart
           chartType="Calendar"
           columns={columns}
@@ -35,8 +35,6 @@ class YearlyCalendar extends React.Component {
             chartPackages: ['calendar'],
           }}
           chartEvents={this.chartEvents}
-          width='1100px'
-          height='200px'
           legend_toggle
           chartEvents={this.chartEvents}
          />

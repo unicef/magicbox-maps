@@ -4,12 +4,12 @@ import config from './config'
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import {Route, Router} from 'react-router-dom';
-import Home from './Home/Home';
-import Callback from './Callback/Callback';
-import Auth from './Auth/Auth';
-import history from './history';
+import Home from './authorization/Home/Home';
+import Callback from './authorization/Callback/Callback';
+import Auth from './authorization/Auth/Auth';
+import history from './authorization/history';
 import App from './App';
-import Shield from './Shield';
+import Shield from './authorization/Shield';
 import {
   Provider
 } from 'react-redux'
@@ -44,7 +44,7 @@ if (config.login_required) {
             <Shield auth={auth} {...props} />} />
           <Route path='/home' render={(props) =>
             <Home auth={auth} {...props} />} />
-          <Route path='/callback' render={(props) => {
+          <Route path='/authorization/callback' render={(props) => {
             handleAuthentication(props);
             return <Callback {...props} />
           }}/>

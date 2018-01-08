@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {fetchMobilityForDate} from '../helpers/helper-general'
+
 /**
  * countryStyle - Specifies the style for the geojson
  *
@@ -28,6 +30,17 @@ export function fetchDates(data) {
           type: 'FETCH_DATES',
           payload: dates
         })
+        let date = new Date(dates[0]).getTime() + 2660400000
+        fetchMobilityForDate(date)
+          .then(payload => {
+            dispatch({
+              type: 'DATE_SELECTED',
+              payload: {
+                date: date,
+                mobility: payload.data
+              }
+            })
+          })
       })
   }
 }

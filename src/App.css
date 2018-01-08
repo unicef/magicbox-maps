@@ -1,4 +1,8 @@
-
+.calendar-component {
+  position: absolute;
+  bottom: -100px;
+  left: 60px;
+}
 .leaflet-container {
   z-index:-1;
   position: absolute;
