@@ -8,7 +8,7 @@
  */
 const popUpString = (labels, data) => {
   let output = '';
-  for (const i = 0; i < labels.length; i++) {
+  for (let i = 0; i < labels.length; i++) {
     if (data[i] !== null &&
       data[i].toString().replace(/\s/g, '') !== '') {
       output += labels[i] + ': ' + data[i] + '<br>';
