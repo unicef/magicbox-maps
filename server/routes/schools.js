@@ -130,7 +130,7 @@ const forward_get = (req, res, next) => {
   const url = `${magicbox_url}${req.originalUrl}`
   axios.get(url)
     .catch(err => {
-      alert('There was an error trying to get initial load BE')
+      console.log('There was an error trying to get initial load BE');
     })
     .then(response => {
       res.json(response.data);
