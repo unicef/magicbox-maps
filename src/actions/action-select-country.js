@@ -19,11 +19,12 @@ export const selectCountry = (country) => {
   }
   return function(dispatch) {
     axios.get(window.location.origin + '/' +
-    config.initial_url_key[mode] + '/countries/' + country)
+        config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
+        console.log(response);
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
