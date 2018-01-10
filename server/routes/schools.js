@@ -3,7 +3,6 @@ const axios = require('axios');
 const express = require('express');
 // eslint-disable-next-line new-cap
 const router = express.Router();
-const mb_url = 'http://magicboxstaging.azurewebsites.net/api/v1';
 let acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
 const Request = require('superagent');
 const magicbox_url = config.magicbox_url; // Magic box API rul
@@ -104,6 +103,21 @@ const forward_get2 = (req, res, next) => {
   getResponse(url, acToken, res);
 }
 
+
+/**
+ * forward_get3 - forward get for school
+ *
+ * @param {type} req  request
+ * @param {type} res  response
+ * @param {type} next next
+ */
+const forward_get3 = (req, res, next) => {
+  console.log('FORWARD_GET3');
+  const url = `${magicbox_url}${req.originalUrl}`
+  console.log(url);
+  getResponse(url, acToken, res);
+}
+
 /**
  * This function is called when there is an api request
  * and it gets all the countries that we have info for
@@ -113,7 +127,7 @@ const forward_get2 = (req, res, next) => {
  */
 const forward_get = (req, res, next) => {
   console.log('IN FORWARD GET');
-  const url = `${mb_url}${req.originalUrl}`
+  const url = `${magicbox_url}${req.originalUrl}`
   axios.get(url)
     .catch(err => {
       alert('There was an error trying to get initial load BE')
@@ -123,5 +137,6 @@ const forward_get = (req, res, next) => {
     })
 }
 router.get('/countries/:country', forward_get2);
+router.get('/school/:school_id', forward_get3);
 router.get('/countries', forward_get);
 module.exports = router;
