@@ -1,5 +1,8 @@
 import L from 'leaflet';
 import axios from 'axios';
+import popUpString from './helper-popup-string';
+const config = require('../config.js')
+const mode = config.mode
 
 /**
  * getStyle - sets style for dot
@@ -57,17 +60,20 @@ export function pointToLayer(feature, latlng) {
 function onDotClick(e) {
   console.log('in mapclick');
   let popup = e.target.getPopup();
-  console.log(e.target.feature.geometry.coordinates);
-  let lat = e.target.feature.geometry.coordinates[1];
-  let lon = e.target.feature.geometry.coordinates[0];
-  console.log(window.location.origin + '/weather?lat=' + lat + '&lon=' + lon);
-  axios.get(window.location.origin + '/weather?lat=' + lat + '&lon=' + lon)
+  let school_id = e.target.feature.properties.id;
+  let url = window.location.origin + '/' +
+    config.initial_url_key[mode] +
+    '/school/' + school_id;
+  console.log(url);
+  axios.get(url)
     .catch(err => {
-      alert('There was an error trying to do the initial fetch')
+      alert('There was an error trying to get school info')
     })
     .then(response => {
-      console.log(response);
-      popup.setContent(response.data.description)
+      let labels = response.data.result[0];
+      let data = response.data.result[1]
+      let message = popUpString(labels, data)
+      popup.setContent(message)
       popup.update();
     })
   console.log(popup);
