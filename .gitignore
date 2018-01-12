@@ -20,4 +20,4 @@ yarn-error.log*
 #Ignore Config
 node_modules
 config.js
-/server/node_modules
+/react-app/node_modules
