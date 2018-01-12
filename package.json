@@ -1,46 +1,19 @@
 {
-  "name": "colombia-project",
-  "version": "0.1.0",
+  "name": "server",
+  "version": "0.0.0",
   "private": true,
-  "dependencies": {
-    "alasql": "^0.4.4",
-    "auth0-js": "^9.0.2",
-    "axios": "^0.17.1",
-    "bootstrap": "^3.3.7",
-    "eslint": "^4.13.1",
-    "geojson": "^0.5.0",
-    "husky": "^0.14.3",
-    "i18n-iso-countries": "^3.3.0",
-    "leaflet": "^1.2.0",
-    "lodash": "^4.17.4",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.31.5",
-    "react-calendar-heatmap": "^1.6.2",
-    "react-datepicker": "^0.61.0",
-    "react-dom": "^16.2.0",
-    "react-google-charts": "^1.5.5",
-    "react-leaflet": "^1.7.7",
-    "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "0.9.5",
-    "react-yearly-calendar": "^1.1.5",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "superagent": "^3.8.2"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "precommit": "./preCommitChecks.sh"
+    "start": "node ./bin/www"
   },
-  "proxy": "http://localhost:3001",
-  "devDependencies": {
-    "eslint": "^4.12.1",
-    "eslint-config-google": "^0.9.1",
-    "eslint-plugin-react": "^7.5.1"
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5",
+    "superagent": "^3.8.2"
   }
 }
