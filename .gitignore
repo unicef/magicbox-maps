@@ -8,6 +8,7 @@
 
 # production
 /build
+react-app/build/
 
 # misc
 .DS_Store
@@ -20,4 +21,3 @@ yarn-error.log*
 node_modules
 config.js
 /server/node_modules
-/build
