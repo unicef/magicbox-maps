@@ -8,7 +8,7 @@ const mode = config.mode
  * getStyle - sets style for dot
  *
  * @param  {type} val  value of speed (MBPS)
- * @param  {type} type type of speed ( 2G, 3G, etc)
+ * @param  {type} type type of speed (2G, 3G, etc)
  * @return {type}      color fo dot
  */
 function getStyle(val, type) {
