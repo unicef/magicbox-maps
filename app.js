@@ -21,9 +21,9 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', index);
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(`${__dirname}/react-app/build`));
+// app.use('/', index);
 app.use('/schools', schools);
 
 // catch 404 and forward to error handler
@@ -43,5 +43,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;
