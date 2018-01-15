@@ -199,7 +199,7 @@ class MyMap extends Component {
         >
           <div style={styles.general}>
             <div style={{'textAlign': 'center'}}>
-              <h3 >{this.props.activeCountry.selectedCountryName}</h3>
+              <h2>{this.props.activeCountry.selectedCountryName}</h2>
             </div>
             <Glyphicon glyph='remove'
               onClick={() => this.setState({ docker: false })}
@@ -207,10 +207,9 @@ class MyMap extends Component {
             <Grid>
               <Row className="show-grid">
                 <Col md={4}>
-                  <p> SCHOOLS</p>
-                  <p> # of SCHOOLS</p>
-                  <p> # of TEACHERS</p>
-                  <p> # of CLASSROOMS</p>
+                  <h3> Information </h3>
+                  <h4> Number of Schools: {this.props.activeCountry.selectedCountryNumSchools}</h4>
+                  <h4> Average speed: {this.props.activeCountry.selectedCountryAvgMbps}</h4>
                 </Col>
                 <Col md={4}>
                   <Pie legend= {false} data={data} />
