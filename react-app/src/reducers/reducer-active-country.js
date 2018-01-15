@@ -30,7 +30,8 @@ let geojson = {
 let initial_state = {
   geojson: geojson,
   points: geojson,
-  selectedCountry: null
+  selectedCountry: null,
+  selectedCountryName: "Country Name",
 }
 
 /**
@@ -54,7 +55,9 @@ function activeCountryReducer(state = initial_state, action) {
           admin_index: admin_index
         })
       } else {
-        return Object.assign(action.payload, {geojson: geojson})
+        return Object.assign(action.payload, {
+          geojson: geojson
+        })
       }
 
     case 'ADMIN_SELECTED':
