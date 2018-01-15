@@ -2,6 +2,7 @@ import arrToGeo from '../helpers/helper-2d-geojson'
 import axios from 'axios';
 const config = require('../config.js')
 const mode = config.mode
+var iso3311a2 = require('iso-3166-1-alpha-2')
 /**
  * selectCountry - Specifies the style for the geojson
  *
@@ -28,11 +29,13 @@ export const selectCountry = (country) => {
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
+        const countryname = iso3311a2.getCountry(country)
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {
             points: points,
-            selectedCountry: country
+            selectedCountry: country,
+            selectedCountryName: countryname
           }
         })
       })
