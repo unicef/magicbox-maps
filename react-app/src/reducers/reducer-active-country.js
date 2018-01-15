@@ -31,7 +31,10 @@ let initial_state = {
   geojson: geojson,
   points: geojson,
   selectedCountry: null,
-  selectedCountryName: "Country Name",
+  selectedCountryName: " . ",
+  selectedCountryNumSchools: null,
+  selectedCountryAvgMbps: null,
+
 }
 
 /**
