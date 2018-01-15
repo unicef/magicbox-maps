@@ -30,12 +30,31 @@ export const selectCountry = (country) => {
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
         const countryname = iso3311a2.getCountry(country)
+        const numSchools = response.data.result.length - 1;
+        console.log(response.data.result[0]);
+        let nschools = 0;
+        let speedschools = 0;
+        let speedresult = null;
+        for (let i = 1; i < response.data.result.length; i++) {
+          if (response.data.result[i][3] !== null) {
+            speedschools += response.data.result[i][3];
+            nschools++;
+          }
+        }
+        if (speedschools === 0) {
+          speedresult = null;
+        } else {
+          speedresult = speedschools / nschools
+          speedresult = speedresult.toFixed(2)
+        }
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {
             points: points,
             selectedCountry: country,
-            selectedCountryName: countryname
+            selectedCountryName: countryname,
+            selectedCountryNumSchools: numSchools,
+            selectedCountryAvgMbps: speedresult
           }
         })
       })
