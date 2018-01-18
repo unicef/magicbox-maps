@@ -25,6 +25,7 @@ const SliderChange = function(geojson, sliderVal) {
         belowT: belowT,
         zeroT: zeroT,
         nullT: nullT,
+        sliderVal: sliderVal
       }
     })
   }
