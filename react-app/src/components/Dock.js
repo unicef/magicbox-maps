@@ -46,14 +46,8 @@ let options = {
 class Docker extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   value: 3,
-    // }
   }
   handleChange(value) {
-    // this.props.map.setState({
-    //   value: value
-    // })
     this.props.sliderChange(this.props.activeCountry.points, value);
   }
 
@@ -90,7 +84,7 @@ class Docker extends Component {
 
     return (
       <Dock
-        isVisible={this.props.docker}
+        isVisible={this.props.didUpdate}
         dockStyle={{ background: 'rgba(0, 0, 0, 0.4)' }}
         position='bottom'
         dimMode='none'
