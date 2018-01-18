@@ -79,6 +79,7 @@ export const selectCountry = (country, sliderVal) => {
             belowT: belowT,
             zeroT: zeroT,
             nullT: nullT,
+            sliderVal: sliderVal
           }
         })
 
