@@ -45,8 +45,7 @@ import {
 } from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
 const _ = require('lodash');
-
-
+let cc;
 
 /**
  * My map class
@@ -70,6 +69,7 @@ class MyMap extends Component {
       zoom: 2,
       docker: false,
       value: 3,
+      didUpdate: false,
     }
 
   }
@@ -81,6 +81,24 @@ class MyMap extends Component {
   componentWillMount() {
     this.props.initialLoad();
   }
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+      this.setState({
+        didUpdate: false,
+      })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+      if (this.state.docker) {
+        this.setState({
+          didUpdate: true
+        })
+      }
+    }
+  }
+
+
 
   /**
    * geoFilter - filters geojson file
@@ -139,7 +157,7 @@ class MyMap extends Component {
             pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
           ></GeoJSON>
         </Map>
-        <Docker docker = {this.state.docker}></Docker>
+        <Docker didUpdate={this.state.didUpdate}></Docker>
       </div>
     )
   }
