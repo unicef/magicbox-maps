@@ -100,8 +100,6 @@ class MyMap extends Component {
     return true
   }
 
-
-
   /**
    * Render
    * @return {object} JSX
@@ -125,7 +123,7 @@ class MyMap extends Component {
             key={_.uniqueId()}
             data={this.props.allCountries}
             style={countryStyle(this.props)}
-            onEachFeature={onEachCountryFeature(this, this.state.value)}
+            onEachFeature={onEachCountryFeature(this, this.props.sliderValues.sliderVal)}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
           <GeoJSON
@@ -138,12 +136,10 @@ class MyMap extends Component {
           <GeoJSON
             key={_.uniqueId()}
             data={this.props.activeCountry.points}
-            pointToLayer={pointToLayer(this.state.value)}
+            pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
           ></GeoJSON>
         </Map>
-        <Docker docker = {this.state.docker} slider ={this.state.value} map ={this}></Docker>
-
-
+        <Docker docker = {this.state.docker} map ={this}></Docker>
       </div>
     )
   }
@@ -156,6 +152,8 @@ function mapStateToProps(state) {
     initialCountries: state.initialCountries.initialCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
+    sliderValues: state.sliderChanged
+
   }
 }
 
