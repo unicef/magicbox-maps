@@ -122,7 +122,8 @@ class Docker extends Component {
                     value={this.props.sliderValues.sliderVal}
                     onChange={this.handleChange.bind(this)}
                   />
-                  <div className='value'>{this.props.slider}</div>
+                  <div className='value' style={{'textAlign': 'center'}}>
+                    {this.props.sliderValues.sliderVal}</div>
                 </div>
 
               </Col>
