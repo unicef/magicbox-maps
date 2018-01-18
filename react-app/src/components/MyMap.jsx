@@ -43,55 +43,10 @@ import {
 import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
-import Dock from 'react-dock';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import {
-  Col,
-  Row,
-  Grid
-} from 'react-bootstrap'
-import {
-  Pie
-} from 'react-chartjs-2';
-import Slider from 'react-rangeslider'
-import 'react-rangeslider/lib/index.css'
+import Docker from './Dock'
 const _ = require('lodash');
-const styles = {
-  remove: {
-    position: 'absolute',
-    zIndex: 1,
-    right: '10px',
-    top: '10px',
-    cursor: 'pointer'
-  },
-  general: {
-    color: 'white'
 
-  }
-}
-const data = {
-  labels: [
-    'Red',
-    'Green',
-    'Yellow'
-  ],
-  datasets: [{
-    data: [300, 50, 100],
-    backgroundColor: [
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56'
-    ],
-    hoverBackgroundColor: [
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56'
-    ]
-  }]
-};
-const fillStyle = {
-  'backgroundColor': 'blue'
-}
+
 
 /**
  * My map class
@@ -113,15 +68,10 @@ class MyMap extends Component {
       lat: 0,
       lng: 0,
       zoom: 2,
-      docker: true,
+      docker: false,
       value: 3,
     }
-  }
 
-  handleChange(value) {
-    this.setState({
-      value: value
-    })
   }
 
   /**
@@ -158,6 +108,7 @@ class MyMap extends Component {
    */
   render() {
     const position = [this.state.lat, this.state.lng]
+
     // console.log(this.props.activeCountry.geojson);
     return (
       <div>
@@ -174,7 +125,7 @@ class MyMap extends Component {
             key={_.uniqueId()}
             data={this.props.allCountries}
             style={countryStyle(this.props)}
-            onEachFeature={onEachCountryFeature(this)}
+            onEachFeature={onEachCountryFeature(this, this.state.value)}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
           <GeoJSON
@@ -190,51 +141,10 @@ class MyMap extends Component {
             pointToLayer={pointToLayer(this.state.value)}
           ></GeoJSON>
         </Map>
-        <Dock
-          isVisible={this.state.docker}
-          dockStyle={{ background: 'rgba(0, 0, 0, 0.4)' }}
-          position='bottom'
-          dimMode='none'
-          defaultSize = {0.35}
-        >
-          <div style={styles.general}>
-            <div style={{'textAlign': 'center'}}>
-              <h2>{this.props.activeCountry.selectedCountryName}</h2>
-            </div>
-            <Glyphicon glyph='remove'
-              onClick={() => this.setState({ docker: false })}
-              style={styles.remove} />
-            <Grid>
-              <Row className="show-grid">
-                <Col md={4}>
-                  <h3> Information </h3>
-                  <h4> Number of Schools: {this.props.activeCountry.selectedCountryNumSchools}</h4>
-                  <h4> Average speed: {this.props.activeCountry.selectedCountryAvgMbps}</h4>
-                </Col>
-                <Col md={4}>
-                  <Pie legend= {false} data={data} />
-                </Col>
-                <Col md={4}>
-                  <div className='slider'>
-                    <Slider
-                      min={0}
-                      max={12}
-                      step={0.5}
-                      value={this.state.value}
-                      onChange={this.handleChange.bind(this)}
-                      fillStyle={fillStyle}
-                    />
-                    <div className='value'>{this.state.value}</div>
-                  </div>
+        <Docker docker = {this.state.docker} slider ={this.state.value} map ={this}></Docker>
 
-                </Col>
-              </Row>
-            </Grid>
-          </div>
-        </Dock>
+
       </div>
-
-
     )
   }
 }
@@ -245,16 +155,16 @@ function mapStateToProps(state) {
   return {
     initialCountries: state.initialCountries.initialCountries,
     allCountries: state.allCountries,
-    activeCountry: state.activeCountry
+    activeCountry: state.activeCountry,
   }
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchDates: fetchDates,
     initialLoad: InitialLoad,
+    fetchDates: fetchDates,
     selectCountry: selectCountry,
-    selectAdmin: selectAdmin
+    selectAdmin: selectAdmin,
   }, dispatch)
 }
 
