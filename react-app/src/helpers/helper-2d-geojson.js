@@ -8,9 +8,9 @@ const GeoJSON = require('geojson');
  */
 const arrToGeo = (params, data) => {
   const toGeo = []
-  for (const i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     const o = {}
-    for (const j = 0; j < params.length; j++) {
+    for (let j = 0; j < params.length; j++) {
       o[params[j]] = data[i][j]
     }
     toGeo[i] = o;

@@ -1,4 +1,4 @@
-const world_geojson = require('../../public/data/countries');
+const world_geojson = require('../data/countries');
 /**
  * Returns style for leaflet polygon
  * @param  {object} state state
