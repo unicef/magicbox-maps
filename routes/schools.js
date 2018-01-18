@@ -5,9 +5,9 @@ const express = require('express');
 const router = express.Router();
 let acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
 const Request = require('superagent');
-const magicbox_url = config.magicbox_url; // Magic box API rul
-const refreshToken = config.refreshToken; // Permanent Refresh Token
-const rfUrl = config.rfUrl; // Refresh Token URL
+const magicbox_url = process.env.magicbox_url || config.magicbox_url; // Magic box API rul
+const refreshToken = process.env.refreshToken || config.refreshToken; // Permanent Refresh Token
+const rfUrl = process.env.rfUrl || config.rfUrl; // Refresh Token URL
 
 /**
  * getNewToken - gets a new token when the given token is expired
