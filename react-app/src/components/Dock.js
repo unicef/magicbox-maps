@@ -51,14 +51,14 @@ class Docker extends Component {
     // }
   }
   handleChange(value) {
-    this.props.map.setState({
-      value: value
-    })
+    // this.props.map.setState({
+    //   value: value
+    // })
     this.props.sliderChange(this.props.activeCountry.points, value);
   }
 
   render() {
-    const data = {
+    let data = {
       labels: [
         'Green',
         'Yellow',
@@ -119,7 +119,7 @@ class Docker extends Component {
                     min={0}
                     max={12}
                     step={0.5}
-                    value={this.props.slider}
+                    value={this.props.sliderValues.sliderVal}
                     onChange={this.handleChange.bind(this)}
                   />
                   <div className='value'>{this.props.slider}</div>
