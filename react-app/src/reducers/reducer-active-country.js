@@ -52,7 +52,7 @@ function activeCountryReducer(state = initial_state, action) {
         return h;
       }, {});
 
-      if (config.mode != 'schools') {
+      if (config.mode !== 'schools') {
         return Object.assign({}, state, {
           geojson: mpio,
           admin_index: admin_index
