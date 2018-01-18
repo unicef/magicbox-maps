@@ -139,7 +139,7 @@ class MyMap extends Component {
             pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
           ></GeoJSON>
         </Map>
-        <Docker docker = {this.state.docker} map ={this}></Docker>
+        <Docker docker = {this.state.docker}></Docker>
       </div>
     )
   }
