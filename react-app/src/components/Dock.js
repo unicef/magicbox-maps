@@ -108,7 +108,7 @@ class Docker extends Component {
                 <Pie data={data} options={options} />
               </Col>
               <Col md={4}>
-                <div className='slider'>
+                {/* <div className='slider'>
                   <Slider
                     min={0}
                     max={12}
@@ -118,7 +118,7 @@ class Docker extends Component {
                   />
                   <div className='value' style={{'textAlign': 'center'}}>
                     {this.props.sliderValues.sliderVal}</div>
-                </div>
+                </div> */}
 
               </Col>
             </Row>
