@@ -32,7 +32,7 @@ export function countryStyle(props) {
         // and this is that country...
         // Don't display. That will happen with the activeCountry layer
         let selectedCountry = activeCountry.selectedCountry ||
-        activeCountry.geojson.properties.alpha2
+          activeCountry.geojson.properties.alpha2
 
         // Points are schools, geojson is mobility now
         let geometry = (activeCountry.points.features.length > 0) ?

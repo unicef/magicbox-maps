@@ -11,7 +11,7 @@ const mode = config.mode
  * @param  {type} type type of speed (2G, 3G, LTE, etc)
  * @return {type}      color fo dot
  */
-function getStyle(val, type) {
+function getStyle(val, type, slider) {
   let value = null;
   if (val !== null) {
     value = val;
@@ -22,9 +22,9 @@ function getStyle(val, type) {
     return '#6A1E74';
   } else if (value === 0 || value === 'No Service') {
     return '#d9534f';
-  } else if (value >= 3 || value === '3G') {
+  } else if (value >= slider || value === '3G') {
     return '#5cb85c';
-  } else if (value < 3 || value === '2G') {
+  } else if (value < slider || value === '2G') {
     return '#F5A623';
   } else {
     return '#DCDCDC';
@@ -38,18 +38,20 @@ function getStyle(val, type) {
  * @param  {type} latlng  latlng
  * @return {type} circleMarker
  */
-export function pointToLayer(feature, latlng) {
-  let val = feature.properties.speed_connectivity;
-  let type = feature.properties.type_connectivity
-  let marker = L.circleMarker(latlng, {
-    color: getStyle(val, type),
-    fillColor: getStyle(val, type),
-    fillOpacity: .8,
-    radius: 3,
-    stroke: false
-  }).bindPopup('LOADING...') // Change marker to circle
-  marker.on('click', onDotClick)
-  return marker;
+export function pointToLayer(slider) {
+  return (feature, latlng) => {
+    let val = feature.properties.speed_connectivity;
+    let type = feature.properties.type_connectivity
+    let marker = L.circleMarker(latlng, {
+      color: getStyle(val, type, slider),
+      fillColor: getStyle(val, type, slider),
+      fillOpacity: .8,
+      radius: 3,
+      stroke: false
+    }).bindPopup('LOADING...') // Change marker to circle
+    marker.on('click', onDotClick)
+    return marker;
+  }
 }
 
 /**
