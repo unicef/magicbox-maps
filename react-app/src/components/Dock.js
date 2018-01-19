@@ -54,10 +54,10 @@ class Docker extends Component {
   render() {
     let data = {
       labels: [
-        'Green',
-        'Yellow',
-        'Orange',
-        'Purple'
+        'Above Threshold',
+        'Below Threshold',
+        'Zero Connectivity',
+        'No Data'
       ],
       datasets: [{
         data: [
