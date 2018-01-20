@@ -44,6 +44,7 @@ import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
+import LoadingSpinner from './LoadingSpinner'
 const _ = require('lodash');
 let cc;
 
@@ -70,6 +71,7 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
+      loading: false,
     }
 
   }
@@ -90,10 +92,17 @@ class MyMap extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+      console.log('END');
       if (this.state.docker) {
         this.setState({
-          didUpdate: true
+          didUpdate: true,
+          loading: false,
         })
+      } else {
+        this.setState({
+          loading: false,
+        })
+
       }
     }
   }
@@ -158,6 +167,7 @@ class MyMap extends Component {
           ></GeoJSON>
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
+        <LoadingSpinner display={this.state.loading}></LoadingSpinner>
       </div>
     )
   }
