@@ -54,10 +54,10 @@ class Docker extends Component {
   render() {
     let data = {
       labels: [
-        'Green',
-        'Yellow',
-        'Orange',
-        'Purple'
+        'Above Threshold',
+        'Below Threshold',
+        'Zero Connectivity',
+        'No Data'
       ],
       datasets: [{
         data: [
@@ -108,7 +108,7 @@ class Docker extends Component {
                 <Pie data={data} options={options} />
               </Col>
               <Col md={4}>
-                <div className='slider'>
+                {/* <div className='slider'>
                   <Slider
                     min={0}
                     max={12}
@@ -118,7 +118,7 @@ class Docker extends Component {
                   />
                   <div className='value' style={{'textAlign': 'center'}}>
                     {this.props.sliderValues.sliderVal}</div>
-                </div>
+                </div> */}
 
               </Col>
             </Row>
