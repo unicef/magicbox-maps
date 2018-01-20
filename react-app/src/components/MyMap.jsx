@@ -9,7 +9,7 @@ import {
 import {
   bindActionCreators
 } from 'redux'
-import InitialLoad from '../actions/initialLoad';
+import InitialLoad from '../actions/action-initialLoad';
 import {
   selectCountry
 } from '../actions/action-select-country';
@@ -119,7 +119,7 @@ class MyMap extends Component {
     // If at country level
     if (feature.id) {
       let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.initialCountries.indexOf(alpha2) > -1) {
+      if (this.props.activeCountries.indexOf(alpha2) > -1) {
         return true
       }
       return false
@@ -177,7 +177,7 @@ class MyMap extends Component {
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    initialCountries: state.initialCountries.initialCountries,
+    activeCountries: state.activeCountries.initialCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged

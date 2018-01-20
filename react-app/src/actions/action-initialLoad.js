@@ -9,7 +9,7 @@ const InitialLoad = function() {
   return function(dispatch) {
     // Fetch all countries for which we have data for schools (mobility later)
     axios.get(window.location.origin + '/' +
-    config.initial_url_key[mode] + '/countries/')
+        config.initial_url_key[mode] + '/countries/')
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
