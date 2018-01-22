@@ -1,0 +1,21 @@
+.navbar {
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8) !important;
+  /* border-bottom: 2px solid #0099FF !important; */
+  border: 0px !important;;
+  height: 70px !important;
+  padding: 0 0 0 0 !important;
+  width: 100vw !important;
+  display: flex !important;
+}
+.navbar .container {
+  margin: 3px 0px 0px 0px !important ;
+  width: 100% !important;
+}
+
+.navbar-brand{
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  background-size: contain !important;
+}
