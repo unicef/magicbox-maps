@@ -27,12 +27,12 @@ export function countryStyle(props) {
     if (geoJsonFeature.base_country) {
       let alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
       // Check if this country is one for which we have data.
-      if (props.initialCountries.indexOf(alpha2) > -1) {
+      if (props.activeCountries.indexOf(alpha2) > -1) {
         // If a country has been clicked on...
         // and this is that country...
         // Don't display. That will happen with the activeCountry layer
         let selectedCountry = activeCountry.selectedCountry ||
-        activeCountry.geojson.properties.alpha2
+          activeCountry.geojson.properties.alpha2
 
         // Points are schools, geojson is mobility now
         let geometry = (activeCountry.points.features.length > 0) ?

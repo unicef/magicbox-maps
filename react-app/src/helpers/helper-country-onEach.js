@@ -7,7 +7,7 @@ const config = require('../config.js')
  * @param {object} myMapObj
  * @return {function} function
  */
-export function onEachCountryFeature(myMapObj) {
+export function onEachCountryFeature(myMapObj, sliderVal) {
   return (feature, layer) => {
     layer.on({
       'mouseover': (e) => {
@@ -33,12 +33,22 @@ export function onEachCountryFeature(myMapObj) {
         // this.onEachFeature(feature, layer)
         // myMapObj.props.selectCountry(e.target.feature);
         if (config.mode != 'schools') {
-          myMapObj.props.selectCountry(e.target.feature);
+          myMapObj.props.selectCountry(e.target.feature, sliderVal);
           myMapObj.props.fetchDates(e.target.feature);
         } else {
           let alpha2 = alpha3ToAlpha2(e.target.feature.id);
-          myMapObj.props.selectCountry(alpha2);
-          console.log(alpha2);
+          myMapObj.props.selectCountry(alpha2, sliderVal);
+          // if (alpha2 === 'BR' || alpha2 === 'CO') {
+          //   myMapObj.setState({
+          //     docker: true
+          //   })
+          // }
+          myMapObj.setState({
+            docker: true,
+            loading: true
+          })
+
+
         }
       }
     });

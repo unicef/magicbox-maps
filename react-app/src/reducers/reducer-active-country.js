@@ -30,7 +30,11 @@ let geojson = {
 let initial_state = {
   geojson: geojson,
   points: geojson,
-  selectedCountry: null
+  selectedCountry: null,
+  selectedCountryName: " . ",
+  selectedCountryNumSchools: null,
+  selectedCountryAvgMbps: null,
+
 }
 
 /**
@@ -47,16 +51,16 @@ function activeCountryReducer(state = initial_state, action) {
         h[f.properties.admin_id] = i;
         return h;
       }, {});
-
-      if (config.mode != 'schools') {
+      if (config.mode !== 'schools') {
         return Object.assign({}, state, {
           geojson: mpio,
           admin_index: admin_index
         })
       } else {
-        return Object.assign(action.payload, {geojson: geojson})
+        return Object.assign(action.payload, {
+          geojson: geojson
+        })
       }
-
     case 'ADMIN_SELECTED':
       let admin_id = action.payload.target.feature.properties.admin_id
       // Add or remove admin_id to selected_admins object

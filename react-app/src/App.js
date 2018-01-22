@@ -20,7 +20,7 @@ class Dashboard extends Component {
     return (
       <div>
         <MyMap />
-        {/* <YearlyCalendar /> */}
+        <YearlyCalendar />
       </div>
     );
   }

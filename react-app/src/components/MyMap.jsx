@@ -9,12 +9,16 @@ import {
 import {
   bindActionCreators
 } from 'redux'
-import InitialLoad from '../actions/initialLoad';
+import InitialLoad from '../actions/action-initialLoad';
 import {
   selectCountry
 } from '../actions/action-select-country';
-import {adminStyle} from '../helpers/helper-admins-style';
-import {onEachAdminFeature} from '../helpers/helper-admin-onEach';
+import {
+  adminStyle
+} from '../helpers/helper-admins-style';
+import {
+  onEachAdminFeature
+} from '../helpers/helper-admin-onEach';
 import {
   selectAdmin
 } from '../actions/action-select-admin';
@@ -34,11 +38,14 @@ import {
   TileLayer
 } from 'react-leaflet'
 import {
-  alpha3ToAlpha2
+  alpha3ToAlpha2,
 } from 'i18n-iso-countries';
 import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
+import Docker from './Dock'
+import UnicefNav from './UnicefNav';
+import LoadingSpinner from './LoadingSpinner'
 const _ = require('lodash');
 
 /**
@@ -60,8 +67,13 @@ class MyMap extends Component {
         ' contributors ',
       lat: 0,
       lng: 0,
-      zoom: 2
+      zoom: 2,
+      docker: false,
+      value: 3,
+      didUpdate: false,
+      loading: false,
     }
+
   }
 
   /**
@@ -71,6 +83,31 @@ class MyMap extends Component {
   componentWillMount() {
     this.props.initialLoad();
   }
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+      this.setState({
+        didUpdate: false,
+      })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+      console.log('END');
+      if (this.state.docker) {
+        this.setState({
+          didUpdate: true,
+          loading: false,
+        })
+      } else {
+        this.setState({
+          loading: false,
+        })
+
+      }
+    }
+  }
+
+
 
   /**
    * geoFilter - filters geojson file
@@ -82,7 +119,7 @@ class MyMap extends Component {
     // If at country level
     if (feature.id) {
       let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.initialCountries.indexOf(alpha2) > -1) {
+      if (this.props.activeCountries.indexOf(alpha2) > -1) {
         return true
       }
       return false
@@ -90,44 +127,49 @@ class MyMap extends Component {
     return true
   }
 
-
   /**
    * Render
    * @return {object} JSX
    */
   render() {
     const position = [this.state.lat, this.state.lng]
+
     // console.log(this.props.activeCountry.geojson);
     return (
-      <Map ref='map'
-        center={position}
-        zoom={this.state.zoom}
-        zoomControl={false}>
-        <ZoomControl position='bottomleft' />
-        <TileLayer
-          url={this.state.url}
-          attribution={this.state.attribution}
-        />
-        <GeoJSON
-          key={_.uniqueId()}
-          data={this.props.allCountries}
-          style={countryStyle(this.props)}
-          onEachFeature={onEachCountryFeature(this)}
-          filter={this.geoFilter.bind(this)}
-        ></GeoJSON>
-        <GeoJSON
-          key={_.uniqueId()}
-          data={this.props.activeCountry.geojson}
-          style={adminStyle(this.props)}
-          onEachFeature={onEachAdminFeature(this.props)}
-          filter={this.geoFilter.bind(this)}
-        ></GeoJSON>
-        <GeoJSON
-          key={_.uniqueId()}
-          data={this.props.activeCountry.points}
-          pointToLayer={pointToLayer}
-        ></GeoJSON>
-      </Map>
+      <div>
+        <UnicefNav></UnicefNav>
+        <Map ref='map'
+          center={position}
+          zoom={this.state.zoom}
+          zoomControl={false}>
+          <ZoomControl position='bottomleft' />
+          <TileLayer
+            url={this.state.url}
+            attribution={this.state.attribution}
+          />
+          <GeoJSON
+            key={_.uniqueId()}
+            data={this.props.allCountries}
+            style={countryStyle(this.props)}
+            onEachFeature={onEachCountryFeature(this, this.props.sliderValues.sliderVal)}
+            filter={this.geoFilter.bind(this)}
+          ></GeoJSON>
+          <GeoJSON
+            key={_.uniqueId()}
+            data={this.props.activeCountry.geojson}
+            style={adminStyle(this.props)}
+            onEachFeature={onEachAdminFeature(this.props)}
+            filter={this.geoFilter.bind(this)}
+          ></GeoJSON>
+          <GeoJSON
+            key={_.uniqueId()}
+            data={this.props.activeCountry.points}
+            pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
+          ></GeoJSON>
+        </Map>
+        <Docker didUpdate={this.state.didUpdate}></Docker>
+        <LoadingSpinner display={this.state.loading}></LoadingSpinner>
+      </div>
     )
   }
 }
@@ -136,18 +178,20 @@ class MyMap extends Component {
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    initialCountries: state.initialCountries.initialCountries,
+    activeCountries: state.activeCountries.initialCountries,
     allCountries: state.allCountries,
-    activeCountry: state.activeCountry
+    activeCountry: state.activeCountry,
+    sliderValues: state.sliderChanged
+
   }
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchDates: fetchDates,
     initialLoad: InitialLoad,
+    fetchDates: fetchDates,
     selectCountry: selectCountry,
-    selectAdmin: selectAdmin
+    selectAdmin: selectAdmin,
   }, dispatch)
 }
 
