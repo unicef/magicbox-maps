@@ -38,12 +38,13 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
         } else {
           let alpha2 = alpha3ToAlpha2(e.target.feature.id);
           myMapObj.props.selectCountry(alpha2, sliderVal);
-          if (alpha2 === 'BR' || alpha2 === 'CO') {
-            myMapObj.setState({
-              docker: true
-            })
-          }
+          // if (alpha2 === 'BR' || alpha2 === 'CO') {
+          //   myMapObj.setState({
+          //     docker: true
+          //   })
+          // }
           myMapObj.setState({
+            docker: true,
             loading: true
           })
 
