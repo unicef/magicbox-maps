@@ -44,6 +44,7 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
           //   })
           // }
           myMapObj.setState({
+            didUpdate: false,
             docker: true,
             loading: true
           })

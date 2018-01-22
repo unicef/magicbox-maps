@@ -102,7 +102,6 @@ class MyMap extends Component {
         this.setState({
           loading: false,
         })
-
       }
     }
   }
