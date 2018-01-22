@@ -47,12 +47,21 @@ class Docker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      internalDock: true
+      internalDock: this.props.didUpdate
     }
 
   }
   handleChange(value) {
     this.props.sliderChange(this.props.activeCountry.points, value);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.didUpdate !== this.props.didUpdate) {
+      if (this.props.didUpdate) {
+        this.setState({
+          internalDock: true,
+        })
+      }
+    }
   }
 
   render() {
@@ -85,10 +94,9 @@ class Docker extends Component {
         ]
       }]
     };
-    let showDocker = this.props.didUpdate && this.state.internalDock;
     return (
       <Dock
-        isVisible={showDocker}
+        isVisible={this.state.internalDock}
         dockStyle={{ background: 'rgba(0, 0, 0, 0.8)' }}
         position='bottom'
         dimMode='none'
