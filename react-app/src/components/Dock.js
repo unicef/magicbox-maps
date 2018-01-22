@@ -88,7 +88,7 @@ class Docker extends Component {
         dockStyle={{ background: 'rgba(0, 0, 0, 0.4)' }}
         position='bottom'
         dimMode='none'
-        defaultSize = {0.35}
+        defaultSize = {0.38}
       >
         <div style={styles.general}>
           <div style={{'textAlign': 'center'}}>
