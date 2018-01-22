@@ -44,9 +44,9 @@ import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
+import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
 const _ = require('lodash');
-let cc;
 
 /**
  * My map class
@@ -137,6 +137,7 @@ class MyMap extends Component {
     // console.log(this.props.activeCountry.geojson);
     return (
       <div>
+        <UnicefNav></UnicefNav>
         <Map ref='map'
           center={position}
           zoom={this.state.zoom}

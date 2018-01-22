@@ -34,11 +34,11 @@ const styles = {
 
   }
 }
-
 let options = {
   legend: {
     display: true,
     position: 'bottom',
+
   }
 }
 
@@ -46,6 +46,10 @@ let options = {
 class Docker extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      internalDock: true
+    }
+
   }
   handleChange(value) {
     this.props.sliderChange(this.props.activeCountry.points, value);
@@ -81,11 +85,11 @@ class Docker extends Component {
         ]
       }]
     };
-
+    let showDocker = this.props.didUpdate && this.state.internalDock;
     return (
       <Dock
-        isVisible={this.props.didUpdate}
-        dockStyle={{ background: 'rgba(0, 0, 0, 0.4)' }}
+        isVisible={showDocker}
+        dockStyle={{ background: 'rgba(0, 0, 0, 0.8)' }}
         position='bottom'
         dimMode='none'
         defaultSize = {0.38}
@@ -95,7 +99,7 @@ class Docker extends Component {
             <h2>{this.props.activeCountry.selectedCountryName}</h2>
           </div>
           <Glyphicon glyph='remove'
-            onClick={() => this.setState({ docker: false })}
+            onClick={() => this.setState({ internalDock: false })}
             style={styles.remove} />
           <Grid>
             <Row className="show-grid">
