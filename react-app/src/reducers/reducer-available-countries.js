@@ -1,5 +1,5 @@
 const initialstate = {
-  initialCountries: []
+  availableCountries: []
 }
 /**
  * Calls initialLoad which loads initial data
@@ -9,8 +9,8 @@ const initialstate = {
  */
 export default function(state = initialstate, action) {
   switch (action.type) {
-    case 'INITIAL_LOAD':
-      return action.payload;
+  case 'INITIAL_LOAD':
+    return action.payload;
   }
   return state;
 }

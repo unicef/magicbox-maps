@@ -9,7 +9,7 @@ import {
 import {
   bindActionCreators
 } from 'redux'
-import InitialLoad from '../actions/action-initialLoad';
+import fetchAvailableCountries from '../actions/action-fetch-available-countries';
 import {
   selectCountry
 } from '../actions/action-select-country';
@@ -80,10 +80,10 @@ class MyMap extends Component {
    *
    */
   componentWillMount() {
-    this.props.initialLoad();
+    this.props.fetchAvailableCountries();
   }
   /**
-   * componentWillUpdate - Calls initialLoad which loads initial data
+   * componentWillUpdate
    * @param  {Object} nextProps
    * @param  {Object} nextState
    */
@@ -95,9 +95,8 @@ class MyMap extends Component {
       })
     }
   }
-
   /**
-   * componentWillMount - Calls initialLoad which loads initial data
+   * componentWillMount
    * @param  {Object} prevProps
    * @param  {Object} prevState
    */
@@ -128,7 +127,7 @@ class MyMap extends Component {
     // If at country level
     if (feature.id) {
       let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.activeCountries.indexOf(alpha2) > -1) {
+      if (this.props.availableCountries.indexOf(alpha2) > -1) {
         return true
       }
       return false
@@ -189,7 +188,7 @@ class MyMap extends Component {
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    activeCountries: state.activeCountries.initialCountries,
+    availableCountries: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged
@@ -199,7 +198,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    initialLoad: InitialLoad,
+    fetchAvailableCountries: fetchAvailableCountries,
     fetchDates: fetchDates,
     selectCountry: selectCountry,
     selectAdmin: selectAdmin
