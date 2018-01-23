@@ -166,7 +166,7 @@ class MyMap extends Component {
           ></GeoJSON>
           <GeoJSON
             key={_.uniqueId()}
-            data={this.props.activeCountry.geojson}
+            data={this.props.activeCountry.polygons}
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
             filter={this.geoFilter.bind(this)}

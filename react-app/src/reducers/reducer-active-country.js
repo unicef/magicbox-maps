@@ -28,7 +28,7 @@ let geojson = {
   'features': []
 }
 let initial_state = {
-  geojson: geojson,
+  polygons: geojson,
   points: geojson,
   selectedCountry: null,
   selectedCountryName: " . ",
@@ -53,12 +53,12 @@ function activeCountryReducer(state = initial_state, action) {
       }, {});
       if (config.mode !== 'schools') {
         return Object.assign({}, state, {
-          geojson: mpio,
+          polygons: mpio,
           admin_index: admin_index
         })
       } else {
         return Object.assign(action.payload, {
-          geojson: geojson
+          polygons: geojson
         })
       }
     case 'ADMIN_SELECTED':
@@ -77,9 +77,9 @@ function activeCountryReducer(state = initial_state, action) {
         diagonal = state.diagonal
         scores = get_scores(diagonal)
         return Object.assign({}, state, {
-          geojson: Object.assign({}, mpio),
+          polygons: Object.assign({}, mpio),
           scores: scores,
-          selected_admins: selected_admins
+          selected_polygons: selected_admins
         })
       }
       // USE THIS LATER TO ENABLE USER TO CLICK ADMIN MULTIPLE TIMES
@@ -96,9 +96,9 @@ function activeCountryReducer(state = initial_state, action) {
       scores = get_scores(combined_vectors, [])
 
       return Object.assign({}, state, {
-        geojson: Object.assign({}, mpio),
+        polygons: Object.assign({}, mpio),
         scores: scores,
-        selected_admins: selected_admins
+        selected_polygons: selected_admins
       })
 
       // On date select, there may be admins selected from
@@ -127,7 +127,7 @@ function activeCountryReducer(state = initial_state, action) {
       }
 
       return Object.assign({}, state, {
-        geojson: Object.assign({}, mpio),
+        polygons: Object.assign({}, mpio),
         diagonal: diagonal,
         matrix,
         // Set scores to null in case admins were previously selected
