@@ -38,7 +38,7 @@ import {
   TileLayer
 } from 'react-leaflet'
 import {
-  alpha3ToAlpha2,
+  alpha3ToAlpha2
 } from 'i18n-iso-countries';
 import {
   fetchDates
@@ -71,9 +71,8 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false,
+      loading: false
     }
-
   }
 
   /**
@@ -83,30 +82,41 @@ class MyMap extends Component {
   componentWillMount() {
     this.props.initialLoad();
   }
+  /**
+   * componentWillUpdate - Calls initialLoad which loads initial data
+   * @param  {Object} nextProps
+   * @param  {Object} nextState
+   */
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+    if (nextProps.activeCountry.selectedCountryName !==
+      this.props.activeCountry.selectedCountryName) {
       this.setState({
-        didUpdate: false,
+        didUpdate: false
       })
     }
   }
+
+  /**
+   * componentWillMount - Calls initialLoad which loads initial data
+   * @param  {Object} prevProps
+   * @param  {Object} prevState
+   */
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+    if (prevProps.activeCountry.selectedCountryName !==
+      this.props.activeCountry.selectedCountryName) {
       console.log('END');
       if (this.state.docker) {
         this.setState({
           didUpdate: true,
-          loading: false,
+          loading: false
         })
       } else {
         this.setState({
-          loading: false,
+          loading: false
         })
       }
     }
   }
-
-
 
   /**
    * geoFilter - filters geojson file
@@ -150,7 +160,9 @@ class MyMap extends Component {
             key={_.uniqueId()}
             data={this.props.allCountries}
             style={countryStyle(this.props)}
-            onEachFeature={onEachCountryFeature(this, this.props.sliderValues.sliderVal)}
+            onEachFeature={onEachCountryFeature(
+              this, this.props.sliderValues.sliderVal
+            )}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
           <GeoJSON
@@ -190,7 +202,7 @@ function matchDispatchToProps(dispatch) {
     initialLoad: InitialLoad,
     fetchDates: fetchDates,
     selectCountry: selectCountry,
-    selectAdmin: selectAdmin,
+    selectAdmin: selectAdmin
   }, dispatch)
 }
 
