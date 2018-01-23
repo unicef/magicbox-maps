@@ -9,7 +9,7 @@ import {
 import {
   bindActionCreators
 } from 'redux'
-import InitialLoad from '../actions/action-initialLoad';
+import fetchAvailableCountries from '../actions/action-fetch-available-countries';
 import {
   selectCountry
 } from '../actions/action-select-country';
@@ -38,7 +38,7 @@ import {
   TileLayer
 } from 'react-leaflet'
 import {
-  alpha3ToAlpha2,
+  alpha3ToAlpha2
 } from 'i18n-iso-countries';
 import {
   fetchDates
@@ -71,9 +71,8 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false,
+      loading: false
     }
-
   }
 
   /**
@@ -81,32 +80,42 @@ class MyMap extends Component {
    *
    */
   componentWillMount() {
-    this.props.initialLoad();
+    this.props.fetchAvailableCountries();
   }
+  /**
+   * componentWillUpdate
+   * @param  {Object} nextProps
+   * @param  {Object} nextState
+   */
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+    if (nextProps.activeCountry.selectedCountryName !==
+      this.props.activeCountry.selectedCountryName) {
       this.setState({
-        didUpdate: false,
+        didUpdate: false
       })
     }
   }
+  /**
+   * componentWillMount
+   * @param  {Object} prevProps
+   * @param  {Object} prevState
+   */
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.activeCountry.selectedCountryName !== this.props.activeCountry.selectedCountryName) {
+    if (prevProps.activeCountry.selectedCountryName !==
+      this.props.activeCountry.selectedCountryName) {
       console.log('END');
       if (this.state.docker) {
         this.setState({
           didUpdate: true,
-          loading: false,
+          loading: false
         })
       } else {
         this.setState({
-          loading: false,
+          loading: false
         })
       }
     }
   }
-
-
 
   /**
    * geoFilter - filters geojson file
@@ -118,7 +127,7 @@ class MyMap extends Component {
     // If at country level
     if (feature.id) {
       let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.activeCountries.indexOf(alpha2) > -1) {
+      if (this.props.availableCountries.indexOf(alpha2) > -1) {
         return true
       }
       return false
@@ -150,7 +159,9 @@ class MyMap extends Component {
             key={_.uniqueId()}
             data={this.props.allCountries}
             style={countryStyle(this.props)}
-            onEachFeature={onEachCountryFeature(this, this.props.sliderValues.sliderVal)}
+            onEachFeature={onEachCountryFeature(
+              this, this.props.sliderValues.sliderVal
+            )}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
           <GeoJSON
@@ -177,7 +188,7 @@ class MyMap extends Component {
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    activeCountries: state.activeCountries.initialCountries,
+    availableCountries: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged
@@ -187,10 +198,10 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    initialLoad: InitialLoad,
+    fetchAvailableCountries: fetchAvailableCountries,
     fetchDates: fetchDates,
     selectCountry: selectCountry,
-    selectAdmin: selectAdmin,
+    selectAdmin: selectAdmin
   }, dispatch)
 }
 

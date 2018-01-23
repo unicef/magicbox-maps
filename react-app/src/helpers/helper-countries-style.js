@@ -27,7 +27,7 @@ export function countryStyle(props) {
     if (geoJsonFeature.base_country) {
       let alpha2 = alpha3ToAlpha2(geoJsonFeature.id);
       // Check if this country is one for which we have data.
-      if (props.activeCountries.indexOf(alpha2) > -1) {
+      if (props.availableCountries.indexOf(alpha2) > -1) {
         // If a country has been clicked on...
         // and this is that country...
         // Don't display. That will happen with the activeCountry layer
