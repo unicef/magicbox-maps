@@ -14,8 +14,6 @@ const arrToGeo = (params, data) => {
       if (data[i][j] !== null) {
         o[params[j]] = data[i][j]
       }
-
-
     }
     toGeo[i] = o;
   }
