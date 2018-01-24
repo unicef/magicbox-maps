@@ -8,6 +8,7 @@ export function adminStyle(props) {
     let admin_id = geoJsonFeature.properties.admin_id
     let admin_index = props.activeCountry.admin_index
     let active_country = props.activeCountry
+    console.log(active_country, 'UUUU')
     let selected_admins = active_country.selected_admins
     let scores = active_country.scores || active_country.diagonal
     const displayCountry = {
@@ -21,17 +22,15 @@ export function adminStyle(props) {
         : 0 // Math.random()
       // stroke: true
     }
-
+      // console.log(admin_id, '****');
     if (selected_admins) {
-      if (selected_admins) {
-        if (selected_admins[admin_id]) {
-          Object.assign(displayCountry, {
-            fillColor: 'blue',
-            // fillOpacity: (Object.keys(selected_admins).length > 1) ?
-            //   scores[admin_index[admin_id]] : 1
-            fillOpacity: 1
-          })
-        }
+      if (selected_admins[admin_id]) {
+        Object.assign(displayCountry, {
+          fillColor: 'blue',
+          // fillOpacity: (Object.keys(selected_admins).length > 1) ?
+          //   scores[admin_index[admin_id]] : 1
+          fillOpacity: 1
+        })
       }
     }
     return displayCountry

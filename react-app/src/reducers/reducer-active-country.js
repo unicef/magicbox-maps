@@ -79,7 +79,7 @@ function activeCountryReducer(state = initial_state, action) {
         return Object.assign({}, state, {
           polygons: Object.assign({}, mpio),
           scores: scores,
-          selected_polygons: selected_admins
+          selected_admins: selected_admins
         })
       }
       // USE THIS LATER TO ENABLE USER TO CLICK ADMIN MULTIPLE TIMES
@@ -98,7 +98,7 @@ function activeCountryReducer(state = initial_state, action) {
       return Object.assign({}, state, {
         polygons: Object.assign({}, mpio),
         scores: scores,
-        selected_polygons: selected_admins
+        selected_admins: selected_admins
       })
 
       // On date select, there may be admins selected from
