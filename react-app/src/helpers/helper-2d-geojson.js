@@ -11,7 +11,11 @@ const arrToGeo = (params, data) => {
   for (let i = 0; i < data.length; i++) {
     const o = {}
     for (let j = 0; j < params.length; j++) {
-      o[params[j]] = data[i][j]
+      if (data[i][j] !== null) {
+        o[params[j]] = data[i][j]
+      }
+
+
     }
     toGeo[i] = o;
   }
