@@ -12,12 +12,14 @@ const mode = config.mode
  * @return {type}      color fo dot
  */
 function getStyle(val, type, slider) {
+  // console.log(val, type);
   let value = null;
-  if (val !== null) {
+  if (typeof val !== 'undefined' && val !== null) {
     value = val;
-  } else if (type != null) {
+  } else if (typeof type !== 'undefined' && type != null) {
     value = type;
   }
+  // console.log(value);
   if (value === null) {
     return '#6A1E74';
   } else if (value === 0 || value === 'No Service') {
