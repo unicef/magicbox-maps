@@ -39,6 +39,14 @@ export const selectCountry = (country, sliderVal) => {
         let zeroT = 0;
         let aboveT = 0;
         let nullT = 0;
+        let aboveTT = 0
+        let types = {
+          null: 0,
+          'No Service': 0,
+          '2G': 0,
+          '3G': 0
+        }
+        console.log(response.data.result[0]);
         for (let i = 1; i < response.data.result.length; i++) {
           if (response.data.result[i][3] !== null) {
             speedschools += response.data.result[i][3];
@@ -53,14 +61,28 @@ export const selectCountry = (country, sliderVal) => {
           } else {
             nullT++;
           }
+          if (response.data.result[i][4] in types) {
+            types[response.data.result[i][4]] += 1;
+          } else {
+            types[response.data.result[i][4]] = 1;
+          }
 
         }
+        if (nullT > types[null]) {
+          console.log('type');
+          zeroT = types['No Service'];
+          belowT = types['2G'];
+          aboveT = response.data.result.length - types['No Service'] - types['2G'] - types[null];
+          nullT = types[null];
+        }
+        console.log(types);
         if (speedschools === 0) {
           speedresult = null;
         } else {
           speedresult = speedschools / nschools
           speedresult = speedresult.toFixed(2)
         }
+
         //console.log(points);
         dispatch({
           type: 'COUNTRY_SELECTED',
