@@ -39,13 +39,13 @@ export function fetchDates(data) {
           type: 'FETCH_DATES',
           payload: dates
         })
-        let date = new Date(dates[0]).getTime() + 2660400000
-        fetchMobilityForDate(date)
+
+        fetchMobilityForDate(dates[0])
           .then(payload => {
             dispatch({
               type: 'DATE_SELECTED',
               payload: {
-                date: date,
+                date: payload,
                 mobility: payload.data
               }
             })
