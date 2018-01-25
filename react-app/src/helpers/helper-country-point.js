@@ -9,7 +9,7 @@ const mode = config.mode
  *
  * @param  {type} val  value of speed (MBPS)
  * @param  {type} type type of speed (2G, 3G, LTE, etc)
- * @return {type}      color fo dot
+ * @return {type}      color for dot
  */
 function getStyle(val, type, slider) {
   // console.log(val, type);
