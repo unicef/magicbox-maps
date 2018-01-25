@@ -20,7 +20,9 @@ export function fetchDates(data) {
       .then(res => {
         let dates = res.data.properties.map((csvFilename) => {
           // csv filename follows the format: YYYY-MM-DD^JOURNEYS-PEOPLE.csv
-          let matches = csvFilename.match(/^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/)
+          let matches = csvFilename.match(
+            /^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/
+          )
 
           // ignore elements not matching pattern
           if (!matches) {
