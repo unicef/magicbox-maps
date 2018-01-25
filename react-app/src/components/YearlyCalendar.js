@@ -16,8 +16,14 @@ import {
 
 class YearlyCalendar extends React.Component {
   onChange(Chart) {
-    this.props.selectDate(Chart.chart.getSelection()[0].date)
+    let index = Chart.chart.getSelection()[0].row
+    console.log('chart selection', Chart.chart.getSelection())
+
+    if (index !== undefined) {
+      this.props.selectDate(this.props.dates[index])
+    }
   }
+
   constructor(props) {
     super(props)
     this.chartEvents = [{
@@ -34,7 +40,8 @@ class YearlyCalendar extends React.Component {
       type: 'number',
       id: 'Won/Loss'
     }]
-    if (new Date(this.props.dates.dateArray).getYear() == 1) {
+
+    if (this.props.dates[0].date.getYear() == 1) {
       return (<div></div>)
     }
 
@@ -43,7 +50,7 @@ class YearlyCalendar extends React.Component {
         <Chart
           chartType="Calendar"
           columns={columns}
-          rows={this.props.dates}
+          rows={this.props.dates.map((dateObj) => [dateObj.date, dateObj.journeys])}
           options={{
             title: this.props.source,
             chartPackages: ['calendar'],
