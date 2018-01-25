@@ -11,7 +11,6 @@ import {
   get_scores
 } from '../helpers/helper-general'
 const config = require('../config.js')
-
 const mpio = require('../data/mpio');
 // List of scores to represent mobility toward each admin
 // Order is by geoFeature index
