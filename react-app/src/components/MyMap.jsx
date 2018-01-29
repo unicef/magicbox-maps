@@ -38,9 +38,6 @@ import {
   TileLayer
 } from 'react-leaflet'
 import {
-  alpha3ToAlpha2
-} from 'i18n-iso-countries';
-import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
@@ -126,12 +123,9 @@ class MyMap extends Component {
   geoFilter(feature) {
     // If at country level
     if (feature.id) {
-      let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.availableCountries.indexOf(alpha2) > -1) {
-        return true
-      }
-      return false
+      return this.props.availableCountries.includes(feature.id.toLowerCase())
     }
+
     return true
   }
 
