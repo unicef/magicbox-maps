@@ -9,7 +9,8 @@ import {
 import {
   bindActionCreators
 } from 'redux'
-import fetchAvailableCountries from '../actions/action-fetch-available-countries';
+import fetchAvailableCountries
+  from '../actions/action-fetch-available-countries';
 import {
   selectCountry
 } from '../actions/action-select-country';
@@ -28,6 +29,10 @@ import {
 import {
   onEachCountryFeature
 } from '../helpers/helper-country-onEach';
+import LayerGl from  "../public/lib";
+import mpio from '../data/mpio'
+
+import us_counties from '../data/us_counties'
 import {
   pointToLayer
 } from '../helpers/helper-country-point';
@@ -73,7 +78,14 @@ class MyMap extends Component {
       didUpdate: false,
       loading: false
     }
+
+    this.polygons = us_counties.features
+      .map(feature => feature.geometry.coordinates)
+    mpio.features.forEach(f => {
+      this.polygons.push(f.geometry.coordinates);
+    })
   }
+
 
   /**
    * componentWillMount - Calls initialLoad which loads initial data
@@ -155,6 +167,7 @@ class MyMap extends Component {
             url={this.state.url}
             attribution={this.state.attribution}
           />
+          {/*
           <GeoJSON
             key={_.uniqueId()}
             data={this.props.allCountries}
@@ -176,6 +189,10 @@ class MyMap extends Component {
             data={this.props.activeCountry.points}
             pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
           ></GeoJSON>
+          */}
+          <LayerGl
+            polygons={this.polygons}
+          />
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
