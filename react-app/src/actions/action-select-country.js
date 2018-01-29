@@ -1,8 +1,10 @@
 import arrToGeo from '../helpers/helper-2d-geojson'
-import axios from 'axios';
+import axios from 'axios'
+import {registerLocale, getName} from 'i18n-iso-countries'
 const config = require('../config.js')
 const mode = config.mode
-var iso3311a2 = require('iso-3166-1-alpha-2')
+
+registerLocale(require("i18n-iso-countries/langs/en.json"))
 /**
  * selectCountry - Specifies the style for the geojson
  *
@@ -29,7 +31,7 @@ export const selectCountry = (country, sliderVal) => {
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
-        const countryname = iso3311a2.getCountry(country)
+        const countryname = getName(country, 'en')
         const numSchools = response.data.result.length - 1;
         // console.log(response.data.result[0]);
         let nschools = 0;

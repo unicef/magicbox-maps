@@ -13,7 +13,6 @@
     "halogenium": "^2.2.3",
     "husky": "^0.14.3",
     "i18n-iso-countries": "^3.3.0",
-    "iso-3166-1-alpha-2": "^1.0.0",
     "leaflet": "^1.2.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
