@@ -18,25 +18,34 @@ export function fetchDates(data) {
         alert('There was an error trying to do the initial fetch')
       })
       .then(res => {
-        let dates = res.data.properties.map(
-          csv => csv.substring(0, csv.indexOf('.'))
-            .split('-').map(value => parseInt(value))
-        )
-        // The calendar chart takes the month as an index
-        dates.forEach( d => {
-          d[1]--;
-        })
+        let dates = res.data.properties.map((csvFilename) => {
+          // csv filename follows the format: YYYY-MM-DD^JOURNEYS-PEOPLE.csv
+          let matches = csvFilename.match(/^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/)
+
+          // ignore elements not matching pattern
+          if (!matches) {
+            return null
+          }
+
+          return {
+            date: new Date(+matches[1], +matches[2] - 1, +matches[3]),
+            journeys: +matches[4],
+            people: +matches[5],
+            filename: csvFilename
+          }
+        }).filter((date) => !!date)
+
         dispatch({
           type: 'FETCH_DATES',
           payload: dates
         })
-        let date = new Date(dates[0]).getTime() + 2660400000
-        fetchMobilityForDate(date)
+
+        fetchMobilityForDate(dates[0])
           .then(payload => {
             dispatch({
               type: 'DATE_SELECTED',
               payload: {
-                date: date,
+                date: payload,
                 mobility: payload.data
               }
             })
