@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
 const schools = require('./routes/schools');
+const mobility = require('./routes/mobility');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(`${__dirname}/react-app/build`));
 // app.use('/', index);
 app.use('/schools', schools);
+app.use('/mobility', mobility);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
