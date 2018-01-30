@@ -5,9 +5,9 @@ import {fetchMobilityForDate} from '../helpers/helper-general'
  * @param  {String} date description
  * @return {object} dispatch
  */
-export const selectDate = function(date) {
+export const selectDate = function(country, date) {
   return function(dispatch) {
-    fetchMobilityForDate(date)
+    fetchMobilityForDate(country, date)
     .then(data => {
       dispatch({
         type: 'DATE_SELECTED',

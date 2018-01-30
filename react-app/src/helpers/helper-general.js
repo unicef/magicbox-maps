@@ -1,8 +1,11 @@
 import axios from 'axios';
+const config = require('../config')
 
-export function fetchMobilityForDate(date) {
+export function fetchMobilityForDate(country, date) {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col/' + date.filename)
+    axios.get(window.location.origin + '/' +
+        config.initial_url_key[config.mode] + '/countries/' +
+        country + '/' + date.filename)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })

@@ -17,10 +17,10 @@ import {
 class YearlyCalendar extends React.Component {
   onChange(Chart) {
     let index = Chart.chart.getSelection()[0].row
-    console.log('chart selection', Chart.chart.getSelection())
+    let country = this.props.activeCountry.polygons.properties.alpha3.toLowerCase()
 
     if (index !== undefined) {
-      this.props.selectDate(this.props.dates[index])
+      this.props.selectDate(country, this.props.dates[index])
     }
   }
 
@@ -41,7 +41,7 @@ class YearlyCalendar extends React.Component {
       id: 'Won/Loss'
     }]
 
-    if (this.props.dates[0].date.getYear() == 1) {
+    if (this.props.dates[0] === undefined) {
       return (<div></div>)
     }
 
@@ -68,14 +68,15 @@ function mapStateToProps(state) {
   return {
     dates: state.dates.dateArray,
     date: state.date,
-    visibility: state.dates.visibility
+    visibility: state.dates.visibility,
+    activeCountry: state.activeCountry
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectDate: (data) => {
-      dispatch(selectDate(data))
+    selectDate: (country, data) => {
+      dispatch(selectDate(country, data))
     }
   }
 }

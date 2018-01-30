@@ -38,7 +38,7 @@ export function fetchDates(data) {
           payload: dates
         })
 
-        fetchMobilityForDate(dates[0])
+        fetchMobilityForDate(data.id.toLowerCase(), dates[0])
           .then(payload => {
             dispatch({
               type: 'DATE_SELECTED',
