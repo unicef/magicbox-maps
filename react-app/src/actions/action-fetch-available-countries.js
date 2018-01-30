@@ -18,7 +18,7 @@ const fetchAvailableCountries = function() {
         dispatch({
           type: 'INITIAL_LOAD',
           payload: {
-            availableCountries: response.data.countries
+            availableCountries: response.data.properties
           }
         })
       })
