@@ -2,12 +2,15 @@
 const router = require('express').Router();
 const axios = require('axios');
 const config = require('../react-app/src/config.js')
-const magicbox_url = process.env.magicbox_url || config.magicbox_url; // Magic box API url
+const magicboxUrl = process.env.magicbox_url || config.magicbox_url; // Magic box API url
+
+// Mobility data
+const mobilityData = '/mobility/sources/acme/series/santiblanko/countries/'
+// Base url
+const baseUrl = `${magicboxUrl}${mobilityData}`
 
 router.get('/countries', (req, res, next) => {
-  const url = `${magicbox_url}/mobility/sources/acme/series/santiblanko/countries/`;
-
-  axios.get(url)
+  axios.get(baseUrl)
     .catch(err => {
       console.log('There was an error trying to get initial load BE');
     })
@@ -17,7 +20,7 @@ router.get('/countries', (req, res, next) => {
 });
 
 router.get('/countries/:country', (req, res, next) => {
-  const url = `${magicbox_url}/mobility/sources/acme/series/santiblanko/countries/${req.params.country}`;
+  const url = `${baseUrl}${req.params.country}`;
 
   axios.get(url)
     .catch(err => {
@@ -29,7 +32,7 @@ router.get('/countries/:country', (req, res, next) => {
 });
 
 router.get('/countries/:country/:filename', (req, res, next) => {
-  const url = `${magicbox_url}/mobility/sources/acme/series/santiblanko/countries/${req.params.country}/${req.params.filename}`;
+  const url = `${baseUrl}${req.params.country}/${req.params.filename}`;
 
   axios.get(url)
     .catch(err => {
