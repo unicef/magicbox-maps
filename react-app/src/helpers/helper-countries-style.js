@@ -34,7 +34,7 @@ export function countryStyle(props) {
         let geometry = (activeCountry.points.features.length > 0) ?
           activeCountry.points : activeCountry.polygons
         if (geometry.features.length > 0 &&
-          geoJsonFeature.id.toLowerCase() === selectedCountry
+          geoJsonFeature.id.toLowerCase() === selectedCountry.toLowerCase()
         ) {
           return nullDisplay;
         }
