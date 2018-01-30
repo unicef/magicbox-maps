@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {fetchMobilityForDate} from '../helpers/helper-general'
+const config = require('../config.js')
 
 /**
  * countryStyle - Specifies the style for the geojson
@@ -8,12 +9,9 @@ import {fetchMobilityForDate} from '../helpers/helper-general'
  * @return {Array}
  */
 export function fetchDates(data) {
-  // if (!data) {
-  //   return []
-  // }
-  // return [[ new Date(2012, 3, 13), 37032 ]]
   return function(dispatch) {
-    axios.get('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col')
+    axios.get(window.location.origin + '/' +
+        config.initial_url_key[config.mode] + '/countries/' + data.id.toLowerCase())
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
