@@ -7,6 +7,7 @@ import React, {
 import {
   connect
 } from 'react-redux'
+import AboutData from './AboutData';
 import {
   fetchDates
 } from '../actions/action-fetch-dates'
@@ -47,6 +48,7 @@ class YearlyCalendar extends React.Component {
 
     return (
       <div className='calendar-component' style={{visibility: this.props.visibility}}>
+        <AboutData/>
         <Chart
           chartType="Calendar"
           columns={columns}

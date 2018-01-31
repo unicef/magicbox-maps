@@ -8,14 +8,14 @@ import {fetchMobilityForDate} from '../helpers/helper-general'
 export const selectDate = function(date) {
   return function(dispatch) {
     fetchMobilityForDate(date)
-    .then(data => {
-      dispatch({
-        type: 'DATE_SELECTED',
-        payload: {
-          date: date,
-          mobility: data.data
-        }
+      .then(data => {
+        dispatch({
+          type: 'DATE_SELECTED',
+          payload: {
+            date: date,
+            mobility: data.data
+          }
+        })
       })
-    })
   }
 }

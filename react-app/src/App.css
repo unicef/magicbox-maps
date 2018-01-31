@@ -3,6 +3,9 @@
   bottom: -100px;
   left: 60px;
 }
+.about-data {
+  color:white;
+}
 .leaflet-container {
   z-index:-1;
   position: absolute;

@@ -8,10 +8,6 @@ import {fetchMobilityForDate} from '../helpers/helper-general'
  * @return {Array}
  */
 export function fetchDates(data) {
-  // if (!data) {
-  //   return []
-  // }
-  // return [[ new Date(2012, 3, 13), 37032 ]]
   return function(dispatch) {
     axios.get('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col')
       .catch(err => {
@@ -42,12 +38,13 @@ export function fetchDates(data) {
           payload: dates
         })
 
-        fetchMobilityForDate(dates[0])
+        let most_recent_date = dates[dates.length-1]
+        fetchMobilityForDate(most_recent_date)
           .then(payload => {
             dispatch({
               type: 'DATE_SELECTED',
               payload: {
-                date: payload,
+                date: most_recent_date,
                 mobility: payload.data
               }
             })
