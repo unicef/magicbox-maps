@@ -22,7 +22,7 @@ export function adminStyle(props) {
         : 0 // Math.random()
       // stroke: true
     }
-      // console.log(admin_id, '****');
+    // console.log(admin_id, '****');
     if (selected_admins) {
       if (selected_admins[admin_id]) {
         Object.assign(displayCountry, {

@@ -1,18 +1,21 @@
-import React, {
+import {
   Component
 } from 'react';
 import {
-  Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  MenuItem
+  Navbar
 } from 'react-bootstrap';
 import './css/UnicefNav.css';
 import unicef from '../data/unicef.png'
 
+/**
+ * Unicef Navbar component
+ */
 class UnicefNav extends Component {
-
+  /**
+   * Render Unicef navbar
+   *
+   * @return {component}
+   */
   render() {
     return (
       <Navbar>
@@ -24,7 +27,6 @@ class UnicefNav extends Component {
       </Navbar>
     );
   }
-
 }
 
 export default UnicefNav;

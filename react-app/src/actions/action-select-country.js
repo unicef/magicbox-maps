@@ -2,11 +2,12 @@ import arrToGeo from '../helpers/helper-2d-geojson'
 import axios from 'axios';
 const config = require('../config.js')
 const mode = config.mode
-var iso3311a2 = require('iso-3166-1-alpha-2')
+const iso3311a2 = require('iso-3166-1-alpha-2')
 /**
  * selectCountry - Specifies the style for the geojson
  *
  * @param  {String} country description
+ * @param  {Number} sliderVal selected slider value
  * @return {object} style
  */
 export const selectCountry = (country, sliderVal) => {
@@ -20,7 +21,7 @@ export const selectCountry = (country, sliderVal) => {
   }
   return function(dispatch) {
     axios.get(window.location.origin + '/' +
-        config.initial_url_key[mode] + '/countries/' + country)
+      config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
@@ -39,9 +40,9 @@ export const selectCountry = (country, sliderVal) => {
         let zeroT = 0;
         let aboveT = 0;
         let nullT = 0;
-        let aboveTT = 0
+
         let types = {
-          null: 0,
+          'null': 0,
           'No Service': 0,
           '2G': 0,
           '3G': 0
@@ -66,16 +67,19 @@ export const selectCountry = (country, sliderVal) => {
           } else {
             types[response.data.result[i][4]] = 1;
           }
-
         }
-        if (nullT > types[null]) {
+
+        if (nullT > types['null']) {
           console.log('type');
           zeroT = types['No Service'];
           belowT = types['2G'];
-          aboveT = response.data.result.length - types['No Service'] - types['2G'] - types[null];
-          nullT = types[null];
+          aboveT = response.data.result.length - types['No Service'] -
+            types['2G'] - types['null'];
+          nullT = types['null'];
         }
+
         console.log(types);
+
         if (speedschools === 0) {
           speedresult = null;
         } else {
@@ -83,7 +87,8 @@ export const selectCountry = (country, sliderVal) => {
           speedresult = speedresult.toFixed(2)
         }
 
-        //console.log(points);
+        // console.log(points);
+
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {
@@ -94,6 +99,7 @@ export const selectCountry = (country, sliderVal) => {
             selectedCountryAvgMbps: speedresult
           }
         })
+
         dispatch({
           type: 'SLIDER_CHANGED',
           payload: {
@@ -104,7 +110,6 @@ export const selectCountry = (country, sliderVal) => {
             sliderVal: sliderVal
           }
         })
-
       })
   }
 }

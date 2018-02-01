@@ -1,26 +1,15 @@
-import React, {
-  Component
-} from 'react';
+import {Component} from 'react';
 /* eslint-enable no-unused-vars*/
-import {
-  connect
-} from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux'
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux'
 import SliderChange from '../actions/action-slider-change';
-import {
-  Col,
-  Row,
-  Grid
-} from 'react-bootstrap'
+import {Col, Row, Grid} from 'react-bootstrap'
 import Dock from 'react-dock';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import {
-  Pie
-} from 'react-chartjs-2';
-import Slider from 'react-rangeslider'
+import {Pie} from 'react-chartjs-2';
+// import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
+
 const styles = {
   remove: {
     position: 'absolute',
@@ -37,33 +26,56 @@ const styles = {
 let options = {
   legend: {
     display: true,
-    position: 'bottom',
-
+    position: 'bottom'
   }
 }
 
-
+/**
+ * Docker component
+ */
 class Docker extends Component {
+  /**
+   * Docker component constructor
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
       internalDock: this.props.didUpdate
     }
-
   }
+
+  /**
+   * Handle docker change
+   *
+   * @param {number} value
+   */
   handleChange(value) {
     this.props.sliderChange(this.props.activeCountry.points, value);
   }
+
+  /**
+   * Finished update
+   *
+   * @param {object} prevProps
+   * @param {object} prevState
+   */
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.didUpdate !== this.props.didUpdate) {
       if (this.props.didUpdate) {
         this.setState({
-          internalDock: true,
+          internalDock: true
         })
       }
     }
   }
 
+  /**
+   * Render component
+   *
+   * @return {component}
+   */
   render() {
     let data = {
       labels: [
@@ -77,7 +89,7 @@ class Docker extends Component {
           this.props.sliderValues.aboveT,
           this.props.sliderValues.belowT,
           this.props.sliderValues.zeroT,
-          this.props.sliderValues.nullT,
+          this.props.sliderValues.nullT
         ],
         backgroundColor: [
           '#5cb85c',
@@ -97,7 +109,7 @@ class Docker extends Component {
     return (
       <Dock
         isVisible={this.state.internalDock}
-        dockStyle={{ background: 'rgba(0, 0, 0, 0.8)' }}
+        dockStyle={{background: 'rgba(0, 0, 0, 0.8)'}}
         position='bottom'
         dimMode='none'
         defaultSize = {0.38}
@@ -107,14 +119,16 @@ class Docker extends Component {
             <h2>{this.props.activeCountry.selectedCountryName}</h2>
           </div>
           <Glyphicon glyph='remove'
-            onClick={() => this.setState({ internalDock: false })}
+            onClick={() => this.setState({internalDock: false})}
             style={styles.remove} />
           <Grid>
             <Row className="show-grid">
               <Col md={4}>
                 <h3> Information </h3>
-                <h4> Number of Schools: {this.props.activeCountry.selectedCountryNumSchools}</h4>
-                <h4> Average speed: {this.props.activeCountry.selectedCountryAvgMbps}</h4>
+                <h4> Number of Schools: {this.props.activeCountry
+                  .selectedCountryNumSchools}</h4>
+                <h4> Average speed: {this.props.activeCountry
+                  .selectedCountryAvgMbps}</h4>
               </Col>
               <Col md={4}>
                 <Pie data={data} options={options} />
@@ -152,7 +166,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    sliderChange: SliderChange,
+    sliderChange: SliderChange
   }, dispatch)
 }
 

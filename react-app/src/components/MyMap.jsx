@@ -1,15 +1,12 @@
-/* eslint-disable no-unused-vars*/
-import React, {
-  Component
-} from 'react'
-/* eslint-enable no-unused-vars*/
+import {Component} from 'react'
 import {
   connect
 } from 'react-redux';
 import {
   bindActionCreators
 } from 'redux'
-import fetchAvailableCountries from '../actions/action-fetch-available-countries';
+import fetchAvailableCountries
+  from '../actions/action-fetch-available-countries';
 import {
   selectCountry
 } from '../actions/action-select-country';

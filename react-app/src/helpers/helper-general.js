@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+/**
+ * Fetch mobility for date
+ *
+ * @param {object} date object
+ * @return {promise} fulfilled when data is found for given date
+ */
 export function fetchMobilityForDate(date) {
   return new Promise((resolve, reject) => {
     axios.get('http://localhost:8000/api/v1/mobility/sources/acme/series/santiblanko/countries/col/' + date.filename)

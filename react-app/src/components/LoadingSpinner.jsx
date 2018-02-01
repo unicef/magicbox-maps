@@ -1,12 +1,15 @@
-import React, {
-  Component
-} from 'react';
-import {
-  RotateLoader
-} from 'halogenium';
-import Center from 'react-center';
+import {Component} from 'react';
+import {RotateLoader} from 'halogenium';
 
+/**
+ * Loading Spinner component
+ */
 class LoadingSpinner extends Component {
+  /**
+   * Render Loading Spinner component
+   *
+   * @return {component}
+   */
   render() {
     const style = {
       position: 'absolute',
@@ -16,9 +19,9 @@ class LoadingSpinner extends Component {
       bottom: 0,
       left: 0,
       width: '100px',
-      height: '100px',
-
+      height: '100px'
     }
+
     if (this.props.display) {
       return (
         <div style ={style}>
@@ -29,11 +32,8 @@ class LoadingSpinner extends Component {
       return (
         <div></div>
       )
-
     }
-
   }
-
 }
 
 export default LoadingSpinner;
