@@ -167,7 +167,7 @@ class MyMap extends Component {
             url={this.state.url}
             attribution={this.state.attribution}
           />
-          {/*
+
           <GeoJSON
             key={_.uniqueId()}
             data={this.props.allCountries}
@@ -182,14 +182,14 @@ class MyMap extends Component {
             data={this.props.activeCountry.polygons}
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
-            filter={this.geoFilter.bind(this)}
+            
           ></GeoJSON>
           <GeoJSON
             key={_.uniqueId()}
             data={this.props.activeCountry.points}
             pointToLayer={pointToLayer(this.props.sliderValues.sliderVal)}
           ></GeoJSON>
-          */}
+
           <LayerGl
             polygons={this.polygons}
           />
