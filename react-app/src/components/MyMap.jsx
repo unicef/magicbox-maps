@@ -74,7 +74,7 @@ class MyMap extends Component {
           info.points.features.forEach(f => {
             let dot = info.layer._map.latLngToContainerPoint([f.geometry.coordinates[1], f.geometry.coordinates[0]]);
             ctx.beginPath();
-            ctx.arc(dot.x, dot.y, 3, 0, Math.PI * 2);
+            ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
             ctx.fill();
             ctx.closePath();
           })
