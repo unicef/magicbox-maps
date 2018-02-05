@@ -55,6 +55,94 @@ import LoadingSpinner from './LoadingSpinner'
 const _ = require('lodash');
 var data = require('../public/data')
 
+Number.prototype.map = function(in_min, in_max, out_min, out_max) {
+  return (((this - in_min) * (out_max - out_min)) / (in_max - in_min)) + out_min;
+};
+// Function to convert rgb to 0-1 for webgl
+const fromRgb = n => Math.ceil((parseInt(n).map(0, 255, 0, 1)) * 1000) / 1000;
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const colorLookup = {}
+
+// Generates off screen color for data point
+const gen_offscreen_colors = function(i) {
+  if (i === 65535) { i +=1; } // Do not use red
+  const r = ((i+1) >>16) & 0xff;
+  const g = ((i+1) >>8) & 0xff;
+  const b = (i+1)  & 0xff;
+  return [r, g, b];
+};
+
+function LatLongToPixelXY(latitude, longitude) {
+  var pi_180 = Math.PI / 180.0;
+  var pi_4 = Math.PI * 4;
+  var sinLatitude = Math.sin(latitude * pi_180);
+  var pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / pi_4) * 256;
+  var pixelX = (longitude + 180) / 360 * 256;
+
+  var pixel = { x: pixelX, y: pixelY };
+
+  return pixel;
+}
+
+function translateMatrix(matrix, tx, ty) {
+  // translation is in last column of matrix
+  matrix[12] += matrix[0] * tx + matrix[4] * ty;
+  matrix[13] += matrix[1] * tx + matrix[5] * ty;
+  matrix[14] += matrix[2] * tx + matrix[6] * ty;
+  matrix[15] += matrix[3] * tx + matrix[7] * ty;
+}
+
+function scaleMatrix(matrix, scaleX, scaleY) {
+  // scaling x and y, which is just scaling first two columns of matrix
+  matrix[0] *= scaleX;
+  matrix[1] *= scaleX;
+  matrix[2] *= scaleX;
+  matrix[3] *= scaleX;
+
+  matrix[4] *= scaleY;
+  matrix[5] *= scaleY;
+  matrix[6] *= scaleY;
+  matrix[7] *= scaleY;
+}
+
+const prepare_points = function(features) {
+  let point_xy                = new Float32Array(2 * features.length);
+  let point_on_screen_color   = new Float32Array(4 * features.length);
+  let point_off_screen_color  = new Float32Array(4 * features.length);
+  let point_size              = new Float32Array(    features.length);
+  features.forEach((f, i) => {
+    const lat = f.geometry.coordinates[1];
+    const lon = f.geometry.coordinates[0];
+    const id  = f.properties.id;
+
+    const pixel          = LatLongToPixelXY(lat, lon);
+    point_xy[i * 2]      = pixel.x;
+    point_xy[(i * 2) + 1]  = pixel.y;
+    point_size[i]        = 20.0;
+
+    // i + 1
+    const [r, g, b] = Array.from(gen_offscreen_colors(i));
+		colorLookup[r + ' ' +  g + ' ' +  b] = id;
+
+    // off screen point colors (each color unique)
+    point_off_screen_color[i * 4] =  fromRgb(r);
+    point_off_screen_color[(i * 4) + 1] =  fromRgb(g);
+    point_off_screen_color[(i * 4) + 2] =  fromRgb(b);
+    point_off_screen_color[(i * 4) + 3] =  1;
+
+    // on screen point colors (all red)
+    point_on_screen_color[i * 4] =  1;
+    point_on_screen_color[(i * 4) + 1] =  0;
+    point_on_screen_color[(i * 4) + 2] =  0;
+    point_on_screen_color[(i * 4) + 3] =  0.5;
+  })
+}
+
 /**
  * My map class
  */
@@ -68,6 +156,10 @@ class MyMap extends Component {
 
     this.state = {
       onDrawLayer: function(info) {
+        if (info.points.features.length > 0) {
+          let points = prepare_points(info.points.features)
+          console.log(points, 'PPpp')
+        }
         // // console.log('blow', info)
         // var ctx = info.canvas.getContext('2d');
         // ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
@@ -81,9 +173,6 @@ class MyMap extends Component {
         //   ctx.fill();
         //   ctx.closePath();
         // })
-        info.canvas.addEventListener('click', function(ev) {
-
-        });
       },
       url: 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?' +
         'access_token=' +
@@ -281,9 +370,11 @@ class MyMap extends Component {
     const leafletMap = this.leafletMap.leafletElement;
 
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
-    window.zz = glLayer;
-    var gl = glLayer._canvas.getContext('webgl', { antialias: true });
 
+    var gl = glLayer._canvas.getContext('webgl', { antialias: true });
+    glLayer._canvas.addEventListener('click', function(ev) {
+
+    });
     var vshaderText = '\nattribute vec4  worldCoord;' +
     'attribute vec4  color;' +
     'attribute float aPointSize;' +
@@ -300,6 +391,29 @@ class MyMap extends Component {
     'void main() {' +
     'gl_FragColor = vColor;' +
     '}'
+    var _shaders = shaders(gl),
+        vertexShader = _shaders.vertexShader,
+        fragmentShader = _shaders.fragmentShader;
+
+    function shaders(gl) {
+      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vertexShader, vshaderText);
+      gl.compileShader(vertexShader);
+      var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fragmentShader, fshaderText);
+      gl.compileShader(fragmentShader);
+
+      return { vertexShader: vertexShader, fragmentShader: fragmentShader };
+    }
+
+    // link shaders to create our program
+    var program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+    this.state.gl = gl
+    this.state.program = program
 
   }
 
