@@ -31,7 +31,7 @@ import {
 } from '../helpers/helper-country-onEach';
 // import LayerGl from  "../public/lib";
 import mpio from '../data/mpio'
-import Toast from './toast'
+// import Toast from './toast'
 import us_counties from '../data/us_counties'
 import {
   pointToLayer
@@ -65,19 +65,25 @@ class MyMap extends Component {
    */
   constructor(props) {
     super(props);
+
     this.state = {
       onDrawLayer: function(info) {
-        console.log('blow', info)
-          var ctx = info.canvas.getContext('2d');
-          ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
-          ctx.fillStyle = "rgba(255,116,0, 0.2)";
-          info.points.features.forEach(f => {
-            let dot = info.layer._map.latLngToContainerPoint([f.geometry.coordinates[1], f.geometry.coordinates[0]]);
-            ctx.beginPath();
-            ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.closePath();
-          })
+        // // console.log('blow', info)
+        // var ctx = info.canvas.getContext('2d');
+        // ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
+        // ctx.fillStyle = 'rgba(255,116,0, 0.2)';
+        // info.points.features.forEach(f => {
+        //   let dot = info.layer._map.latLngToContainerPoint(
+        //     [f.geometry.coordinates[1], f.geometry.coordinates[0]]
+        //   );
+        //   ctx.beginPath();
+        //   ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
+        //   ctx.fill();
+        //   ctx.closePath();
+        // })
+        info.canvas.addEventListener('click', function(ev) {
+
+        });
       },
       url: 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?' +
         'access_token=' +
@@ -185,7 +191,7 @@ class MyMap extends Component {
 
             map._panes.overlayPane.appendChild(this._canvas);
 
-            map.on(this.getEvents(),this);
+            map.on(this.getEvents(), this);
 
             var del = this._delegate.state || this.state;
 
@@ -241,7 +247,6 @@ class MyMap extends Component {
                 center : center,
                 corner : corner
             }
-            console.log(info, 'INNOFFO')
             this._delegate.state.info = info
             del.onDrawLayer && del.onDrawLayer(info);
             this._frame = null;
@@ -266,49 +271,36 @@ class MyMap extends Component {
                                    this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
 
             L.DomUtil.setTransform(this._canvas, offset, scale);
-
-
         }
     });
 
     L.canvasLayer = function () {
-        return new L.CanvasLayer();
+      return new L.CanvasLayer();
     };
 
     const leafletMap = this.leafletMap.leafletElement;
+
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
+    window.zz = glLayer;
+    var gl = glLayer._canvas.getContext('webgl', { antialias: true });
 
-    // function onDrawLayer(info) {
-    //
-    //   console.log(info, 'xxxxx')
-    //     var ctx = info.canvas.getContext('2d');
-    //     ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
-    //     ctx.fillStyle = "rgba(255,116,0, 0.2)";
-    //     for (var i = 0; i < data.length; i++) {
-    //         var d = data[i];
-    //         if (info.bounds.contains([d[0], d[1]])) {
-    //             let dot = info.layer._map.latLngToContainerPoint([d[0], d[1]]);
-    //             ctx.beginPath();
-    //             ctx.arc(dot.x, dot.y, 3, 0, Math.PI * 2);
-    //             ctx.fill();
-    //             ctx.closePath();
-    //         }
-    //     }
-    // };
+    var vshaderText = '\nattribute vec4  worldCoord;' +
+    'attribute vec4  color;' +
+    'attribute float aPointSize;' +
+    'varying vec4 vColor;' +
+    'uniform mat4 mapMatrix;' +
+    'void main() {\n' +
+    'gl_Position = mapMatrix * worldCoord;' +
+    'vColor = color;' +
+    'gl_PointSize = aPointSize;' +
+    '}'
 
-    // console.log(CanvasLayer, 'LLL')
-    // const canvasLayerOptions = {
-    //   map: this.props.leafletMap(),
-    //   animate: false,
-    //   updateHandler: update
-    // };
+    var fshaderText = 'precision mediump float;' +
+    'varying vec4 vColor;' +
+    'void main() {' +
+    'gl_FragColor = vColor;' +
+    '}'
 
-    // const canvasLayer = new CanvasLayer(canvasLayerOptions);
-    // console.log(canvasLayer, 'cllclcl')
-      // const leafletMap = this.leafletMap.leafletElement;
-      // leafletMap.on('zoomend', () => {
-      //     window.console.log('Current zoom level -> ', leafletMap.getZoom());
-      // });
   }
 
   /**
@@ -341,7 +333,8 @@ class MyMap extends Component {
     if (prevProps.activeCountry.selectedCountryName !==
       this.props.activeCountry.selectedCountryName) {
       this.state.info.points = this.props.activeCountry.points
-      console.log(this.state.info, '****')
+      console.log(prevProps.activeCountry.selectedCountryName, this.props.activeCountry.selectedCountryName, 'nnnnn')
+      console.log("!!!!")
       this.state.onDrawLayer(this.state.info);
       if (this.state.docker) {
         this.setState({
@@ -416,7 +409,7 @@ class MyMap extends Component {
 
           ></GeoJSON>
 
-          <Toast thing={this.props.activeCountry.selectedCountry} map={Map} tileLayer={TileLayer}/>
+
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
