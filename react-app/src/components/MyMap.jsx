@@ -110,7 +110,7 @@ function scaleMatrix(matrix, scaleX, scaleY) {
 }
 
 function assign_speed_value(properties) {
-  let value = properties.type_connectivity || properties.speed_connectivity
+  let value = properties.speed_connectivity || properties.type_connectivity
   let slider = 3
 
   if (typeof value === 'undefined') {
@@ -148,7 +148,7 @@ const prepare_points = function(features, zoom) {
     point_xy[(i * 2) + 1]  = pixel.y;
     point_size[i] = 1.0 * (zoom/2.5);
     if (i%100 === 0) {
-      //console.log(f.properties)
+      console.log(f)
     }
     // i + 1
     const [r, g, b] = Array.from(gen_offscreen_colors(i));
