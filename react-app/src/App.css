@@ -10,3 +10,13 @@
   bottom: 0;
   width: 100%;
 }
+
+#infoWindow {
+  position:absolute;
+  background-color:yellow;
+  display:none;
+  text-align: center;
+  width:150px;
+  height:20px;
+  z-index:1;
+}

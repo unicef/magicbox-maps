@@ -110,21 +110,47 @@ function scaleMatrix(matrix, scaleX, scaleY) {
   matrix[7] *= scaleY;
 }
 
-const prepare_points = function(features) {
+function assign_speed_value(properties) {
+  let value = properties.type_connectivity || properties.speed_connectivity
+  let slider = 3
+
+  if (typeof value === 'undefined') {
+    // return '#6A1E74';
+    return [106, 30, 116]
+  } else if (value === 0 || value === 'No Service') {
+    // return '#d9534f';
+    return [217, 83, 79]
+  } else if (value >= slider || value === '3G') {
+    // return '#5cb85c';
+    return [92, 184, 92]
+  } else if (value < slider || value === '2G') {
+    // return '#F5A623';
+    return [245, 166, 35]
+  } else {
+    // return '#DCDCDC';
+    return [1, 1, 1] }
+}
+
+const prepare_points = function(features, zoom) {
   let point_xy                = new Float32Array(2 * features.length);
   let point_on_screen_color   = new Float32Array(4 * features.length);
   let point_off_screen_color  = new Float32Array(4 * features.length);
   let point_size              = new Float32Array(    features.length);
   features.forEach((f, i) => {
+
+    var speed_value = assign_speed_value(f.properties)
+
     const lat = f.geometry.coordinates[1];
     const lon = f.geometry.coordinates[0];
     const id  = f.properties.id;
 
     const pixel          = LatLongToPixelXY(lat, lon);
-    point_xy[i * 2]      = pixel.x;
+    point_xy[i * 2]  = pixel.x;
     point_xy[(i * 2) + 1]  = pixel.y;
-    point_size[i]        = 20.0;
-
+    point_size[i] = 1.0 * (zoom/2.5);
+    if (i%100 === 0) {
+      //console.log(f.properties)
+    }
     // i + 1
     const [r, g, b] = Array.from(gen_offscreen_colors(i));
 		colorLookup[r + ' ' +  g + ' ' +  b] = id;
@@ -136,11 +162,12 @@ const prepare_points = function(features) {
     point_off_screen_color[(i * 4) + 3] =  1;
 
     // on screen point colors (all red)
-    point_on_screen_color[i * 4] =  1;
-    point_on_screen_color[(i * 4) + 1] =  0;
-    point_on_screen_color[(i * 4) + 2] =  0;
+    point_on_screen_color[i * 4] =  fromRgb(speed_value[0]);
+    point_on_screen_color[(i * 4) + 1] =  fromRgb(speed_value[1]);
+    point_on_screen_color[(i * 4) + 2] =  fromRgb(speed_value[2]);
     point_on_screen_color[(i * 4) + 3] =  0.5;
   })
+  return {point_off_screen_color, point_on_screen_color, point_xy, point_size};
 }
 
 /**
@@ -155,11 +182,155 @@ class MyMap extends Component {
     super(props);
 
     this.state = {
-      onDrawLayer: function(info) {
-        if (info.points.features.length > 0) {
-          let points = prepare_points(info.points.features)
-          console.log(points, 'PPpp')
+      onDrawLayer: function(info, bind_buffers) {
+        let gl = this.gl
+        let canvas = info.canvas
+        let leafletMap = this.leafletMap
+        let program = this.program
+
+        let pointArrayBuffer = this.pointArrayBuffer
+        let sizeArrayBuffer = this.sizeArrayBuffer
+        let colorArrayBuffer = this.colorArrayBuffer
+        let colorArrayBufferOffScreen = this.colorArrayBufferOffScreen
+        let framebuffer = this.framebuffer
+
+        let points = prepare_points(info.points.features, this.info.zoom)
+        let point_xy = points.point_xy               // Typed array of x, y pairs
+        let point_off_screen_color = points.point_off_screen_color // Typed array of sets of four floating points
+        let point_on_screen_color = points.point_on_screen_color;  // Typed array of sets of four floating points
+        let point_size = points.point_size;
+
+        if (info.points.features.length) {
+          // pointArrayBuffer
+    			gl.bindBuffer(gl.ARRAY_BUFFER, this.pointArrayBuffer);
+    			gl.bufferData(gl.ARRAY_BUFFER, points.point_xy, gl.STATIC_DRAW);
+
+                                       // SizeArrayBuffer
+    			gl.bindBuffer(gl.ARRAY_BUFFER, this.sizeArrayBuffer);
+    			gl.bufferData(gl.ARRAY_BUFFER, points.point_size, gl.STATIC_DRAW);
+
+          // On screen ColorArrayBuffer
+    			gl.bindBuffer(gl.ARRAY_BUFFER, this.colorArrayBuffer);
+    			gl.bufferData(gl.ARRAY_BUFFER, points.point_on_screen_color, gl.STATIC_DRAW);
+
+          // Off screen ColorArrayBuffer
+    			gl.bindBuffer(gl.ARRAY_BUFFER, this.colorArrayBufferOffScreen);
+    			gl.bufferData(gl.ARRAY_BUFFER, points.point_off_screen_color, gl.STATIC_DRAW);
+    			// end animate
+
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          this.gl = gl;
         }
+        if (info.points.features.length > 0) {
+          gl.clear(gl.COLOR_BUFFER_BIT);
+          window.z = this
+          // let mapProjection = this.leafletMap.getProjection()
+
+          // look up the locations for the inputs to our shaders.
+    			var attributeLoc = gl.getUniformLocation(program, 'worldCoord');
+          var attributeSize = gl.getAttribLocation(program, 'aPointSize')
+          var attributeCol = gl.getAttribLocation(program, 'color');
+          var pixelsToWebGLMatrix = new Float32Array(16);
+          // prettier-ignore
+          pixelsToWebGLMatrix.set([2 / canvas.width, 0, 0, 0, 0, -2 / canvas.height, 0, 0, 0, 0, 0, 0, -1, 1, 0, 1]);
+          // Set viewport
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          var mapMatrix = new Float32Array(16);
+          mapMatrix.set(pixelsToWebGLMatrix);
+          var bounds = leafletMap.getBounds();
+
+
+          var topLeft = new L.LatLng(bounds.getNorth(), bounds.getWest());
+          var offset = LatLongToPixelXY(topLeft.lat, topLeft.lng);
+
+          // Scale to current zoom
+          var scale = Math.pow(2, leafletMap.getZoom());
+          scaleMatrix(mapMatrix, scale, scale);
+          translateMatrix(mapMatrix, -offset.x, -offset.y);
+
+    			// // attach matrix value to 'mapMatrix' uniform in shader
+          var matrixLoc = gl.getUniformLocation(program, "mapMatrix");
+          gl.uniformMatrix4fv(matrixLoc, false, mapMatrix);
+
+          // Off SCREEN
+          // Bind Shader attributes
+          const height = 1024;
+          const width  = 1024;
+          // Creating a texture to store colors
+          const texture = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+          // Creating a Renderbuffer to store depth information
+          const renderbuffer = gl.createRenderbuffer();
+          gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+          gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+
+          // Creating a framebuffer for offscreen rendering
+
+          gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+          gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+
+          // Finally, we do a bit of cleaning up as usual
+          gl.bindTexture(gl.TEXTURE_2D, null);
+          gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      //
+          //
+          // OFF SCREEN
+          // Bind Shader attributes
+          gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+          gl.bindBuffer(gl.ARRAY_BUFFER, pointArrayBuffer);           // Bind world coord
+          attributeLoc = gl.getAttribLocation(program, "worldCoord");
+
+          gl.enableVertexAttribArray(1);
+          gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, sizeArrayBuffer);            // Bind point size
+          attributeSize = gl.getAttribLocation(program, "aPointSize");
+          gl.enableVertexAttribArray(attributeSize);
+          gl.vertexAttribPointer(attributeSize, 1, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, colorArrayBufferOffScreen);    // Bind point color
+          attributeCol = gl.getAttribLocation(program, "color");
+          gl.enableVertexAttribArray(attributeCol);
+          gl.vertexAttribPointer(attributeCol, 4, gl.FLOAT, false, 0, 0);
+
+          // tell webgl how buffer is laid out (pairs of x,y coords)
+
+          //l = current_service.rawPoints.length / 2
+          let l = point_xy.length / 2;
+
+          gl.drawArrays(gl.POINTS, 0, l);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      //  //
+      //  //    //
+   		// // // //
+      // On SCREEN
+      // Bind Shader attributes
+      gl.bindBuffer(gl.ARRAY_BUFFER, pointArrayBuffer);           // Bind world coord
+      attributeLoc = gl.getAttribLocation(program, "worldCoord");
+      gl.enableVertexAttribArray(attributeLoc);
+      gl.vertexAttribPointer(attributeLoc, 2, gl.FLOAT, false, 0, 0);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, sizeArrayBuffer);            // Bind point size
+      attributeSize = gl.getAttribLocation(program, "aPointSize");
+
+      gl.enableVertexAttribArray(attributeSize);
+      gl.vertexAttribPointer(attributeSize, 1, gl.FLOAT, false, 0, 0);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorArrayBuffer);   // Bind point color
+      attributeCol = gl.getAttribLocation(program, "color");
+      gl.enableVertexAttribArray(attributeCol);
+      gl.vertexAttribPointer(attributeCol, 4, gl.FLOAT, false, 0, 0);
+
+      // tell webgl how buffer is laid out (pairs of x,y coords)
+
+      l = point_xy.length / 2;
+      gl.drawArrays(gl.POINTS, 0, l);
+    }
+
         // // console.log('blow', info)
         // var ctx = info.canvas.getContext('2d');
         // ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
@@ -370,10 +541,48 @@ class MyMap extends Component {
     const leafletMap = this.leafletMap.leafletElement;
 
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
-
+    var canvas = glLayer._canvas
     var gl = glLayer._canvas.getContext('webgl', { antialias: true });
-    glLayer._canvas.addEventListener('click', function(ev) {
-
+    var program = gl.createProgram();
+    var framebuffer = gl.createFramebuffer();
+    this.state.pointArrayBuffer = gl.createBuffer()
+		this.state.sizeArrayBuffer = gl.createBuffer()
+		this.state.colorArrayBuffer = gl.createBuffer()
+		this.state.colorArrayBufferOffScreen = gl.createBuffer()
+    this.state.framebuffer = framebuffer
+    canvas.addEventListener('mousemove', function(ev) {
+      if (!!this.style.cssText) {
+        let x    = undefined;
+        let y    = undefined;
+        let top  = 0;
+        let left = 0;
+        let obj  = canvas;
+        while (obj && (obj.tagName !== "BODY")) {
+          top  += obj.offsetTop;
+          left += obj.offsetLeft;
+          obj   = obj.offsetParent;
+        }
+        left += window.pageXOffset;
+        top  -= window.pageYOffset;
+        x     = ev.clientX - left;
+        y     = canvas.clientHeight - (ev.clientY - top);
+        const pixels = new Uint8Array(4);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);              // Load offscreen frame buffer for picking
+        gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        const d = document.getElementById('infoWindow');
+        if (colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]) {
+          this.style.cursor='pointer'
+          console.log(colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]);
+          d.style.display = "inline";
+          d.style.left    = ev.x + 20 + 'px';
+          d.style.top     = (ev.y - 25) + 'px';
+          return d.innerHTML     = 'School ID: ' + colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]];
+        } else {
+          this.style.cursor='auto'
+          return d.style.display = "none";
+        }
+      }
     });
     var vshaderText = '\nattribute vec4  worldCoord;' +
     'attribute vec4  color;' +
@@ -407,13 +616,15 @@ class MyMap extends Component {
     }
 
     // link shaders to create our program
-    var program = gl.createProgram();
+
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
     gl.useProgram(program);
+
     this.state.gl = gl
     this.state.program = program
+    this.state.leafletMap = leafletMap
 
   }
 
@@ -447,9 +658,8 @@ class MyMap extends Component {
     if (prevProps.activeCountry.selectedCountryName !==
       this.props.activeCountry.selectedCountryName) {
       this.state.info.points = this.props.activeCountry.points
-      console.log(prevProps.activeCountry.selectedCountryName, this.props.activeCountry.selectedCountryName, 'nnnnn')
-      console.log("!!!!")
-      this.state.onDrawLayer(this.state.info);
+      // true is for whether to bind buffers
+      this.state.onDrawLayer(this.state.info, true);
       if (this.state.docker) {
         this.setState({
           didUpdate: true,
@@ -493,7 +703,7 @@ class MyMap extends Component {
     return (
       <div>
         <UnicefNav></UnicefNav>
-
+        <div id="infoWindow"></div>
         <Map ref='map'
           ref={m => { this.leafletMap = m; }}
           center={position}
