@@ -139,6 +139,7 @@ const prepare_points            =  function(city_data) {
 
   let i = 0;
   while (i < city_data.length) {
+		console.log(city_data[i], '!!!!')
     const lat = city_data[i]['latitude'];
     const lon = city_data[i]['longitude'];
     const id  = city_data[i]['id'];
@@ -227,7 +228,7 @@ var LayerGl = function (_MapLayer) {
     key: 'setup',
     value: function setup(canvas) {
       var leafletMap = this.context.map;
-      var gl = canvas.getContext('webgl', { antialias: true });
+      // var gl = canvas.getContext('webgl', { antialias: true });
 
        var vshaderText =
 			 'uniform mat4 u_matrix;\n ' +
@@ -337,11 +338,8 @@ var LayerGl = function (_MapLayer) {
       gl.linkProgram(program);
       gl.useProgram(program);
 
-      // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      // gl.enable(gl.BLEND);
-      // gl.disable(gl.DEPTH_TEST);
+
 			let cities = [{"id":"Algiers", "latitude": 36.70000, "longitude": 3.21700} ,{"id": "Khartoum", "latitude": 15.56670, "longitude": 32.60000 },{"id": "New York", "latitude": 40.75170, "longitude": -73.99420}, {"id": "London", "latitude": 51.50722, "longitude": -0.12750}, {"id": "Bogota", "latitude": 4.63330, "longitude": -74.09990}, {"id": "Paris", "latitude": 48.85000, "longitude": 2.33330}]
-			// cities = []
 			var points = prepare_points(cities)
 			window.z = points
 			// animate
@@ -366,70 +364,11 @@ var LayerGl = function (_MapLayer) {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.colorArrayBufferOffScreen);
 			gl.bufferData(gl.ARRAY_BUFFER, points.point_off_screen_color, gl.STATIC_DRAW);
 			// end animate
-      // ----------------------------
-      // // look up the locations for the inputs to our shaders.
-			// var attributeLoc = gl.getUniformLocation(program, 'worldCoord');
-      // var attributeSize = gl.getAttribLocation(program, 'aPointSize')
-      // var attributeCol = gl.getAttribLocation(program, 'color');
-      // // gl.aPointSize = gl.getAttribLocation(program, 'a_pointSize');
-      // // Set the matrix to some that makes 1 unit 1 pixel.
+
 
       gl.viewport(0, 0, canvas.width, canvas.height);
 
-      // // -- data
-      // var polygons = this.props.polygons;
-      // var flattenPolygons = polygons.reduce(function (a, e) {
-      //   return a.concat(e);
-      // }, []);
-      // this.preparedData = flattenPolygons.map(preparePolygon);
 
-      // function preparePolygon(coords) {
-      //   function makeVerts(el) {
-      //     var verts = [];
-      //     el.map(function (d) {
-      //       verts.push(d[0], d[1]);
-      //     });
-      //     return verts;
-      //   }
-      //
-      //   var vertArray = void 0;
-      //   var index = void 0;
-      //   var linesArray = void 0;
-      //
-      //   if (coords[0].length != 2) {
-      //     // MultiPolygon
-      //     var datas = _earcut2.default.flatten(coords);
-      //     vertArray = new Float32Array(datas.vertices);
-      //     index = (0, _earcut2.default)(datas.vertices, datas.holes);
-      //     linesArray = new Float32Array(makeVerts(coords[0]));
-      //   } else {
-      //     // Polygon
-      //     var verts = makeVerts(coords);
-      //     vertArray = new Float32Array(verts);
-      //     index = (0, _earcut2.default)(verts);
-      //     linesArray = vertArray;
-      //   }
-      //
-      //   return {
-      //     vertArray: vertArray,
-      //     index: index,
-      //     linesArray: linesArray
-      //   };
-      // }
-
-      // this.index_buffer = gl.createBuffer();
-      // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);
-      //
-      // var fsize = new Float32Array().BYTES_PER_ELEMENT;
-      //
-      // var vertBuffer = gl.createBuffer();
-      // gl.bindBuffer(gl.ARRAY_BUFFER, vertBuffer);
-      //
-      // gl.vertexAttribPointer(vertLoc, 2, gl.FLOAT, false, fsize * 2, 0);
-      // gl.enableVertexAttribArray(vertLoc);
-      // // -- offset for color buffer
-      // gl.vertexAttribPointer(colorLoc, 3, gl.FLOAT, false, fsize * 5, fsize * 2)
-      // gl.enableVertexAttribArray(colorLoc)
 
       this.gl = gl;
       this.program = program;
@@ -522,25 +461,6 @@ var LayerGl = function (_MapLayer) {
       var scale = Math.pow(2, leafletMap.getZoom());
       scaleMatrix(mapMatrix, scale, scale);
       translateMatrix(mapMatrix, -offset.x, -offset.y);
-      // Attach matrix value to 'mapMatrix' uniform in shader
-      //gl.uniformMatrix4fv(attributeLoc, false, mapMatrix);
-      // preparedData.forEach(function (obj, i) {
-      //   // Pass index as point size for now
-      //   gl.vertexAttrib1f(gl.aPointSize, i);
-      //
-      //   // Setup data for polygon drawing:
-      //   // 1. vertex
-      //   gl.bufferData(gl.ARRAY_BUFFER, obj.vertArray, gl.STATIC_DRAW);
-      //   // 2. index
-      //   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(obj.index), gl.STATIC_DRAW);
-      //   // Draw polygons
-      //   gl.drawElements(gl.TRIANGLES, obj.index.length, gl.UNSIGNED_SHORT, _this2.index_buffer);
-      //
-      //   // Setup data for polygon borders
-      //   gl.bufferData(gl.ARRAY_BUFFER, obj.linesArray, gl.STATIC_DRAW);
-      //   // Draw
-      //   gl.drawArrays(gl.LINE_LOOP, 0, obj.linesArray.length / 2);
-      // });
 
 			// // attach matrix value to 'mapMatrix' uniform in shader
       var matrixLoc = gl.getUniformLocation(program, "mapMatrix");
