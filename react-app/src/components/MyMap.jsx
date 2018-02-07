@@ -149,9 +149,9 @@ const prepare_points = function(features, zoom) {
     point_xy[i * 2]  = pixel.x;
     point_xy[(i * 2) + 1]  = pixel.y;
     point_size[i] = 1.0 * (zoom/2.5);
-    if (i%100 === 0) {
-      console.log(f)
-    }
+    // if (i%100 === 0) {
+    //   console.log(f)
+    // }
     // i + 1
     const [r, g, b] = Array.from(gen_offscreen_colors(i));
 		colorLookup[r + ' ' +  g + ' ' +  b] = id;
