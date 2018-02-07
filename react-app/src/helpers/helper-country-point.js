@@ -40,21 +40,56 @@ function getStyle(val, type, slider) {
  * @param  {type} latlng  latlng
  * @return {type} circleMarker
  */
-export function pointToLayer(slider) {
-  return (feature, latlng) => {
-    let val = feature.properties.speed_connectivity;
-    let type = feature.properties.type_connectivity
-    let marker = L.circleMarker(latlng, {
-      color: getStyle(val, type, slider),
-      fillColor: getStyle(val, type, slider),
-      fillOpacity: .8,
-      radius: 3,
-      stroke: false
-    }).bindPopup('LOADING...') // Change marker to circle
-    marker.on('click', onDotClick)
-    return marker;
-  }
+export function pointToLayer(school_id, map) {
+
+  let url = window.location.origin + '/' +
+    config.initial_url_key[mode] +
+    '/school/' + school_id;
+  console.log(url);
+  axios.get(url)
+    .catch(err => {
+      alert('There was an error trying to get school info')
+    })
+    .then(response => {
+
+      let labels = response.data.result[0];
+      let data = response.data.result[1]
+      let lat_index = labels.findIndex(e => { return e.match(/^lat$/)})
+      let lon_index = labels.findIndex(e => { return e.match(/^lon$/)})
+      let message = popUpString(labels, data)
+      console.log(lat_index, lon_index);
+      console.log(data);
+      window.aaa = labels;
+      window.bbb= data;
+      // console.log(message, 'Mmmm', lat_index, lon_index, data)
+      map.openPopup(message, [data[lat_index], data[lon_index]])
+    })
+  // console.log(popup);
 }
+
+// /**
+//  * pointToLayer - makes point to layer
+//  *
+//  * @param  {type} feature features
+//  * @param  {type} latlng  latlng
+//  * @return {type} circleMarker
+//  */
+// export function pointToLayer(slider) {
+//   alert(slider);
+//   return (feature, latlng) => {
+//     let val = feature.properties.speed_connectivity;
+//     let type = feature.properties.type_connectivity
+//     let marker = L.circleMarker(latlng, {
+//       color: getStyle(val, type, slider),
+//       fillColor: getStyle(val, type, slider),
+//       fillOpacity: .8,
+//       radius: 3,
+//       stroke: false
+//     }).bindPopup('LOADING...') // Change marker to circle
+//     marker.on('click', onDotClick)
+//     return marker;
+//   }
+// }
 
 /**
  * onMapClick - On click function for dot

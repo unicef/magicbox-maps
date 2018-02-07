@@ -6,6 +6,7 @@ import React, {
 import {
   connect
 } from 'react-redux';
+
 import {
   bindActionCreators
 } from 'redux'
@@ -33,6 +34,7 @@ import {
 import mpio from '../data/mpio'
 // import Toast from './toast'
 import us_counties from '../data/us_counties'
+
 import {
   pointToLayer
 } from '../helpers/helper-country-point';
@@ -549,6 +551,34 @@ class MyMap extends Component {
 		this.state.colorArrayBuffer = gl.createBuffer()
 		this.state.colorArrayBufferOffScreen = gl.createBuffer()
     this.state.framebuffer = framebuffer
+    canvas.addEventListener('click', function(ev) {
+      if (!!this.style.cssText) {
+        let x    = undefined;
+        let y    = undefined;
+        let top  = 0;
+        let left = 0;
+        let obj  = canvas;
+        while (obj && (obj.tagName !== "BODY")) {
+          top  += obj.offsetTop;
+          left += obj.offsetLeft;
+          obj   = obj.offsetParent;
+        }
+        left += window.pageXOffset;
+        top  -= window.pageYOffset;
+        x     = ev.clientX - left;
+        y     = canvas.clientHeight - (ev.clientY - top);
+        const pixels = new Uint8Array(4);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);              // Load offscreen frame buffer for picking
+        gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+        if (colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]) {
+          this.style.cursor='pointer'
+          pointToLayer(colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]], leafletMap)
+
+        }
+      }
+    });
     canvas.addEventListener('mousemove', function(ev) {
       if (!!this.style.cssText) {
         let x    = undefined;
@@ -569,17 +599,17 @@ class MyMap extends Component {
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);              // Load offscreen frame buffer for picking
         gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        const d = document.getElementById('infoWindow');
+        // const d = document.getElementById('infoWindow');
         if (colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]) {
           this.style.cursor='pointer'
           console.log(colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]);
-          d.style.display = "inline";
-          d.style.left    = ev.x + 20 + 'px';
-          d.style.top     = (ev.y - 25) + 'px';
-          return d.innerHTML     = 'School ID: ' + colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]];
+          // d.style.display = "inline";
+          // d.style.left    = ev.x + 20 + 'px';
+          // d.style.top     = (ev.y - 25) + 'px';
+          // return d.innerHTML     = 'School ID: ' + colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]];
         } else {
           this.style.cursor='auto'
-          return d.style.display = "none";
+          // return d.style.display = "none";
         }
       }
     });
