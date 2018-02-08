@@ -8,7 +8,6 @@ export function adminStyle(props) {
     let admin_id = geoJsonFeature.properties.admin_id
     let admin_index = props.activeCountry.admin_index
     let active_country = props.activeCountry
-    console.log(active_country, 'UUUU')
     let selected_admins = active_country.selected_admins
     let scores = active_country.scores || active_country.diagonal
     const displayCountry = {

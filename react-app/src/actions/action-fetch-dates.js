@@ -37,8 +37,8 @@ export function fetchDates(data) {
           type: 'FETCH_DATES',
           payload: dates
         })
-
-        fetchMobilityForDate(data.id.toLowerCase(), dates[0])
+        let most_recent_date = dates[dates.length-1]
+        fetchMobilityForDate(data.id.toLowerCase(), most_recent_date)
           .then(payload => {
             dispatch({
               type: 'DATE_SELECTED',

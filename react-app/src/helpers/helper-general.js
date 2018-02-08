@@ -49,7 +49,6 @@ export function get_diagonal(matrix) {
     // console.log(a.length,i, matrix[i][i], '****')
     return a
   }, []);
-  console.log(mmm, 'mmx')
   return mmm
 }
 
