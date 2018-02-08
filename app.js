@@ -4,7 +4,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const index = require('./routes/index');
 const schools = require('./routes/schools');
 const mobility = require('./routes/mobility');
 

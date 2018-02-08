@@ -7,9 +7,10 @@ const mode = config.mode
 /**
  * getStyle - sets style for dot
  *
- * @param  {type} val  value of speed (MBPS)
- * @param  {type} type type of speed (2G, 3G, LTE, etc)
- * @return {type}      color for dot
+ * @param {type} val  value of speed (MBPS)
+ * @param {type} type type of speed (2G, 3G, LTE, etc)
+ * @param {type} slider slider value
+ * @return {type} color for dot
  */
 function getStyle(val, type, slider) {
   // console.log(val, type);
@@ -36,9 +37,8 @@ function getStyle(val, type, slider) {
 /**
  * pointToLayer - makes point to layer
  *
- * @param  {type} feature features
- * @param  {type} latlng  latlng
- * @return {type} circleMarker
+ * @param  {object} slider features
+ * @return {function}
  */
 export function pointToLayer(slider) {
   return (feature, latlng) => {

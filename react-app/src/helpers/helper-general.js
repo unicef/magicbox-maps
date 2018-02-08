@@ -1,6 +1,13 @@
 import axios from 'axios';
 const config = require('../config')
 
+/**
+ * Fetch mobility for date
+ *
+ * @param {object} country object
+ * @param {object} date object
+ * @return {promise} fulfilled when data is found for given date
+ */
 export function fetchMobilityForDate(country, date) {
   return new Promise((resolve, reject) => {
     axios.get(window.location.origin + '/' +

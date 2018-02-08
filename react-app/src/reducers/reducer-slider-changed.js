@@ -13,8 +13,8 @@ const initialstate = {
  */
 export default function(state = initialstate, action) {
   switch (action.type) {
-    case 'SLIDER_CHANGED':
-      return action.payload;
+  case 'SLIDER_CHANGED':
+    return action.payload;
   }
   return state;
 }

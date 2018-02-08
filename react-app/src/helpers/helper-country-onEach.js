@@ -1,7 +1,10 @@
 const config = require('../config.js')
+
 /**
- * onEach
+ * onEachCountryFeature
+ *
  * @param {object} myMapObj
+ * @param {number} sliderVal value
  * @return {function} function
  */
 export function onEachCountryFeature(myMapObj, sliderVal) {
@@ -44,8 +47,6 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
             docker: true,
             loading: true
           })
-
-
         }
       }
     });
