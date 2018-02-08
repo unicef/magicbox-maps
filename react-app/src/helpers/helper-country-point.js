@@ -1,4 +1,3 @@
-import L from 'leaflet';
 import axios from 'axios';
 import popUpString from './helper-popup-string';
 const config = require('../config.js')
@@ -13,14 +12,14 @@ const mode = config.mode
  * @return {type} color for dot
  */
 function getStyle(val, type, slider) {
-  // console.log(val, type);
+
   let value = null;
   if (typeof val !== 'undefined' && val !== null) {
     value = val;
   } else if (typeof type !== 'undefined' && type != null) {
     value = type;
   }
-  // console.log(value);
+
   if (value === null) {
     return '#6A1E74';
   } else if (value === 0 || value === 'No Service') {
@@ -40,31 +39,8 @@ function getStyle(val, type, slider) {
  * @param  {object} slider features
  * @return {function}
  */
-export function pointToLayer(slider) {
-  return (feature, latlng) => {
-    let val = feature.properties.speed_connectivity;
-    let type = feature.properties.type_connectivity
-    let marker = L.circleMarker(latlng, {
-      color: getStyle(val, type, slider),
-      fillColor: getStyle(val, type, slider),
-      fillOpacity: .8,
-      radius: 3,
-      stroke: false
-    }).bindPopup('LOADING...') // Change marker to circle
-    marker.on('click', onDotClick)
-    return marker;
-  }
-}
+export function pointToLayer(school_id, map) {
 
-/**
- * onMapClick - On click function for dot
- *
- * @param  {type} e event
- */
-function onDotClick(e) {
-  console.log('in mapclick');
-  let popup = e.target.getPopup();
-  let school_id = e.target.feature.properties.id;
   let url = window.location.origin + '/' +
     config.initial_url_key[mode] +
     '/school/' + school_id;
@@ -76,9 +52,13 @@ function onDotClick(e) {
     .then(response => {
       let labels = response.data.result[0];
       let data = response.data.result[1]
+      let lat_index = labels.findIndex(e => {return e.match(/^lat$/)})
+      let lon_index = labels.findIndex(e => {return e.match(/^lon$/)})
       let message = popUpString(labels, data)
-      popup.setContent(message)
-      popup.update();
+      window.aaa = labels;
+      window.bbb= data;
+      // console.log(message, 'Mmmm', lat_index, lon_index, data)
+      map.openPopup(message, [data[lat_index], data[lon_index]])
     })
-  console.log(popup);
+  // console.log(popup);
 }

@@ -27,21 +27,11 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
           // Fetch dates for country
           // this.props.fetchDates()
         }
-        // layer.setStyle({
-        //   fillColor: 'red'
-        // });
-        // this.onEachFeature(feature, layer)
-        // myMapObj.props.selectCountry(e.target.feature);
-        if (config.mode !== 'schools') {
+        if (config.mode != 'schools') {
           myMapObj.props.selectCountry(e.target.feature, sliderVal);
           myMapObj.props.fetchDates(e.target.feature);
         } else {
-          myMapObj.props.selectCountry(e.target.feature.id.toLowerCase(), sliderVal);
-          // if (alpha2 === 'BR' || alpha2 === 'CO') {
-          //   myMapObj.setState({
-          //     docker: true
-          //   })
-          // }
+          myMapObj.props.selectCountry(e.target.feature.id, sliderVal);
           myMapObj.setState({
             didUpdate: false,
             docker: true,
@@ -60,5 +50,5 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
  * @param {object} lev
  */
 function centerCountry(myMapObj, latlng, lev) {
-  myMapObj.refs.map.leafletElement.flyTo(latlng, lev);
+  myMapObj.leafletMap.leafletElement.flyTo(latlng, lev);
 }

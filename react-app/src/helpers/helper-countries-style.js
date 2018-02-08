@@ -29,12 +29,11 @@ export function countryStyle(props) {
         // Don't display. That will happen with the activeCountry layer
         let selectedCountry = activeCountry.selectedCountry ||
           activeCountry.polygons.properties.alpha3
-
         // Points are schools, geojson is mobility now
         let geometry = (activeCountry.points.features.length > 0) ?
           activeCountry.points : activeCountry.polygons
         if (geometry.features.length > 0 &&
-          geoJsonFeature.id.toLowerCase() === selectedCountry.toLowerCase()
+          geoJsonFeature.id.match(selectedCountry)
         ) {
           return nullDisplay;
         }

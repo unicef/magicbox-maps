@@ -28,13 +28,11 @@ export const selectCountry = (country, sliderVal) => {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
-        // console.log(response);
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
         const countryname = getName(country, 'en')
         const numSchools = response.data.result.length - 1;
-        // console.log(response.data.result[0]);
         let nschools = 0;
         let speedschools = 0;
         let speedresult = null;
@@ -49,7 +47,7 @@ export const selectCountry = (country, sliderVal) => {
           '2G': 0,
           '3G': 0
         }
-        console.log(response.data.result[0]);
+
         for (let i = 1; i < response.data.result.length; i++) {
           if (response.data.result[i][3] !== null) {
             speedschools += response.data.result[i][3];
@@ -70,26 +68,19 @@ export const selectCountry = (country, sliderVal) => {
             types[response.data.result[i][4]] = 1;
           }
         }
-
-        if (nullT > types['null']) {
-          console.log('type');
+        if (nullT > types[null]) {
           zeroT = types['No Service'];
           belowT = types['2G'];
           aboveT = response.data.result.length - types['No Service'] -
             types['2G'] - types['null'];
           nullT = types['null'];
         }
-
-        console.log(types);
-
         if (speedschools === 0) {
           speedresult = null;
         } else {
           speedresult = speedschools / nschools
           speedresult = speedresult.toFixed(2)
         }
-
-        // console.log(points);
 
         dispatch({
           type: 'COUNTRY_SELECTED',

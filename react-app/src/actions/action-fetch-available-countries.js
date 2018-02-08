@@ -16,7 +16,6 @@ const fetchAvailableCountries = function() {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
-        console.log(response.data.properties);
         dispatch({
           type: 'INITIAL_LOAD',
           payload: {
