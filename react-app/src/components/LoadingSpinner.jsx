@@ -1,4 +1,5 @@
-import {Component} from 'react';
+/* eslint-disable no-unused-vars */
+import React, {Component} from 'react';
 import {RotateLoader} from 'halogenium';
 
 /**

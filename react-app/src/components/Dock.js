@@ -1,4 +1,5 @@
-import {Component} from 'react';
+/* eslint-disable no-unused-vars */
+import React, {Component} from 'react';
 /* eslint-enable no-unused-vars*/
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
@@ -107,6 +108,7 @@ class Docker extends Component {
       }]
     };
     return (
+      <div>
       <Dock
         isVisible={this.state.internalDock}
         dockStyle={{background: 'rgba(0, 0, 0, 0.8)'}}
@@ -151,6 +153,7 @@ class Docker extends Component {
           </Grid>
         </div>
       </Dock>
+      </div>
 
     );
   }
