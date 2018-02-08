@@ -43,7 +43,7 @@ export function fetchDates(data) {
             dispatch({
               type: 'DATE_SELECTED',
               payload: {
-                date: payload,
+                date: most_recent_date,
                 mobility: payload.data
               }
             })
