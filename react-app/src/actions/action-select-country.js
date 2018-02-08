@@ -2,7 +2,8 @@ import arrToGeo from '../helpers/helper-2d-geojson'
 import axios from 'axios';
 const config = require('../config.js')
 const mode = config.mode
-var iso3311a2 = require('iso-3166-1-alpha-2')
+const iso3311a2 = require('iso-3166-1-alpha-2')
+
 /**
  * selectCountry - Specifies the style for the geojson
  *
@@ -25,13 +26,11 @@ export const selectCountry = (country, sliderVal) => {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
-        // console.log(response);
         const headersList = response.data.result[0];
         const jsonData = response.data.result.slice(1)
         const points = arrToGeo(headersList, jsonData)
         const countryname = iso3311a2.getCountry(country)
         const numSchools = response.data.result.length - 1;
-        // console.log(response.data.result[0]);
         let nschools = 0;
         let speedschools = 0;
         let speedresult = null;
@@ -46,7 +45,7 @@ export const selectCountry = (country, sliderVal) => {
           '2G': 0,
           '3G': 0
         }
-        console.log(response.data.result[0]);
+
         for (let i = 1; i < response.data.result.length; i++) {
           if (response.data.result[i][3] !== null) {
             speedschools += response.data.result[i][3];
@@ -69,13 +68,11 @@ export const selectCountry = (country, sliderVal) => {
 
         }
         if (nullT > types[null]) {
-          console.log('type');
           zeroT = types['No Service'];
           belowT = types['2G'];
           aboveT = response.data.result.length - types['No Service'] - types['2G'] - types[null];
           nullT = types[null];
         }
-        console.log(types);
         if (speedschools === 0) {
           speedresult = null;
         } else {
@@ -83,7 +80,6 @@ export const selectCountry = (country, sliderVal) => {
           speedresult = speedresult.toFixed(2)
         }
 
-        //console.log(points);
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {

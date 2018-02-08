@@ -46,9 +46,6 @@ import {
 } from 'react-leaflet'
 import L from 'leaflet'
 import {
-  alpha3ToAlpha2
-} from 'i18n-iso-countries';
-import {
   fetchDates
 } from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
@@ -683,9 +680,8 @@ class MyMap extends Component {
    * @param  {Object} prevState
    */
   componentDidUpdate(prevProps, prevState) {
-
-    if (prevProps.activeCountry.selectedCountryName !==
-      this.props.activeCountry.selectedCountryName) {
+    if (prevProps.activeCountry.selectedCountry !==
+      this.props.activeCountry.selectedCountry) {
       this.state.info.points = this.props.activeCountry.points
       // true is for whether to bind buffers
       this.state.onDrawLayer(this.state.info, true);
@@ -712,8 +708,7 @@ class MyMap extends Component {
   geoFilter(feature) {
     // If at country level
     if (feature.id) {
-      let alpha2 = alpha3ToAlpha2(feature.id);
-      if (this.props.availableCountries.indexOf(alpha2) > -1) {
+      if (this.props.availableCountries.indexOf(feature.id.toLowerCase()) > -1) {
         return true
       }
       return false

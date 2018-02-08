@@ -14,11 +14,10 @@ const fetchAvailableCountries = function() {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
-        // console.log(response.data.countries);
         dispatch({
           type: 'INITIAL_LOAD',
           payload: {
-            availableCountries: response.data.countries
+            availableCountries: response.data.properties
           }
         })
       })

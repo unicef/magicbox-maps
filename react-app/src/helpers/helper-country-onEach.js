@@ -1,6 +1,3 @@
-import {
-  alpha3ToAlpha2
-} from 'i18n-iso-countries';
 const config = require('../config.js')
 /**
  * onEach
@@ -27,22 +24,11 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
           // Fetch dates for country
           // this.props.fetchDates()
         }
-        // layer.setStyle({
-        //   fillColor: 'red'
-        // });
-        // this.onEachFeature(feature, layer)
-        // myMapObj.props.selectCountry(e.target.feature);
         if (config.mode != 'schools') {
           myMapObj.props.selectCountry(e.target.feature, sliderVal);
           myMapObj.props.fetchDates(e.target.feature);
         } else {
-          let alpha2 = alpha3ToAlpha2(e.target.feature.id);
-          myMapObj.props.selectCountry(alpha2, sliderVal);
-          // if (alpha2 === 'BR' || alpha2 === 'CO') {
-          //   myMapObj.setState({
-          //     docker: true
-          //   })
-          // }
+          myMapObj.props.selectCountry(e.target.feature.id, sliderVal);
           myMapObj.setState({
             didUpdate: false,
             docker: true,
