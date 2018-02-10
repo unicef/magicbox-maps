@@ -108,7 +108,7 @@ class Docker extends Component {
       }]
     };
     return (
-      <div>
+
       <Dock
         isVisible={this.state.internalDock}
         dockStyle={{background: 'rgba(0, 0, 0, 0.8)'}}
@@ -153,7 +153,6 @@ class Docker extends Component {
           </Grid>
         </div>
       </Dock>
-      </div>
 
     );
   }
