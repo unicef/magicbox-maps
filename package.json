@@ -1,5 +1,8 @@
 {
   "name": "server",
+  "engines": {
+    "node": "8.0"
+  },
   "version": "0.0.0",
   "private": true,
   "scripts": {
