@@ -16,16 +16,15 @@ class AboutData extends React.Component {
       <div className='about-data'>
         Selected date: {this.props.date}
         <br />
-        journeys: {this.props.journeys}
+        Journeys: {this.props.journeys}
         <br />
-        people: {this.props.people}
+        People: {this.props.people}
       </div>
     );
   }
 }
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
-  console.log(state, 'HHHH')
   return {
     date: state.date.day,
     journeys: state.date.journeys,
