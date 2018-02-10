@@ -9,7 +9,12 @@ const mobilityData = '/mobility/sources/acme/series/santiblanko/countries/'
 // Base url
 const baseUrl = `${magicboxUrl}${mobilityData}`
 
-// Forward request to given url
+/**
+ * Forward request to given url
+ *
+ * @param  {String} res
+ * @param  {String} url
+ */
 const forwardRequestToUrl = (res, url) => {
   axios.get(url)
     .catch(err => {
