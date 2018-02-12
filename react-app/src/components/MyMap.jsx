@@ -31,6 +31,7 @@ import {
 import mpio from '../data/mpio'
 // import Toast from './toast'
 import us_counties from '../data/us_counties'
+import Popup from './Popup.jsx'
 
 import {
   pointToLayer
@@ -48,6 +49,7 @@ import {
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
+
 const _ = require('lodash');
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
@@ -338,7 +340,8 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false
+      loading: false,
+
     }
 
     this.polygons = us_counties.features
@@ -346,6 +349,7 @@ class MyMap extends Component {
     mpio.features.forEach(f => {
       this.polygons.push(f.geometry.coordinates);
     })
+
   }
   componentDidMount() {
 
@@ -711,6 +715,10 @@ class MyMap extends Component {
    * @return {object} JSX
    */
   render() {
+    const style = {
+      position: 'relative',
+      top: '200px'
+    }
     const position = [this.state.lat, this.state.lng]
     return (
       <div>
@@ -746,13 +754,11 @@ class MyMap extends Component {
             data={this.props.activeCountry.polygons}
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
-
           ></GeoJSON>
-
-
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
+        <Popup style={style}/>
       </div>
     )
   }
