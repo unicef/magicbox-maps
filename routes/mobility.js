@@ -10,29 +10,18 @@ const mobilityData = '/mobility/sources/acme/series/santiblanko/countries/'
 // Base url
 const baseUrl = `${magicboxUrl}${mobilityData}`
 
-// Forward request to given url
-const forwardRequestToUrl = (res, url) => {
-  axios.get(url)
-    .catch(err => {
-      console.log('There was an error trying to get initial load BE');
-    })
-    .then(response => {
-      res.json(response.data);
-    })
-}
-
 router.get('/countries', helper.cache_response(300), (req, res, next) => {
-  forwardRequestToUrl(res, baseUrl)
+  helper.forward_request_to_url(res, baseUrl)
 })
 
 router.get('/countries/:country', helper.cache_response(300), (req, res, next) => {
   const url = `${baseUrl}${req.params.country}`;
-  forwardRequestToUrl(res, url)
+  helper.forward_request_to_url(res, url)
 })
 
 router.get('/countries/:country/:filename', helper.cache_response(300), (req, res, next) => {
   const url = `${baseUrl}${req.params.country}/${req.params.filename}`;
-  forwardRequestToUrl(res, url)
+  helper.forward_request_to_url(res, url)
 })
 
 module.exports = router;

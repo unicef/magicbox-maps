@@ -119,6 +119,21 @@ exports.forward_get = (req, res, next) => {
 }
 
 /**
+ * Forward request to given url
+ * @param  {object} res response object
+ * @param  {string} url
+ */
+exports.forward_request_to_url = (res, url) => {
+  axios.get(url)
+    .catch(err => {
+      console.log('There was an error trying to get initial load BE');
+    })
+    .then(response => {
+      res.json(response.data);
+    })
+}
+
+/**
  * This function provides a cache middleware to be used
  * with express
  *
