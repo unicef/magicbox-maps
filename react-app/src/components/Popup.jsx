@@ -64,7 +64,7 @@ class Popup extends React.Component {
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
           <Modal.Header>
             <Modal.Title id="contained-modal-title-lg">
-              {header} Mapping   |   Alpha Version
+              {header} Mapping  |  Alpha Version
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
