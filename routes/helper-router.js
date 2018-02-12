@@ -1,3 +1,4 @@
+const mcache = require('memory-cache')
 const config = require('../react-app/src/config.js')
 const axios = require('axios');
 let acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
@@ -116,3 +117,40 @@ exports.forward_get = (req, res, next) => {
       res.json(response.data);
     })
 }
+
+/**
+ * This function provides a cache middleware to be used
+ * with express
+ *
+ * https://medium.com/the-node-js-collection/simple-server-side-cache-for-express-js-with-node-js-45ff296ca0f0
+ *
+ * @param  {number} duration of cache in seconds
+ * @return {function} express middleware
+ */
+exports.cache_response = (duration) => {
+  return (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cachedBody = mcache.get(key)
+
+    // return cached body if found any
+    // and interrupt the middleware chain
+    if (cachedBody) {
+      res.send(cachedBody)
+      return
+    }
+
+    // save old send method
+    res.sendResponse = res.send
+    // replace send method for new method to
+    // store the result in memory before send it
+    // to client
+    res.send = (body) => {
+      mcache.put(key, body, duration * 1000)
+      res.sendResponse(body)
+    }
+
+    // call next middleware in the chain
+    next()
+  }
+}
+
