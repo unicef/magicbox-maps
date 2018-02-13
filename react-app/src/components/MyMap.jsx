@@ -340,7 +340,7 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false,
+      loading: false
 
     }
 
