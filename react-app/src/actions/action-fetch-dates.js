@@ -11,7 +11,8 @@ const config = require('../config.js')
 export function fetchDates(data) {
   return function(dispatch) {
     axios.get(window.location.origin + '/' +
-        config.initial_url_key[config.mode] + '/countries/' + data.id.toLowerCase())
+      config.initial_url_key[config.mode] +
+      '/countries/' + data.id.toLowerCase())
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })

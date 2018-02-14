@@ -1,5 +1,8 @@
 {
   "name": "server",
+  "engines": {
+    "node": "8.0.0"
+  },
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,6 +18,7 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "jade": "~1.11.0",
+    "memory-cache": "^0.2.0",
     "morgan": "~1.9.0",
     "react-leaflet-webgl": "0.0.2",
     "serve-favicon": "~2.4.5",

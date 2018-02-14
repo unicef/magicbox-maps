@@ -31,6 +31,7 @@ import {
 import mpio from '../data/mpio'
 // import Toast from './toast'
 import us_counties from '../data/us_counties'
+import Popup from './Popup.jsx'
 
 import {
   pointToLayer
@@ -48,6 +49,7 @@ import {
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
+
 const _ = require('lodash');
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
@@ -299,9 +301,8 @@ class MyMap extends Component {
 
           gl.drawArrays(gl.POINTS, 0, l);
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      //  //
-      //  //    //
-   		// // // //
+
+
       // On SCREEN
       // Bind Shader attributes
       gl.bindBuffer(gl.ARRAY_BUFFER, pointArrayBuffer);           // Bind world coord
@@ -326,19 +327,6 @@ class MyMap extends Component {
       gl.drawArrays(gl.POINTS, 0, l);
     }
 
-        // // console.log('blow', info)
-        // var ctx = info.canvas.getContext('2d');
-        // ctx.clearRect(0, 0, info.canvas.width, info.canvas.height);
-        // ctx.fillStyle = 'rgba(255,116,0, 0.2)';
-        // info.points.features.forEach(f => {
-        //   let dot = info.layer._map.latLngToContainerPoint(
-        //     [f.geometry.coordinates[1], f.geometry.coordinates[0]]
-        //   );
-        //   ctx.beginPath();
-        //   ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
-        //   ctx.fill();
-        //   ctx.closePath();
-        // })
       },
       url: 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?' +
         'access_token=' +
@@ -352,7 +340,8 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false
+      loading: false,
+
     }
 
     this.polygons = us_counties.features
@@ -360,6 +349,7 @@ class MyMap extends Component {
     mpio.features.forEach(f => {
       this.polygons.push(f.geometry.coordinates);
     })
+
   }
   componentDidMount() {
 
@@ -692,6 +682,10 @@ class MyMap extends Component {
           loading: false
         })
       }
+    // Country has been clicked in mobility mode
+    // mobility data has arrived.
+    } else {
+      this.state.loading = false
     }
   }
 
@@ -705,7 +699,9 @@ class MyMap extends Component {
   geoFilter(feature) {
     // If at country level
     if (feature.id) {
-      if (this.props.availableCountries.indexOf(feature.id.toLowerCase()) > -1) {
+      if (
+        this.props.availableCountries.indexOf(feature.id.toLowerCase()) > -1
+      ) {
         return true
       }
       return false
@@ -719,21 +715,27 @@ class MyMap extends Component {
    * @return {object} JSX
    */
   render() {
+    const style = {
+      position: 'relative',
+      top: '200px'
+    }
     const position = [this.state.lat, this.state.lng]
-        // <Toast thing={this.props.activeCountry.selectedCountry} map={Map} tileLayer={TileLayer}/>
-    // console.log(this.props.activeCountry.geojson);
     return (
       <div>
         <UnicefNav></UnicefNav>
-        <div id="infoWindow"></div>
         <Map ref='map'
-          ref={m => { this.leafletMap = m; }}
+          ref={m => {
+            this.leafletMap = m;
+          }
+          }
           center={position}
           zoom={this.state.zoom}
           zoomControl={false}>
           <ZoomControl position='bottomleft' />
           <TileLayer
-            ref={t => { this.tileLayer = t; }}
+            ref={t => {
+              this.tileLayer = t;
+            }}
             url={this.state.url}
             attribution={this.state.attribution}
           />
@@ -752,13 +754,11 @@ class MyMap extends Component {
             data={this.props.activeCountry.polygons}
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
-
           ></GeoJSON>
-
-
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
+        <Popup style={style}/>
       </div>
     )
   }
