@@ -27,6 +27,7 @@
     "react-dock": "^0.2.4",
     "react-dom": "^16.2.0",
     "react-google-charts": "^1.5.5",
+    "react-hover-observer": "^2.1.0",
     "react-leaflet": "^1.7.7",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^5.0.6",
