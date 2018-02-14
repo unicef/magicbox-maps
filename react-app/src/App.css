@@ -23,3 +23,20 @@
   height:20px;
   z-index:1;
 }
+.leaflet-control-zoom {
+  z-index: 100000000 !important; /* was 1000 */
+  }
+.dockerClass {
+  z-index: -100 !important;
+}
+
+.hoverButton{
+  width: 25%;
+  height: 30px;
+  left: 37.5%;
+  bottom: 1px;
+  position: absolute;
+  background-color: rgba(0,0,0,0);
+  border: none;
+
+}
