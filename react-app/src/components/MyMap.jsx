@@ -116,8 +116,13 @@ function scaleMatrix(matrix, scaleX, scaleY) {
 }
 
 function assign_speed_value(properties) {
-  let value = properties.speed_connectivity || properties.type_connectivity
   let slider = 3
+  let value = null;
+  if (properties.speed_connectivity !== null) {
+    value = properties.speed_connectivity;
+  } else if (properties.type_connectivity != null) {
+    value = properties.type_connectivity;
+  }
 
   if (typeof value === 'undefined') {
     // return '#6A1E74';
@@ -430,6 +435,7 @@ class MyMap extends Component {
         };
         if (this._map.options.zoomAnimation && L.Browser.any3d) {
           events.zoomanim = this._animateZoom;
+
         }
 
         return events;
