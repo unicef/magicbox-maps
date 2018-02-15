@@ -435,6 +435,7 @@ class MyMap extends Component {
         };
         if (this._map.options.zoomAnimation && L.Browser.any3d) {
           events.zoomanim = this._animateZoom;
+
         }
 
         return events;
