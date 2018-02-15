@@ -22,6 +22,8 @@ export const selectCountry = (country, sliderVal) => {
     }
   }
   return function(dispatch) {
+    dispatch({type: 'REQUEST_DATA'})
+
     axios.get(window.location.origin + '/' +
       config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
@@ -81,6 +83,8 @@ export const selectCountry = (country, sliderVal) => {
           speedresult = speedschools / nschools
           speedresult = speedresult.toFixed(2)
         }
+
+        dispatch({type: 'RECEIVE_DATA'})
 
         dispatch({
           type: 'COUNTRY_SELECTED',
