@@ -34,6 +34,7 @@ import mpio from '../data/mpio'
 // import Toast from './toast'
 import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
+import HoverButton from './HoverButton.jsx'
 
 import {
   pointToLayer
@@ -358,7 +359,8 @@ class MyMap extends Component {
       docker: false,
       value: 3,
       didUpdate: false,
-      loading: false
+      loading: false,
+      onHover: false,
 
     }
 
@@ -734,6 +736,17 @@ class MyMap extends Component {
   }
 
   /**
+   *   buttonHover  - Manages state for dock hovering
+   *
+   */
+  buttonHover = () => {
+    this.setState({
+      onHover: !this.state.onHover
+    })
+  }
+
+
+  /**
    * Render
    * @return {object} JSX
    */
@@ -746,6 +759,7 @@ class MyMap extends Component {
     return (
       <div>
         <UnicefNav></UnicefNav>
+        <Docker  className="dockerClass" didUpdate={this.state.didUpdate} buttonHover={this.state.onHover}></Docker>
         <Map ref='map'
           ref={m => {
             this.leafletMap = m;
@@ -779,14 +793,14 @@ class MyMap extends Component {
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
         </Map>
-        <Docker didUpdate={this.state.didUpdate}></Docker>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
         <Popup style={style}/>
+        <HoverButton />
+
       </div>
     )
   }
 }
-
 
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
