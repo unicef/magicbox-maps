@@ -7,6 +7,7 @@ import allCountriesReducer from './reducer-all-countries';
 import availableCountriesReducer from './reducer-available-countries';
 import activeCountryReducer from './reducer-active-country';
 import sliderChangedReducer from './reducer-slider-changed';
+import loadingDataReducer from './reducer-loading-data'
 
 
 const allReducers = combineReducers({
@@ -15,7 +16,8 @@ const allReducers = combineReducers({
   date: dateReducer,
   allCountries: allCountriesReducer,
   availableCountries: availableCountriesReducer,
-  sliderChanged: sliderChangedReducer
+  sliderChanged: sliderChangedReducer,
+  loading: loadingDataReducer
 })
 
 export default allReducers;
