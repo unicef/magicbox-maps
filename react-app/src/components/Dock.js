@@ -20,6 +20,9 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import {
   Pie
 } from 'react-chartjs-2';
+import {
+  closeDock
+} from '../actions/action-close-dock'
 // import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
 
@@ -83,8 +86,9 @@ class Docker extends Component {
         })
       }
     }
-    if (prevProps.buttonHover !== this.props.buttonHover) {
-      if (this.state.closed && this.props.buttonHover) {
+
+    if (prevProps.display !== this.props.display) {
+      if (this.state.closed && this.props.display) {
         this.setState({
           internalDock: true,
           closed: false
@@ -142,7 +146,13 @@ class Docker extends Component {
             <h2>{this.props.activeCountry.selectedCountryName}</h2>
           </div>
           <Glyphicon glyph='remove'
-            onClick={() => this.setState({internalDock: false, closed: true})}
+            onClick={() => {
+              this.props.closeDock()
+              this.setState({
+                internalDock: false,
+                closed: true
+              })
+            }}
             style={styles.remove} />
           <Grid>
             <Row className="show-grid">
@@ -183,12 +193,14 @@ class Docker extends Component {
 function mapStateToProps(state) {
   return {
     activeCountry: state.activeCountry,
-    sliderValues: state.sliderChanged
+    sliderValues: state.sliderChanged,
+    display: state.dock.display
   }
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
+    closeDock: closeDock,
     sliderChange: SliderChange
   }, dispatch)
 }

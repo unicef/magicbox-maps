@@ -34,6 +34,7 @@ import mpio from '../data/mpio'
 // import Toast from './toast'
 import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
+import HoverButton from './HoverButton.jsx'
 
 import {
   pointToLayer
@@ -51,7 +52,6 @@ import {
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
-import ReactHoverObserver from 'react-hover-observer'
 
 const _ = require('lodash');
 
@@ -732,7 +732,7 @@ class MyMap extends Component {
 
   /**
    *   buttonHover  - Manages state for dock hovering
-   * 
+   *
    */
   buttonHover = () => {
     this.setState({
@@ -790,12 +790,12 @@ class MyMap extends Component {
         </Map>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
         <Popup style={style}/>
-        <button onMouseOver={this.buttonHover}  onMouseOut={this.buttonHover}className ="hoverButton"></button>
+        <HoverButton />
+
       </div>
     )
   }
 }
-
 
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
