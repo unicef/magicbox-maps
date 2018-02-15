@@ -780,7 +780,7 @@ class MyMap extends Component {
           ></GeoJSON>
         </Map>
         <Docker didUpdate={this.state.didUpdate}></Docker>
-        <LoadingSpinner display={this.state.loading}></LoadingSpinner>
+        <LoadingSpinner display={this.props.loading}></LoadingSpinner>
         <Popup style={style}/>
       </div>
     )
@@ -794,8 +794,8 @@ function mapStateToProps(state) {
     availableCountries: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
-    sliderValues: state.sliderChanged
-
+    sliderValues: state.sliderChanged,
+    loading: state.loading
   }
 }
 
