@@ -696,19 +696,8 @@ class MyMap extends Component {
       // true is for whether to bind buffers
       this.state.onDrawLayer(this.state.info, true);
       if (this.state.docker) {
-        this.setState({
-          didUpdate: true,
-          loading: false
-        })
-      } else {
-        this.setState({
-          loading: false
-        })
+        this.setState({didUpdate: true})
       }
-      // Country has been clicked in mobility mode
-      // mobility data has arrived.
-    } else {
-      this.state.loading = false
     }
   }
 
