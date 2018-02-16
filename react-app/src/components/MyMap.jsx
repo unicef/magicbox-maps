@@ -270,8 +270,8 @@ class MyMap extends Component {
 
           // Off SCREEN
           // Bind Shader attributes
-          const height = 1024;
-          const width = 1024;
+          const height = 2048;
+          const width = 2048;
           // Creating a texture to store colors
           const texture = gl.createTexture();
           gl.bindTexture(gl.TEXTURE_2D, texture);
