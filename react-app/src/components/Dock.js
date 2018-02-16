@@ -141,7 +141,6 @@ class Docker extends Component {
         'Zero Connectivity',
         'No Data'
       ]
-
     }
     return (
 
