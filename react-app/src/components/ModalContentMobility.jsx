@@ -18,47 +18,55 @@ class PopupContentMobility extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
+
   render() {
+    const gif_style = {width: '300px'}
+    const grid_style = {width: '700px'}
     return (
       <div>
         <p>
-           Knowing how people move can be useful to:
-           <ul>
-              <li>
-                mapping communities
-              </li>
-              <li>
-                preventing spread of disease
-              </li>
-              <li>
-                response to natural disasters
-              </li>
-            </ul>
-            <p>
-              We created this prototype to visualize mobility for Colombia given to us by Telefonica. For:
-            </p>
-            <ul>
-              <li>
-                background on this particular app, please read <a href='https://medium.com/@mikefabrikant/the-project-f1f90c2a29b7'>this</a>.
-              </li>
-              <li>
-                an article that explains how mobility can be generated from cell phone usage, please read <a href='https://medium.com/@mikefabrikant/cell-towers-chiefdoms-and-anonymized-call-detail-records-a-guide-to-creating-a-mobility-matrix-d2d5c1bafb68'>this</a>.
-
-              </li>
-            </ul>
-            <p>
+                    <Grid style={grid_style}>
+          <Row className="show-grid">
+            <Col xs={6} md={6}>
+              <strong>
+                Knowing how people move can be useful to:
+              </strong>
+              <ul>
+                <li>
+                  mapping communities
+                </li>
+                <li>
+                  preventing spread of disease
+                </li>
+                <li>
+                  response to natural disasters
+                </li>
+              </ul>
+              <p>
+                <strong>
+                We created this prototype to visualize mobility for Colombia given to us by Telefonica. For:
+              </strong>
               </p>
-            <p>
-              To learn about other applications we've created around mobility, please see:
-            </p>
-            <Grid>
+              <ul>
+                <li>
+                  background on this particular app, please read <a href='https://medium.com/@mikefabrikant/the-project-f1f90c2a29b7'>this</a>.
+                </li>
+                <li>
+                  an article that explains how mobility can be generated from cell phone usage, please read <a href='https://medium.com/@mikefabrikant/cell-towers-chiefdoms-and-anonymized-call-detail-records-a-guide-to-creating-a-mobility-matrix-d2d5c1bafb68'>this</a>.
+
+                </li>
+              </ul>
+            </Col>
+            <Col xs={6} md={6}>
+              <img src='https://media.giphy.com/media/pb1onNOMlkkrIOXMRJ/giphy.gif' style={gif_style}></img>
+            </Col>
+          </Row>
+
               <Row className="show-grid">
-                <Col xs={2} md={1}>
+                <Col xs={6} md={6}>
                 </Col>
-                <Col xs={8} md={8}>
-                  <iframe width="200" height="150" src="https://www.youtube.com/embed/alvUiktZNyI"></iframe>
-                </Col>
-                <Col xs={2} md={1}>
+                <Col xs={6} md={6}>
+                  <iframe width="300" src="https://www.youtube.com/embed/alvUiktZNyI"></iframe>
                 </Col>
               </Row>
             </Grid>
