@@ -7,6 +7,7 @@ const mode = config.mode
  */
 const fetchAvailableCountries = function() {
   return function(dispatch) {
+    dispatch({type: 'REQUEST_DATA'})
     // Fetch all countries for which we have data for schools (mobility later)
     console.log(window.location.origin + '/' +
         config.initial_url_key[mode] + '/countries/', 'llll')
@@ -22,6 +23,8 @@ const fetchAvailableCountries = function() {
             availableCountries: response.data.properties
           }
         })
+
+        dispatch({type: 'RECEIVE_DATA'})
       })
   }
 }

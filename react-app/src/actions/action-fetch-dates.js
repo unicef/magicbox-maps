@@ -10,6 +10,8 @@ const config = require('../config.js')
  */
 export function fetchDates(data) {
   return function(dispatch) {
+    dispatch({type: 'REQUEST_DATA'})
+
     axios.get(window.location.origin + '/' +
       config.initial_url_key[config.mode] +
       '/countries/' + data.id.toLowerCase())
@@ -39,6 +41,7 @@ export function fetchDates(data) {
           type: 'FETCH_DATES',
           payload: dates
         })
+
         let most_recent_date = dates[dates.length-1]
         fetchMobilityForDate(data.id.toLowerCase(), most_recent_date)
           .then(payload => {
@@ -49,6 +52,8 @@ export function fetchDates(data) {
                 mobility: payload.data
               }
             })
+
+            dispatch({type: 'RECEIVE_DATA'})
           })
       })
   }

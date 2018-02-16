@@ -9,6 +9,7 @@ import activeCountryReducer from './reducer-active-country';
 import hoverButtonReducer from './reducer-hover-button';
 import dockReducer from './reducer-dock';
 import sliderChangedReducer from './reducer-slider-changed';
+import loadingDataReducer from './reducer-loading-data-status'
 
 
 const allReducers = combineReducers({
@@ -19,7 +20,8 @@ const allReducers = combineReducers({
   availableCountries: availableCountriesReducer,
   sliderChanged: sliderChangedReducer,
   hoverButton: hoverButtonReducer,
-  dock: dockReducer
+  dock: dockReducer,
+  loading: loadingDataReducer
 })
 
 export default allReducers;

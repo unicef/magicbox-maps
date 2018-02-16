@@ -700,19 +700,8 @@ class MyMap extends Component {
       // true is for whether to bind buffers
       this.state.onDrawLayer(this.state.info, true);
       if (this.state.docker) {
-        this.setState({
-          didUpdate: true,
-          loading: false
-        })
-      } else {
-        this.setState({
-          loading: false
-        })
+        this.setState({didUpdate: true})
       }
-      // Country has been clicked in mobility mode
-      // mobility data has arrived.
-    } else {
-      this.state.loading = false
     }
   }
 
@@ -795,7 +784,7 @@ class MyMap extends Component {
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
         </Map>
-        <LoadingSpinner display={this.state.loading}></LoadingSpinner>
+        <LoadingSpinner display={this.props.loading}></LoadingSpinner>
         <Popup style={style}/>
         <HoverButton />
 
@@ -810,8 +799,8 @@ function mapStateToProps(state) {
     availableCountries: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
-    sliderValues: state.sliderChanged
-
+    sliderValues: state.sliderChanged,
+    loading: state.loading
   }
 }
 
