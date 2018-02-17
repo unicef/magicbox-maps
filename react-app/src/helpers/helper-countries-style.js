@@ -1,3 +1,6 @@
+const countries_w_connectity = require('../config')
+  .countries_with_school_connectivity
+
 /**
  * countryStyle - Specifies the style for the geojson
  *
@@ -9,7 +12,8 @@ export function countryStyle(props) {
     let activeCountry = props.activeCountry;
     const displayCountry = {
       fill: true,
-      fillColor: '#0099FF',
+      fillColor: countries_w_connectity[geoJsonFeature.id] ?
+        '#FFC72C' : '#0099FF',
       fillOpacity: 0.5,
       stroke: false
     }
