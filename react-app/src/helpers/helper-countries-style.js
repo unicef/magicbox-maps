@@ -1,5 +1,6 @@
-const countries_w_connectity = require('../config')
+const countries_w_connectity = JSON.parse(require('../config')
   .countries_with_school_connectivity
+)
 
 /**
  * countryStyle - Specifies the style for the geojson
