@@ -33,6 +33,7 @@ let initial_state = {
   selectedCountryName: " . ",
   selectedCountryNumSchools: null,
   selectedCountryAvgMbps: null,
+  usingSpeed: false
 
 }
 
