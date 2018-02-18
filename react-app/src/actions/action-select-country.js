@@ -1,6 +1,9 @@
 import arrToGeo from '../helpers/helper-2d-geojson'
 import axios from 'axios'
-import {registerLocale, getName} from 'i18n-iso-countries'
+import {
+  registerLocale,
+  getName
+} from 'i18n-iso-countries'
 const config = require('../config.js')
 const mode = config.mode
 
@@ -22,8 +25,10 @@ export const selectCountry = (country, sliderVal) => {
     }
   }
   return function(dispatch) {
+    dispatch({type: 'REQUEST_DATA'})
+
     axios.get(window.location.origin + '/' +
-      config.initial_url_key[mode] + '/countries/' + country)
+        config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
@@ -68,7 +73,9 @@ export const selectCountry = (country, sliderVal) => {
             types[response.data.result[i][4]] = 1;
           }
         }
+        let usingSpeed = true;
         if (nullT > types[null]) {
+          usingSpeed = false;
           zeroT = types['No Service'];
           belowT = types['2G'];
           aboveT = response.data.result.length - types['No Service'] -
@@ -82,6 +89,8 @@ export const selectCountry = (country, sliderVal) => {
           speedresult = speedresult.toFixed(2)
         }
 
+        dispatch({type: 'RECEIVE_DATA'})
+
         dispatch({
           type: 'COUNTRY_SELECTED',
           payload: {
@@ -89,7 +98,8 @@ export const selectCountry = (country, sliderVal) => {
             selectedCountry: country,
             selectedCountryName: countryname,
             selectedCountryNumSchools: numSchools,
-            selectedCountryAvgMbps: speedresult
+            selectedCountryAvgMbps: speedresult,
+            usingSpeed: usingSpeed
           }
         })
 

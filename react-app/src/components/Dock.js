@@ -103,10 +103,12 @@ class Docker extends Component {
    * @return {component}
    */
   render() {
+    console.log(this.props.activeCountry.usingSpeed);
+
     let data = {
       labels: [
-        'Above Threshold',
-        'Below Threshold',
+        'Above Threshold (3)',
+        'Below Threshold (3)',
         'Zero Connectivity',
         'No Data'
       ],
@@ -132,6 +134,14 @@ class Docker extends Component {
         ]
       }]
     };
+    if (!this.props.activeCountry.usingSpeed) {
+      data['labels'] = [
+        '3G',
+        '2G',
+        'Zero Connectivity',
+        'No Data'
+      ]
+    }
     return (
 
       <Dock
