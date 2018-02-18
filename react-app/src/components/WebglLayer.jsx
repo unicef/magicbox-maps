@@ -149,12 +149,11 @@ class WebglLayer extends React.Component {
 /* eslint-disable require-jsdoc*/
   constructor(props, context) {
     super(props);
-
     this.state = {
       onDrawLayer: function(info, bind_buffers) {
         let gl = this.gl
         let canvas = info.canvas
-        let leafletMap = this.leafletMap
+        let leafletMap = props.leafletMap.leafletMap
         let program = this.program
 
         let pointArrayBuffer = this.pointArrayBuffer
@@ -192,28 +191,25 @@ class WebglLayer extends React.Component {
         }
         if (info.points.features.length > 0) {
           gl.clear(gl.COLOR_BUFFER_BIT);
-          window.z = this
           // let mapProjection = this.leafletMap.getProjection()
 
           // look up the locations for the inputs to our shaders.
-          var attributeLoc = gl.getUniformLocation(program, 'worldCoord');
-          var attributeSize = gl.getAttribLocation(program, 'aPointSize')
-          var attributeCol = gl.getAttribLocation(program, 'color');
-          var pixelsToWebGLMatrix = new Float32Array(16);
+          let attributeLoc = gl.getUniformLocation(program, 'worldCoord');
+          let attributeSize = gl.getAttribLocation(program, 'aPointSize')
+          let attributeCol = gl.getAttribLocation(program, 'color');
+          let pixelsToWebGLMatrix = new Float32Array(16);
           // prettier-ignore
           pixelsToWebGLMatrix.set([2 / canvas.width, 0, 0, 0, 0, -2 / canvas.height, 0, 0, 0, 0, 0, 0, -1, 1, 0, 1]);
           // Set viewport
           gl.viewport(0, 0, canvas.width, canvas.height);
           var mapMatrix = new Float32Array(16);
           mapMatrix.set(pixelsToWebGLMatrix);
-          var bounds = leafletMap.getBounds();
-
-
-          var topLeft = new L.LatLng(bounds.getNorth(), bounds.getWest());
-          var offset = LatLongToPixelXY(topLeft.lat, topLeft.lng);
+          let bounds = this.leafletMap.getBounds();
+          let topLeft = new L.LatLng(bounds.getNorth(), bounds.getWest());
+          let offset = LatLongToPixelXY(topLeft.lat, topLeft.lng);
 
           // Scale to current zoom
-          var scale = Math.pow(2, leafletMap.getZoom());
+          var scale = Math.pow(2, this.leafletMap.getZoom());
           scaleMatrix(mapMatrix, scale, scale);
           translateMatrix(mapMatrix, -offset.x, -offset.y);
 
@@ -315,6 +311,17 @@ class WebglLayer extends React.Component {
       onHover: false
     }
   }
+  /**
+   * componentWillMount
+   * @param  {Object} prevProps
+   * @param  {Object} prevState
+   */
+  componentDidUpdate(prevProps, prevState) {
+      this.state.info.points = this.props.points
+      // true is for whether to bind buffers
+      this.state.onDrawLayer(this.state.info, true);
+  }
+
   componentDidMount() {
     /*
       Generic  Canvas Layer for leaflet 0.7 and 1.0-rc,
@@ -423,7 +430,6 @@ class WebglLayer extends React.Component {
 
       //------------------------------------------------------------
       addTo: function(map) {
-        console.log(props, this, 'Iiiii')
         map.addLayer(this);
         return this;
       },
@@ -447,7 +453,7 @@ class WebglLayer extends React.Component {
 
         var del = this._delegate.state || this.state;
         let info = {
-          points: this._delegate.props.activeCountry.points,
+          points: this._delegate.props.points,
           layer: this,
           canvas: this._canvas,
           bounds: bounds,
@@ -487,8 +493,7 @@ class WebglLayer extends React.Component {
       return new L.CanvasLayer();
     };
 
-    const leafletMap = this.props.leafletMap.leafletElement;
-
+    const leafletMap = this.props.leafletMap.leafletMap.leafletElement;
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
     var canvas = glLayer._canvas
     var gl = glLayer._canvas.getContext('webgl', {

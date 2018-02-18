@@ -36,6 +36,7 @@ import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
 import HoverButton from './HoverButton.jsx'
 import WebglLayer from './WebglLayer'
+import ReactWebglLeaflet from 'react-webgl-leaflet';
 
 import {
   GeoJSON,
@@ -50,7 +51,8 @@ import {
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
-
+const fetch_url = window.location.origin + '/' +
+    'schools' + '/school/';
 const _ = require('lodash');
 
 /**
@@ -118,9 +120,6 @@ class MyMap extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.activeCountry.selectedCountry !==
       this.props.activeCountry.selectedCountry) {
-      this.state.info.points = this.props.activeCountry.points
-      // true is for whether to bind buffers
-      this.state.onDrawLayer(this.state.info, true);
       if (this.state.docker) {
         this.setState({
           didUpdate: true,
@@ -192,6 +191,8 @@ class MyMap extends Component {
           center={position}
           zoom={this.state.zoom}
           zoomControl={false}>
+
+
           <ZoomControl position='bottomleft' />
           <TileLayer
             ref={t => {
@@ -216,7 +217,10 @@ class MyMap extends Component {
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
-        <WebglLayer leafletMap={this}/>
+          <ReactWebglLeaflet leafletMap={this}
+            points={this.props.activeCountry.points}
+            fetchUrl={fetch_url}
+            />
         </Map>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
         <Popup style={style}/>
