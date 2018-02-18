@@ -35,10 +35,8 @@ import mpio from '../data/mpio'
 import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
 import HoverButton from './HoverButton.jsx'
+import WebglLayer from './WebglLayer'
 
-import {
-  pointToLayer
-} from '../helpers/helper-country-point';
 import {
   GeoJSON,
   Map,
@@ -218,6 +216,7 @@ class MyMap extends Component {
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
+        <WebglLayer leafletMap={this}/>
         </Map>
         <LoadingSpinner display={this.state.loading}></LoadingSpinner>
         <Popup style={style}/>

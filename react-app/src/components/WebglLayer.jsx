@@ -9,6 +9,9 @@ import {
 } from 'redux'
 
 import L from 'leaflet'
+import {
+  pointToLayer
+} from '../helpers/helper-country-point';
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
   return (((this - in_min) * (out_max - out_min)) / (in_max - in_min)) + out_min;
@@ -313,7 +316,6 @@ class WebglLayer extends React.Component {
     }
   }
   componentDidMount() {
-
     /*
       Generic  Canvas Layer for leaflet 0.7 and 1.0-rc,
       copyright Stanislav Sumbera,  2016 , sumbera.com , license MIT
@@ -421,6 +423,7 @@ class WebglLayer extends React.Component {
 
       //------------------------------------------------------------
       addTo: function(map) {
+        console.log(props, this, 'Iiiii')
         map.addLayer(this);
         return this;
       },
@@ -484,7 +487,7 @@ class WebglLayer extends React.Component {
       return new L.CanvasLayer();
     };
 
-    const leafletMap = this.leafletMap.leafletElement;
+    const leafletMap = this.props.leafletMap.leafletElement;
 
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
     var canvas = glLayer._canvas
