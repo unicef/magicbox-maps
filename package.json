@@ -1,7 +1,7 @@
 {
   "name": "server",
   "engines": {
-    "node": "8.1"
+    "node": "8.0"
   },
   "version": "0.0.0",
   "private": true,
@@ -21,7 +21,6 @@
     "memory-cache": "^0.2.0",
     "morgan": "~1.9.0",
     "react-hover-observer": "^2.1.0",
-    "react-leaflet-webgl": "0.0.2",
     "serve-favicon": "~2.4.5",
     "superagent": "^3.8.2"
   },
