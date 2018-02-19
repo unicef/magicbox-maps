@@ -2,6 +2,7 @@
 import React, {
   Component
 } from 'react';
+import ReactWebglLeaflet from 'react-webgl-leaflet'
 import {
   connect
 } from 'react-redux';
@@ -35,8 +36,8 @@ import mpio from '../data/mpio'
 import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
 import HoverButton from './HoverButton.jsx'
-import WebglLayer from './WebglLayer'
-import ReactWebglLeaflet from 'react-webgl-leaflet';
+// import WebglLayer from './WebglLayer'
+
 
 import {
   GeoJSON,
@@ -217,7 +218,8 @@ class MyMap extends Component {
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
-          <ReactWebglLeaflet leafletMap={this}
+        <ReactWebglLeaflet
+            leafletMap={this}
             points={this.props.activeCountry.points}
             fetchUrl={fetch_url}
             />
