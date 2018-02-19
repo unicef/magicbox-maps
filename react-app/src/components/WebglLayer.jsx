@@ -492,8 +492,8 @@ class WebglLayer extends React.Component {
     L.canvasLayer = function() {
       return new L.CanvasLayer();
     };
-
-    const leafletMap = this.props.leafletMap.leafletMap.leafletElement;
+    console.log(this.props.leafletMap, '!!!!')
+    const leafletMap = this.props.leafletMap.leafletElement;
     var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
     var canvas = glLayer._canvas
     var gl = glLayer._canvas.getContext('webgl', {

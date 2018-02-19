@@ -34,7 +34,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
-    "react-webgl-leaflet": "0.0.3",
+    "react-webgl-leaflet": "0.0.6",
     "react-yearly-calendar": "^1.1.5",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
