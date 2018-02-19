@@ -2,6 +2,9 @@
   "name": "maps",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "8.1"
+  },
   "dependencies": {
     "alasql": "^0.4.4",
     "auth0-js": "^9.0.2",
