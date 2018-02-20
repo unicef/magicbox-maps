@@ -215,7 +215,6 @@ class MyMap extends Component {
         <LoadingSpinner display={this.props.loading}></LoadingSpinner>
         <Popup style={style}/>
         <HoverButton />
-
       </div>
     )
   }
