@@ -4,6 +4,7 @@ import {
   registerLocale,
   getName
 } from 'i18n-iso-countries'
+import {assign_speed_value} from '../helpers/helper-country-point'
 const config = require('../config.js')
 const mode = config.mode
 
@@ -90,6 +91,10 @@ export const selectCountry = (country, sliderVal) => {
         }
 
         dispatch({type: 'RECEIVE_DATA'})
+        // Assign color to point
+        points.features.forEach(f => {
+          f.properties.color = assign_speed_value(f.properties)
+        })
 
         dispatch({
           type: 'COUNTRY_SELECTED',
