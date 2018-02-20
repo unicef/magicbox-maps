@@ -11,11 +11,13 @@ const mode = config.mode
  * @return {type} color for dot
  */
 export function assign_speed_value(properties) {
-  let slider = 3 // hardcoded threshhold
+  let slider = 3
   let value = null;
-  if (properties.speed_connectivity !== null) {
+  if (properties.speed_connectivity !== null &&
+    typeof properties.speed_connectivity !== 'undefined'
+  ) {
     value = properties.speed_connectivity;
-  } else if (properties.type_connectivity != null) {
+  } else if (properties.type_connectivity !== null) {
     value = properties.type_connectivity;
   }
 

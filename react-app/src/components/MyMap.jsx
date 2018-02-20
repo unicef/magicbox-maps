@@ -207,8 +207,7 @@ class MyMap extends Component {
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
-        <ReactWebglLeaflet
-            leafletMap={this}
+        <ReactWebglLeaflet leafletMap={this.leafletMap}
             points={this.props.activeCountry.points}
             fetchUrl={fetch_url}
             />
