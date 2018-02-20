@@ -182,7 +182,6 @@ class MyMap extends Component {
           zoom={this.state.zoom}
           zoomControl={false}>
 
-
           <ZoomControl position='bottomleft' />
           <TileLayer
             ref={t => {
