@@ -13,20 +13,35 @@ import {
   pointToLayer
 } from '../helpers/helper-country-point';
 
-Number.prototype.map = function(in_min, in_max, out_min, out_max) {
-  return (((this - in_min) * (out_max - out_min)) / (in_max - in_min)) + out_min;
+Number.map = function(in_min, in_max, out_min, out_max) {
+  return (((this - in_min) * (out_max - out_min)) / (in_max - in_min)) +
+        out_min;
 };
-// Function to convert rgb to 0-1 for webgl
+
+/**
+ * Converts RGB values into a 0-to-1 scale for WebGL to 0-1 for WebGL. Allows
+ * for wider color set to use in the map than what's possible with RGB values.
+ *
+ * @param {array} n RGB value set
+ * @return {number} 0-to-1 value for color
+ */
 const fromRgb = n => Math.ceil((parseInt(n).map(0, 255, 0, 1)) * 1000) / 1000;
-/*
+
+/**
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ * Full docs:
+ * https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const colorLookup = {}
 
-// Generates off screen color for data point
+/**
+ * Generates off-screen RGB color for data point.
+ *
+ * @param {number} i 0-to-1 value for color
+ * @return {array} RGB value set
+ */
 const gen_offscreen_colors = function(i) {
   if (i === 65535) {
     i += 1;
@@ -37,21 +52,35 @@ const gen_offscreen_colors = function(i) {
   return [r, g, b];
 };
 
-function LatLongToPixelXY(latitude, longitude) {
-  var pi_180 = Math.PI / 180.0;
-  var pi_4 = Math.PI * 4;
-  var sinLatitude = Math.sin(latitude * pi_180);
-  var pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / pi_4) * 256;
-  var pixelX = (longitude + 180) / 360 * 256;
+/**
+ * Finds a pixel from a latitude / longtitude set.
+ *
+ * @param {number} latitude a latitudinal value
+ * @param {number} longitude a longitudinal value
+ * @return {number} a pixel
+ */
+function latLongToPixelXY(latitude, longitude) {
+  let pi_180 = Math.PI / 180.0;
+  let pi_4 = Math.PI * 4;
+  let sinLatitude = Math.sin(latitude * pi_180);
+  let pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / pi_4)
+      * 256;
+  let pixelX = (longitude + 180) / 360 * 256;
 
-  var pixel = {
+  let pixel = {
     x: pixelX,
     y: pixelY
   };
 
   return pixel;
 }
-
+/**
+ * Translate a matrix across an x or y axis.
+ *
+ * @param {array} matrix matrix to translate
+ * @param {number} tx x-axis multiplier
+ * @param {number} ty y-axis multiplier
+ */
 function translateMatrix(matrix, tx, ty) {
   // translation is in last column of matrix
   matrix[12] += matrix[0] * tx + matrix[4] * ty;
@@ -60,6 +89,13 @@ function translateMatrix(matrix, tx, ty) {
   matrix[15] += matrix[3] * tx + matrix[7] * ty;
 }
 
+/**
+ * Scales a matrix by a proportion across an x or y axis.
+ *
+ * @param {array} matrix matrix to scale
+ * @param {number} scaleX x-axis multiplier
+ * @param {number} scaleY y-axis multiplier
+ */
 function scaleMatrix(matrix, scaleX, scaleY) {
   // scaling x and y, which is just scaling first two columns of matrix
   matrix[0] *= scaleX;
@@ -73,6 +109,14 @@ function scaleMatrix(matrix, scaleX, scaleY) {
   matrix[7] *= scaleY;
 }
 
+/**
+ * Creates color code indicating network connection type or speed from provided
+ * properties (either speed or type). The color is later used to map a color of
+ * a data point in a map.
+ *
+ * @param {undefined} properties object properties to add data
+ * @return {array} RGB color value (indicating network type / speed)
+ */
 function assign_speed_value(properties) {
   let slider = 3
   let value = null;
@@ -106,14 +150,13 @@ const prepare_points = function(features, zoom) {
   let point_off_screen_color = new Float32Array(4 * features.length);
   let point_size = new Float32Array(features.length);
   features.forEach((f, i) => {
-
-    var speed_value = assign_speed_value(f.properties)
+    let speed_value = assign_speed_value(f.properties)
 
     const lat = f.geometry.coordinates[1];
     const lon = f.geometry.coordinates[0];
     const id = f.properties.id;
 
-    const pixel = LatLongToPixelXY(lat, lon);
+    const pixel = latLongToPixelXY(lat, lon);
     point_xy[i * 2] = pixel.x;
     point_xy[(i * 2) + 1] = pixel.y;
     point_size[i] = 1.0 * (zoom / 2.5);
@@ -179,11 +222,15 @@ class WebglLayer extends React.Component {
 
           // On screen ColorArrayBuffer
           gl.bindBuffer(gl.ARRAY_BUFFER, this.colorArrayBuffer);
-          gl.bufferData(gl.ARRAY_BUFFER, points.point_on_screen_color, gl.STATIC_DRAW);
+          gl.bufferData(gl.ARRAY_BUFFER,
+                        points.point_on_screen_color,
+                        gl.STATIC_DRAW);
 
           // Off screen ColorArrayBuffer
           gl.bindBuffer(gl.ARRAY_BUFFER, this.colorArrayBufferOffScreen);
-          gl.bufferData(gl.ARRAY_BUFFER, points.point_off_screen_color, gl.STATIC_DRAW);
+          gl.bufferData(gl.ARRAY_BUFFER,
+                        points.point_off_screen_color,
+                        gl.STATIC_DRAW);
           // end animate
 
           gl.viewport(0, 0, canvas.width, canvas.height);
@@ -199,22 +246,23 @@ class WebglLayer extends React.Component {
           let attributeCol = gl.getAttribLocation(program, 'color');
           let pixelsToWebGLMatrix = new Float32Array(16);
           // prettier-ignore
-          pixelsToWebGLMatrix.set([2 / canvas.width, 0, 0, 0, 0, -2 / canvas.height, 0, 0, 0, 0, 0, 0, -1, 1, 0, 1]);
+          pixelsToWebGLMatrix.set([2 / canvas.width, 0, 0, 0, 0, -2 /
+              canvas.height, 0, 0, 0, 0, 0, 0, -1, 1, 0, 1]);
           // Set viewport
           gl.viewport(0, 0, canvas.width, canvas.height);
-          var mapMatrix = new Float32Array(16);
+          let mapMatrix = new Float32Array(16);
           mapMatrix.set(pixelsToWebGLMatrix);
           let bounds = this.leafletMap.getBounds();
           let topLeft = new L.LatLng(bounds.getNorth(), bounds.getWest());
-          let offset = LatLongToPixelXY(topLeft.lat, topLeft.lng);
+          let offset = latLongToPixelXY(topLeft.lat, topLeft.lng);
 
           // Scale to current zoom
-          var scale = Math.pow(2, this.leafletMap.getZoom());
+          let scale = Math.pow(2, this.leafletMap.getZoom());
           scaleMatrix(mapMatrix, scale, scale);
           translateMatrix(mapMatrix, -offset.x, -offset.y);
 
           // // attach matrix value to 'mapMatrix' uniform in shader
-          var matrixLoc = gl.getUniformLocation(program, "mapMatrix");
+          let matrixLoc = gl.getUniformLocation(program, 'mapMatrix');
           gl.uniformMatrix4fv(matrixLoc, false, mapMatrix);
 
           // Off SCREEN
@@ -224,18 +272,22 @@ class WebglLayer extends React.Component {
           // Creating a texture to store colors
           const texture = gl.createTexture();
           gl.bindTexture(gl.TEXTURE_2D, texture);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,
+                        width, height, 0, gl.RGBA,
+                        gl.UNSIGNED_BYTE, null);
 
           // Creating a Renderbuffer to store depth information
           const renderbuffer = gl.createRenderbuffer();
           gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
-          gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+          gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16,
+                                 width, height);
 
           // Creating a framebuffer for offscreen rendering
-
           gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-          gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
+                                  gl.TEXTURE_2D, texture, 0);
+          gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT,
+                                     gl.RENDERBUFFER, renderbuffer);
 
           // Finally, we do a bit of cleaning up as usual
           gl.bindTexture(gl.TEXTURE_2D, null);
@@ -247,24 +299,24 @@ class WebglLayer extends React.Component {
           // Bind Shader attributes
           gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
           gl.bindBuffer(gl.ARRAY_BUFFER, pointArrayBuffer); // Bind world coord
-          attributeLoc = gl.getAttribLocation(program, "worldCoord");
+          attributeLoc = gl.getAttribLocation(program, 'worldCoord');
 
           gl.enableVertexAttribArray(1);
           gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
 
           gl.bindBuffer(gl.ARRAY_BUFFER, sizeArrayBuffer); // Bind point size
-          attributeSize = gl.getAttribLocation(program, "aPointSize");
+          attributeSize = gl.getAttribLocation(program, 'aPointSize');
           gl.enableVertexAttribArray(attributeSize);
           gl.vertexAttribPointer(attributeSize, 1, gl.FLOAT, false, 0, 0);
 
           gl.bindBuffer(gl.ARRAY_BUFFER, colorArrayBufferOffScreen); // Bind point color
-          attributeCol = gl.getAttribLocation(program, "color");
+          attributeCol = gl.getAttribLocation(program, 'color');
           gl.enableVertexAttribArray(attributeCol);
           gl.vertexAttribPointer(attributeCol, 4, gl.FLOAT, false, 0, 0);
 
           // tell webgl how buffer is laid out (pairs of x,y coords)
 
-          //l = current_service.rawPoints.length / 2
+          // l = current_service.rawPoints.length / 2
           let l = point_xy.length / 2;
 
           gl.drawArrays(gl.POINTS, 0, l);
@@ -274,12 +326,12 @@ class WebglLayer extends React.Component {
           // On SCREEN
           // Bind Shader attributes
           gl.bindBuffer(gl.ARRAY_BUFFER, pointArrayBuffer); // Bind world coord
-          attributeLoc = gl.getAttribLocation(program, "worldCoord");
+          attributeLoc = gl.getAttribLocation(program, 'worldCoord');
           gl.enableVertexAttribArray(attributeLoc);
           gl.vertexAttribPointer(attributeLoc, 2, gl.FLOAT, false, 0, 0);
 
           gl.bindBuffer(gl.ARRAY_BUFFER, sizeArrayBuffer); // Bind point size
-          attributeSize = gl.getAttribLocation(program, "aPointSize");
+          attributeSize = gl.getAttribLocation(program, 'aPointSize');
 
           gl.enableVertexAttribArray(attributeSize);
           gl.vertexAttribPointer(attributeSize, 1, gl.FLOAT, false, 0, 0);
@@ -317,9 +369,9 @@ class WebglLayer extends React.Component {
    * @param  {Object} prevState
    */
   componentDidUpdate(prevProps, prevState) {
-      this.state.info.points = this.props.points
-      // true is for whether to bind buffers
-      this.state.onDrawLayer(this.state.info, true);
+    this.state.info.points = this.props.points
+    // true is for whether to bind buffers
+    this.state.onDrawLayer(this.state.info, true);
   }
 
   componentDidMount() {
@@ -331,16 +383,17 @@ class WebglLayer extends React.Component {
     */
 
     // -- L.DomUtil.setTransform from leaflet 1.0.0 to work on 0.0.7
-    //------------------------------------------------------------------------------
-    L.DomUtil.setTransform = L.DomUtil.setTransform || function(el, offset, scale) {
-      var pos = offset || new L.Point(0, 0);
+    // -------------------------------------------------------------
+    L.DomUtil.setTransform =
+            L.DomUtil.setTransform || function(el, offset, scale) {
+        let pos = offset || new L.Point(0, 0);
 
-      el.style[L.DomUtil.TRANSFORM] =
+        el.style[L.DomUtil.TRANSFORM] =
         (L.Browser.ie3d ?
           'translate(' + pos.x + 'px,' + pos.y + 'px)' :
           'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
         (scale ? ' scale(' + scale + ')' : '');
-    };
+      };
 
     // -- support for both  0.0.7 and 1.0.0 rc2 leaflet
     L.CanvasLayer = (L.Layer ? L.Layer : L.Class).extend({
@@ -365,20 +418,20 @@ class WebglLayer extends React.Component {
         return this;
       },
 
-      //-------------------------------------------------------------
+      // -------------------------------------------------------------
       _onLayerDidResize: function(resizeEvent) {
         this._canvas.width = resizeEvent.newSize.x;
         this._canvas.height = resizeEvent.newSize.y;
       },
-      //-------------------------------------------------------------
+      // -------------------------------------------------------------
       _onLayerDidMove: function() {
-        var topLeft = this._map.containerPointToLayerPoint([0, 0]);
+        let topLeft = this._map.containerPointToLayerPoint([0, 0]);
         L.DomUtil.setPosition(this._canvas, topLeft);
         this.drawLayer();
       },
-      //-------------------------------------------------------------
+      // -------------------------------------------------------------
       getEvents: function() {
-        var events = {
+        let events = {
           resize: this._onLayerDidResize,
           moveend: this._onLayerDidMove,
           zoom: this._onLayerDidMove
@@ -389,34 +442,34 @@ class WebglLayer extends React.Component {
 
         return events;
       },
-      //-------------------------------------------------------------
+      // -------------------------------------------------------------
       onAdd: function(map) {
-
         this._map = map;
         this._canvas = L.DomUtil.create('canvas', 'leaflet-layer');
         this.tiles = {};
 
-        var size = this._map.getSize();
+        let size = this._map.getSize();
         this._canvas.width = size.x;
         this._canvas.height = size.y;
 
-        var animated = this._map.options.zoomAnimation && L.Browser.any3d;
-        L.DomUtil.addClass(this._canvas, 'leaflet-zoom-' + (animated ? 'animated' : 'hide'));
+        let animated = this._map.options.zoomAnimation && L.Browser.any3d;
+        L.DomUtil.addClass(this._canvas, 'leaflet-zoom-' +
+                          (animated ? 'animated' : 'hide'));
 
 
         map._panes.overlayPane.appendChild(this._canvas);
 
         map.on(this.getEvents(), this);
 
-        var del = this._delegate.state || this.state;
+        let del = this._delegate.state || this.state;
 
         del.onLayerDidMount && del.onLayerDidMount(); // -- callback
         this.needRedraw();
       },
 
-      //-------------------------------------------------------------
+      // -----------------------------------------------------------------------
       onRemove: function(map) {
-        var del = this._delegate || this;
+        let del = this._delegate || this;
         del.onLayerWillUnmount && del.onLayerWillUnmount(); // -- callback
 
 
@@ -425,33 +478,32 @@ class WebglLayer extends React.Component {
         map.off(this.getEvents(), this);
 
         this._canvas = null;
-
       },
-
-      //------------------------------------------------------------
+      // -----------------------------------------------------------------------
       addTo: function(map) {
         map.addLayer(this);
         return this;
       },
-      // --------------------------------------------------------------------------------
-      LatLonToMercator: function(latlon) {
+      // -----------------------------------------------------------------------
+      latLonToMercator: function(latlon) {
         return {
           x: latlon.lng * 6378137 * Math.PI / 180,
           y: Math.log(Math.tan((90 + latlon.lat) * Math.PI / 360)) * 6378137
         };
       },
 
-      //------------------------------------------------------------------------------
+      // -----------------------------------------------------------------------
       drawLayer: function() {
         // -- todo make the viewInfo properties  flat objects.
-        var size = this._map.getSize();
-        var bounds = this._map.getBounds();
-        var zoom = this._map.getZoom();
+        let size = this._map.getSize();
+        let bounds = this._map.getBounds();
+        let zoom = this._map.getZoom();
 
-        var center = this.LatLonToMercator(this._map.getCenter());
-        var corner = this.LatLonToMercator(this._map.containerPointToLatLng(this._map.getSize()));
+        let center = this.latLonToMercator(this._map.getCenter());
+        let corner = this.latLonToMercator(
+          this._map.containerPointToLatLng(this._map.getSize()));
 
-        var del = this._delegate.state || this.state;
+        let del = this._delegate.state || this.state;
         let info = {
           points: this._delegate.props.points,
           layer: this,
@@ -467,9 +519,9 @@ class WebglLayer extends React.Component {
         this._frame = null;
       },
       // -- L.DomUtil.setTransform from leaflet 1.0.0 to work on 0.0.7
-      //------------------------------------------------------------------------------
+      // -----------------------------------------------------------------------
       _setTransform: function(el, offset, scale) {
-        var pos = offset || new L.Point(0, 0);
+        let pos = offset || new L.Point(0, 0);
 
         el.style[L.DomUtil.TRANSFORM] =
           (L.Browser.ie3d ?
@@ -478,12 +530,16 @@ class WebglLayer extends React.Component {
           (scale ? ' scale(' + scale + ')' : '');
       },
 
-      //------------------------------------------------------------------------------
+      // -----------------------------------------------------------------------
       _animateZoom: function(e) {
-        var scale = this._map.getZoomScale(e.zoom);
-        // -- different calc of animation zoom  in leaflet 1.0.3 thanks @peterkarabinovic, @jduggan1
-        var offset = L.Layer ? this._map._latLngBoundsToNewLayerBounds(this._map.getBounds(), e.zoom, e.center).min :
-          this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
+        let scale = this._map.getZoomScale(e.zoom);
+        // -- different calc of animation zoom in leaflet 1.0.3
+        // thanks @peterkarabinovic, @jduggan1
+        let offset = L.Layer ?
+          this._map._latLngBoundsToNewLayerBounds(this._map.getBounds(),
+                                                  e.zoom, e.center).min :
+          this._map._getCenterOffset(e.center).
+            _multiplyBy(-scale).subtract(this._map._getMapPanePos());
 
         L.DomUtil.setTransform(this._canvas, offset, scale);
       }
@@ -494,26 +550,26 @@ class WebglLayer extends React.Component {
     };
 
     const leafletMap = this.props.leafletMap.leafletElement;
-    var glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
-    var canvas = glLayer._canvas
-    var gl = glLayer._canvas.getContext('webgl', {
+    let glLayer = L.canvasLayer().delegate(this).addTo(leafletMap);
+    let canvas = glLayer._canvas
+    let gl = glLayer._canvas.getContext('webgl', {
       antialias: true
     });
-    var program = gl.createProgram();
-    var framebuffer = gl.createFramebuffer();
+    let program = gl.createProgram();
+    let framebuffer = gl.createFramebuffer();
     this.state.pointArrayBuffer = gl.createBuffer()
     this.state.sizeArrayBuffer = gl.createBuffer()
     this.state.colorArrayBuffer = gl.createBuffer()
     this.state.colorArrayBufferOffScreen = gl.createBuffer()
     this.state.framebuffer = framebuffer
     canvas.addEventListener('click', function(ev) {
-      if (!!this.style.cssText) {
+      if (!!style.cssText) {
         let x = undefined;
         let y = undefined;
         let top = 0;
         let left = 0;
         let obj = canvas;
-        while (obj && (obj.tagName !== "BODY")) {
+        while (obj && (obj.tagName !== 'BODY')) {
           top += obj.offsetTop;
           left += obj.offsetLeft;
           obj = obj.offsetParent;
@@ -527,21 +583,21 @@ class WebglLayer extends React.Component {
         gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-        if (colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]) {
-          this.style.cursor = 'pointer'
-          pointToLayer(colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]], leafletMap)
-
+        if (colorLookup[pixels[0] + ' ' + pixels[1] + ' ' + pixels[2]]) {
+          style.cursor = 'pointer'
+          pointToLayer(colorLookup[pixels[0] + ' ' + pixels[1] +
+                                   ' ' + pixels[2]], leafletMap)
         }
       }
     });
     canvas.addEventListener('mousemove', function(ev) {
-      if (!!this.style.cssText) {
+      if (!!style.cssText) {
         let x = undefined;
         let y = undefined;
         let top = 0;
         let left = 0;
         let obj = canvas;
-        while (obj && (obj.tagName !== "BODY")) {
+        while (obj && (obj.tagName !== 'BODY')) {
           top += obj.offsetTop;
           left += obj.offsetLeft;
           obj = obj.offsetParent;
@@ -555,20 +611,21 @@ class WebglLayer extends React.Component {
         gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         // const d = document.getElementById('infoWindow');
-        if (colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]) {
-          this.style.cursor = 'pointer'
-          console.log(colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]]);
-          // d.style.display = "inline";
+        if (colorLookup[pixels[0] + ' ' + pixels[1] + ' ' + pixels[2]]) {
+          style.cursor = 'pointer'
+          console.log(colorLookup[pixels[0] + ' ' +
+                                  pixels[1] + ' ' + pixels[2]]);
+          // d.style.display = 'inline';
           // d.style.left    = ev.x + 20 + 'px';
           // d.style.top     = (ev.y - 25) + 'px';
           // return d.innerHTML     = 'School ID: ' + colorLookup[pixels[0] + " " + pixels[1] + " " + pixels[2]];
         } else {
-          this.style.cursor = 'auto'
-          // return d.style.display = "none";
+          style.cursor = 'auto'
+          // return d.style.display = 'none';
         }
       }
     });
-    var vshaderText = '\nattribute vec4  worldCoord;' +
+    let vshaderText = '\nattribute vec4  worldCoord;' +
       'attribute vec4  color;' +
       'attribute float aPointSize;' +
       'varying vec4 vColor;' +
@@ -579,22 +636,22 @@ class WebglLayer extends React.Component {
       'gl_PointSize = aPointSize;' +
       '}'
 
-    var fshaderText = 'precision mediump float;' +
+    let fshaderText = 'precision mediump float;' +
       'varying vec4 vColor;' +
       'void main() {' +
       'gl_FragColor = vColor;' +
       '}'
-    var _shaders = shaders(gl),
+    let _shaders = shaders(gl),
       vertexShader = _shaders.vertexShader,
       fragmentShader = _shaders.fragmentShader;
 
-    function shaders(gl) {
-      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-      gl.shaderSource(vertexShader, vshaderText);
-      gl.compileShader(vertexShader);
-      var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-      gl.shaderSource(fragmentShader, fshaderText);
-      gl.compileShader(fragmentShader);
+    function shaders(shadegl) {
+      let shadeVertexShader = shadegl.createShader(shadegl.VERTEX_SHADER);
+      shadegl.shaderSource(vertexShader, vshaderText);
+      shadegl.compileShader(vertexShader);
+      let shadeFragmentShader = shadegl.createShader(shadegl.FRAGMENT_SHADER);
+      shadegl.shaderSource(fragmentShader, fshaderText);
+      shadegl.compileShader(fragmentShader);
 
       return {
         vertexShader: vertexShader,
