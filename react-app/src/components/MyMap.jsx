@@ -30,14 +30,12 @@ import {
 import {
   onEachCountryFeature
 } from '../helpers/helper-country-onEach';
-// import LayerGl from  "../public/lib";
+
 import mpio from '../data/mpio'
-// import Toast from './toast'
+
 import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
 import HoverButton from './HoverButton.jsx'
-// import WebglLayer from './WebglLayer'
-
 
 import {
   GeoJSON,
