@@ -107,8 +107,8 @@ class Docker extends Component {
 
     let data = {
       labels: [
-        'Above Threshold (3)',
-        'Below Threshold (3)',
+        'Above Threshold (3g)',
+        'Below Threshold (3g)',
         'Zero Connectivity',
         'No Data'
       ],
