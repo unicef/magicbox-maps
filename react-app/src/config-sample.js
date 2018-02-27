@@ -15,7 +15,7 @@ module.exports = {
   },
 
   // Require login?
-  login_required: (process.env.REACT_APP_LOGIN_REQUIRED==='true') || false,
+  login_required: (process.env.REACT_APP_LOGIN_REQUIRED==='true'),
 
   // Address of magicbox-open-api back-end
   magicbox_url: process.env.MAGICBOX_URL || 'MAGICBOX_API_URL',
