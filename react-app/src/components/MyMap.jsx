@@ -31,9 +31,6 @@ import {
   onEachCountryFeature
 } from '../helpers/helper-country-onEach';
 
-import mpio from '../data/mpio'
-
-import us_counties from '../data/us_counties'
 import Popup from './Popup.jsx'
 import HoverButton from './HoverButton.jsx'
 
@@ -82,12 +79,6 @@ class MyMap extends Component {
       onHover: false,
 
     }
-
-    this.polygons = us_counties.features
-      .map(feature => feature.geometry.coordinates)
-    mpio.features.forEach(f => {
-      this.polygons.push(f.geometry.coordinates);
-    })
 
   }
 
