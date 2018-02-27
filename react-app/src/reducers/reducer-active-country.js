@@ -11,7 +11,12 @@ import {
   get_scores
 } from '../helpers/helper-general'
 const config = require('../config.js')
-const mpio = require('../data/mpio');
+let mpio = {}
+let admin_index = {}
+
+if (config.mode !== 'schools') {
+  const mpio = require('../data/mpio');
+}
 // List of scores to represent mobility toward each admin
 // Order is by geoFeature index
 let scores = []
@@ -46,11 +51,6 @@ let initial_state = {
 function activeCountryReducer(state = initial_state, action) {
   switch (action.type) {
     case 'COUNTRY_SELECTED':
-      // Create a lookup of admin_id to index in features array.
-      let admin_index = mpio.features.reduce((h, f, i) => {
-        h[f.properties.admin_id] = i;
-        return h;
-      }, {});
       if (config.mode !== 'schools') {
         return Object.assign({}, state, {
           polygons: mpio,
