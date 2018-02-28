@@ -13,6 +13,7 @@ import {
 } from 'react-redux'
 import ModalContentSchools from './ModalContentSchools';
 import ModalContentMobility from './ModalContentMobility';
+import {isBrowser} from 'react-device-detect'
 const config = require('../config.js')
 
 /* eslint-disable require-jsdoc*/
@@ -25,7 +26,8 @@ class Popup extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      show: true
+      // show popup if user is on browser (not mobile)
+      show: isBrowser
     };
   }
 
