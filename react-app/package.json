@@ -27,6 +27,7 @@
     "react-center": "^1.1.1",
     "react-chartjs-2": "^2.7.0",
     "react-datepicker": "^1.0.4",
+    "react-device-detect": "^0.1.0",
     "react-dock": "^0.2.4",
     "react-dom": "^16.2.0",
     "react-google-charts": "^1.5.5",
