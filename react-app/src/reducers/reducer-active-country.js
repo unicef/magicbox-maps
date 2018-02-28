@@ -15,7 +15,7 @@ let mpio = {}
 let admin_index = {}
 
 if (config.mode !== 'schools') {
-  mpio = import('../data/mpio');
+  mpio = require('../data/mpio');
 }
 // List of scores to represent mobility toward each admin
 // Order is by geoFeature index
