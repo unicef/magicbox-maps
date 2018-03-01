@@ -29,7 +29,6 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
         }
         if (config.mode != 'schools') {
           myMapObj.props.selectCountry(e.target.feature, sliderVal);
-          myMapObj.props.fetchDates(e.target.feature);
         } else {
           myMapObj.props.selectCountry(e.target.feature.id, sliderVal);
           myMapObj.setState({

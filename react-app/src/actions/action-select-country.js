@@ -4,6 +4,9 @@ import {
   registerLocale,
   getName
 } from 'i18n-iso-countries'
+import {
+  fetchDates
+} from './action-fetch-dates.js'
 import {assign_speed_value} from '../helpers/helper-country-point'
 const config = require('../config.js')
 const mode = config.mode
@@ -19,15 +22,24 @@ registerLocale(require('i18n-iso-countries/langs/en.json'))
 export const selectCountry = (country, sliderVal) => {
   console.log('You selected', country);
   if (mode !== 'schools') {
-    return {
-      type: 'COUNTRY_SELECTED',
-      // Not used  as using mode now
-      payload: country
+    return function(dispatch) {
+      axios.get(window.location.origin + '/shapefiles/' + 'asdf')
+        .catch(err => {
+          console.log(err)
+          alert('There was an error trying to do the initial fetch')
+        })
+        .then(response => {
+          fetchDates(country)(dispatch)
+          dispatch({
+            type: 'COUNTRY_SELECTED',
+            // Not used  as using mode now
+            payload: response.data
+          })
+        })
     }
   }
   return function(dispatch) {
     dispatch({type: 'REQUEST_DATA'})
-
     axios.get(window.location.origin + '/' +
         config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {

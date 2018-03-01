@@ -41,9 +41,6 @@ import {
   TileLayer
 } from 'react-leaflet'
 import L from 'leaflet'
-import {
-  fetchDates
-} from '../actions/action-fetch-dates.js'
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
@@ -221,7 +218,6 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchAvailableCountries: fetchAvailableCountries,
-    fetchDates: fetchDates,
     selectCountry: selectCountry,
     selectAdmin: selectAdmin
   }, dispatch)

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 const schools = require('./routes/schools');
 const mobility = require('./routes/mobility');
-
+const shapefiles = require('./routes/shapefiles');
 const app = express();
 
 // view engine setup
@@ -26,7 +26,7 @@ app.use(express.static(`${__dirname}/react-app/build`));
 // app.use('/', index);
 app.use('/schools', schools);
 app.use('/mobility', mobility);
-
+app.use('/shapefiles', shapefiles);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   let err = new Error('Not Found');

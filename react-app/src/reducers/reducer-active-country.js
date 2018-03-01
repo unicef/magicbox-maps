@@ -11,12 +11,9 @@ import {
   get_scores
 } from '../helpers/helper-general'
 const config = require('../config.js')
-let mpio = {}
+let country_admins = {}
 let admin_index = {}
 
-if (config.mode !== 'schools') {
-  mpio = require('../data/mpio');
-}
 // List of scores to represent mobility toward each admin
 // Order is by geoFeature index
 let scores = []
@@ -52,8 +49,13 @@ function activeCountryReducer(state = initial_state, action) {
   switch (action.type) {
     case 'COUNTRY_SELECTED':
       if (config.mode !== 'schools') {
+        country_admins = action.payload
+        let admin_index = country_admins.features.reduce((h, f, i) => {
+          h[f.properties.admin_id] = i;
+          return h;
+        }, {});
         return Object.assign({}, state, {
-          polygons: mpio,
+          polygons: action.payload,
           admin_index: admin_index
         })
       } else {
@@ -77,7 +79,7 @@ function activeCountryReducer(state = initial_state, action) {
         diagonal = state.diagonal
         scores = get_scores(diagonal)
         return Object.assign({}, state, {
-          polygons: Object.assign({}, mpio),
+          polygons: Object.assign({}, country_admins),
           scores: scores,
           selected_admins: selected_admins
         })
@@ -96,7 +98,7 @@ function activeCountryReducer(state = initial_state, action) {
       scores = get_scores(combined_vectors, [])
 
       return Object.assign({}, state, {
-        polygons: Object.assign({}, mpio),
+        polygons: Object.assign({}, country_admins),
         scores: scores,
         selected_admins: selected_admins
       })
@@ -127,7 +129,7 @@ function activeCountryReducer(state = initial_state, action) {
       }
 
       return Object.assign({}, state, {
-        polygons: Object.assign({}, mpio),
+        polygons: Object.assign({}, country_admins),
         diagonal: diagonal,
         matrix,
         // Set scores to null in case admins were previously selected
