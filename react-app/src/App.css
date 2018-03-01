@@ -1,6 +1,6 @@
 .calendar-component {
   position: absolute;
-  bottom: -100px;
+  bottom: 0;
   left: 60px;
 }
 .about-data {
