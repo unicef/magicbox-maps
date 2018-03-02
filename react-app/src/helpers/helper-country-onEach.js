@@ -48,5 +48,5 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
  * @param {object} lev
  */
 function centerCountry(myMapObj, latlng, lev) {
-  myMapObj.leafletMap.leafletElement.flyTo(latlng, lev);
+  myMapObj.map.leafletElement.flyTo(latlng, lev);
 }

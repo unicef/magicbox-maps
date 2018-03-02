@@ -44,6 +44,7 @@ import L from 'leaflet'
 import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
+import pointClick from '../helpers/helper-point-click'
 const fetch_url = window.location.origin + '/' +
     'schools' + '/school/';
 const _ = require('lodash');
@@ -159,14 +160,11 @@ class MyMap extends Component {
       <div>
         <UnicefNav></UnicefNav>
         <Docker  className="dockerClass" didUpdate={this.state.didUpdate} buttonHover={this.state.onHover}></Docker>
-        <Map ref='map'
-          ref={m => {
-            this.leafletMap = m;
-          }
-          }
-          center={position}
-          zoom={this.state.zoom}
-          zoomControl={false}>
+
+        <Map center={position}
+          zoom={this.state.zoom} ref={c => (this.map = c)}
+          zoomControl={false}
+          >
           <ZoomControl position='bottomleft' />
           <TileLayer
             ref={t => {
@@ -191,9 +189,9 @@ class MyMap extends Component {
             style={adminStyle(this.props)}
             onEachFeature={onEachAdminFeature(this.props)}
           ></GeoJSON>
-        <ReactWebglLeaflet leafletMap={this.leafletMap}
+        <ReactWebglLeaflet
             points={this.props.activeCountry.points}
-            fetchUrl={fetch_url}
+              onClickCallback={(id, map) => pointClick(id, map, fetch_url)}
             />
         </Map>
         <LoadingSpinner display={this.props.loading}></LoadingSpinner>
