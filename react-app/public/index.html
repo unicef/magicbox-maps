@@ -6,7 +6,34 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-
+    <script type="text/javascript">
+      if (typeof Object.assign != 'function') {
+        // Must be writable: true, enumerable: false, configurable: true
+        Object.defineProperty(Object, "assign", {
+          value: function assign(target, varArgs) { // .length of function is 2
+            'use strict';
+            if (target == null) { // TypeError if undefined or null
+              throw new TypeError('Cannot convert undefined or null to object');
+            }
+            var to = Object(target);
+            for (var index = 1; index < arguments.length; index++) {
+              var nextSource = arguments[index];
+              if (nextSource != null) { // Skip over if undefined or null
+                for (var nextKey in nextSource) {
+                  // Avoid bugs when hasOwnProperty is shadowed
+                  if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                    to[nextKey] = nextSource[nextKey];
+                  }
+                }
+              }
+            }
+            return to;
+          },
+          writable: true,
+          configurable: true
+        });
+      }
+    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
