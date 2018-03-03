@@ -23,7 +23,8 @@ export const selectCountry = (country, sliderVal) => {
   console.log('You selected', country);
   if (mode !== 'schools') {
     return function(dispatch) {
-      axios.get(window.location.origin + '/shapefiles/' + 'asdf')
+      dispatch({type: 'REQUEST_DATA'})
+      axios.get(window.location.origin + '/shapefiles/' + 'col')
         .catch(err => {
           console.log(err)
           alert('There was an error trying to do the initial fetch')
