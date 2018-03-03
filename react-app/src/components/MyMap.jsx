@@ -6,7 +6,7 @@ import ReactWebglLeaflet from 'react-webgl-leaflet'
 import {
   connect
 } from 'react-redux';
-
+import config from '../config'
 import {
   bindActionCreators
 } from 'redux'
@@ -48,6 +48,7 @@ import pointClick from '../helpers/helper-point-click'
 const fetch_url = window.location.origin + '/' +
     'schools' + '/school/';
 const _ = require('lodash');
+const mode = config.mode
 
 /**
  * My map class
@@ -67,8 +68,8 @@ class MyMap extends Component {
         'GfClkT4QxlFDC_xiI37x3Q',
       attribution: '&copy; <a href=\'http://osm.org/copyright\'>OpenStreetMap</a>' +
         ' contributors ',
-      lat: 0,
-      lng: 0,
+      lat: mode.match('schools') ? 0 : 2.910125,
+      lng: mode.match('schools') ? 0 : -73.828125,
       zoom: 2,
       docker: false,
       value: 3,
