@@ -4,14 +4,67 @@ import {
   registerLocale,
   getName
 } from 'i18n-iso-countries'
-import {
-  fetchDates
-} from './action-fetch-dates.js'
 import {assign_speed_value} from '../helpers/helper-country-point'
+import {fetchMobilityForDate} from '../helpers/helper-general'
 const config = require('../config.js')
 const mode = config.mode
 
 registerLocale(require('i18n-iso-countries/langs/en.json'))
+/**
+ * get_shapefile - Specifies the style for the geojson
+ *
+ * @param  {Object} country country (geojson)
+ * @return {Array}
+ */
+function get_shapefile(country) {
+  return new Promise((resolve, reject) => {
+    axios.get(window.location.origin + '/shapefiles/' + country.id)
+      .catch(err => {
+        console.log(err)
+        alert('There was an error trying to do the initial fetch')
+      })
+      .then(response => {
+        resolve(response.data);
+      })
+  })
+}
+
+/**
+ * fetch_dates - Fetch dates for which we have mobility data for country
+ *
+ * @param  {Object} data description
+ * @return {Array}
+ */
+function fetch_dates(data) {
+  return new Promise((resolve, reject) => {
+    axios.get(window.location.origin + '/' +
+      config.initial_url_key[config.mode] +
+      '/countries/' + data.id.toLowerCase())
+      .catch(err => {
+        alert('There was an error trying to do the initial fetch')
+      })
+      .then(res => {
+        let dates = res.data.properties.map((csvFilename) => {
+          // csv filename follows the format: YYYY-MM-DD^JOURNEYS-PEOPLE.csv
+          let pattern = /^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/
+          let matches = csvFilename.match(pattern)
+
+          // ignore elements not matching pattern
+          if (!matches) {
+            return null
+          }
+          return {
+            date: new Date(+matches[1], +matches[2] - 1, +matches[3]),
+            journeys: +matches[4],
+            people: +matches[5],
+            filename: csvFilename
+          }
+        }).filter((date) => !!date)
+        return resolve(dates)
+      })
+  })
+}
+
 /**
  * selectCountry - Specifies the style for the geojson
  *
@@ -24,21 +77,35 @@ export const selectCountry = (country, sliderVal) => {
   if (mode !== 'schools') {
     return function(dispatch) {
       dispatch({type: 'REQUEST_DATA'})
-      axios.get(window.location.origin + '/shapefiles/' + 'col')
-        .catch(err => {
-          console.log(err)
-          alert('There was an error trying to do the initial fetch')
+      Promise.all(
+        [get_shapefile(country), fetch_dates(country)]
+      ).then(function(values) {
+        let dates = values[1]
+        dispatch({
+          type: 'COUNTRY_SELECTED',
+          // Not used  as using mode now
+          payload: values[0]
         })
-        .then(response => {
-          fetchDates(country)(dispatch)
-          dispatch({
-            type: 'COUNTRY_SELECTED',
-            // Not used  as using mode now
-            payload: response.data
+        dispatch({
+          type: 'FETCH_DATES',
+          payload: dates
+        })
+        let most_recent_date = dates[dates.length-1]
+        fetchMobilityForDate(country.id.toLowerCase(), most_recent_date)
+          .then(payload => {
+            dispatch({
+              type: 'DATE_SELECTED',
+              payload: {
+                date: most_recent_date,
+                mobility: payload.data
+              }
+            })
+            dispatch({type: 'RECEIVE_DATA'})
           })
-        })
+      })
     }
   }
+  // Schools
   return function(dispatch) {
     dispatch({type: 'REQUEST_DATA'})
     axios.get(window.location.origin + '/' +

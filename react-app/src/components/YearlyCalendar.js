@@ -8,9 +8,9 @@ import {
   connect
 } from 'react-redux'
 import AboutData from './AboutData';
-import {
-  fetchDates
-} from '../actions/action-fetch-dates'
+// import {
+//   fetchDates
+// } from '../actions/action-fetch-dates'
 import {
   selectDate
 } from '../actions/action-select-date.js'
