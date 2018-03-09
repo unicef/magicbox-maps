@@ -9,6 +9,7 @@ magicbox-maps
 Map mobility data in a NodeJS + React front-end application with data served by
 magicbox-open-api
 
+![screenshot](./public/screenshot.png)
 
 ## What is it?
 
