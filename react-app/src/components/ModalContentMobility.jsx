@@ -37,7 +37,7 @@ class PopupContentMobility extends React.Component {
                   <li>respond to natural disasters.</li>
                 </ul>
                 <p>
-                  <strong>We created this prototype to visualize mobility for Colombia given to us by Telefonica. For:</strong>
+                  <strong>We created this prototype to visualize fake mobile data for Colombia. To see:</strong>
                 </p>
                 <ul>
                   <li>background on this particular app, please read <a href='https://medium.com/@mikefabrikant/the-project-f1f90c2a29b7'>this</a>.</li>
@@ -107,9 +107,9 @@ class PopupContentMobility extends React.Component {
                   <li>Blue regions are the areas you selected. The shaded red areas show the movement of people traveling to that area from where you selected.</li>
                 </ul>
                 <iframe width="300" src="https://www.youtube.com/embed/alvUiktZNyI"></iframe>
-          <strong>DISCLAIMER:</strong> The data displayed here is fake, and not what Telefonica provides.
+          <strong>DISCLAIMER:</strong> The data displayed here is fake.
           <p>
-            <strong>We are always looking for more partners</strong> to validate (and add!) to our existing datasets. Please contact <a href={this.props.email}>this</a> person to learn more.
+            <strong>We are always looking for partners</strong> to validate (and add!) to our existing datasets. Please contact <a href={this.props.email}>this</a> person to learn more.
           </p>
         </div>
       )
