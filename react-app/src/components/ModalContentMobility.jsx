@@ -64,7 +64,7 @@ class PopupContentMobility extends React.Component {
               </Col>
             </Row>
           </Grid>
-          <strong>DISCLAIMER:</strong> The data displayed here is fake, and not what Telefonica provides.
+          <strong>DISCLAIMER:</strong> The data displayed here is fake.
           <p>
             <strong>We are always looking for more partners</strong> to validate (and add!) to our existing datasets. Please contact <a href={this.props.email}>this</a> person to learn more.
           </p>
