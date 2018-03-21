@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import './App.css';
 
@@ -42,13 +43,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Magicbox Maps 2.0</h1>
-        </header>
         <div>
-          <div className="inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
-            <div>{`Longitude: ${lng} Latitude: ${lat} Zoom: ${zoom}`}</div>
-          </div>
           <div ref={el => this.mapContainer = el} className="absolute top right left bottom" />
         </div>
       </div>
