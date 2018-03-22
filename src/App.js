@@ -14,9 +14,9 @@ class App extends Component {
       lng: -74.2973,
       lat: 4.5709,
       zoom: 4.5,
-      schools: {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-73.46016667,-1.65044444]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-69.71527778,-1.44111111]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-70.041267,-4.102542]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-69.9211111,-4.10777777]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-70.22113889,-3.84816666]},"properties":{}}]},
       // We'll replace the blank collection with actual data once the file has loaded.
       regions: {"type":"FeatureCollection","features":[]},
+      schools: {"type":"FeatureCollection","features":[]},
     };
   }
 
@@ -29,12 +29,6 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-    fetch('/data/mpio.json').then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      component.setState({regions: myJson});
-    });
 
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
@@ -53,7 +47,7 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: component.state.regions
+          data: '/data/mpio.json'
         },
         layout: {},
         paint: {
@@ -67,7 +61,7 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: component.state.schools
+          data: '/data/schools.json'
         },
         layout: {
           'icon-image': 'circle-11',
@@ -78,11 +72,6 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    let regions = this.state.map.getSource('regions');
-    // The map may not have finished loading by this point, in which case the layers will not exist.
-    if (regions) {
-      regions.setData(this.state.regions);
-    }
   }
 
   render() {
