@@ -57,15 +57,18 @@ class App extends Component {
       });
       map.addLayer({
         id: 'schools',
-        type: 'symbol',
+        type: 'circle',
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
           data: '/data/schools.json'
         },
-        layout: {
-          'icon-image': 'circle-11',
-          'icon-allow-overlap': true,
+        paint: {
+          'circle-radius': {
+            'base': 1.75,
+            'stops':[[12, 2], [22, 180]]
+          },
+          'circle-color': ['get', 'color']
         }
       });
     });
