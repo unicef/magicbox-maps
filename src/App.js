@@ -75,8 +75,16 @@ class App extends Component {
       // Add click event to schools layer
       map.on('click', 'schools', (e) => {
         let coordinates = e.features[0].geometry.coordinates.slice()
-        let schoolID = e.features[0].properties.id
-        new mapboxgl.Popup().setLngLat(coordinates).setHTML(`<strong>School ID</strong><p>${schoolID}</p>`).addTo(map)
+        let schoolProperties = e.features[0].properties
+
+        // output all properties besides color
+        let html = Object.keys(schoolProperties)
+          .filter((key) => key !== 'color')
+          .reduce((acc, key) => {
+          return acc + `<p><strong>${key}:</strong> ${schoolProperties[key]}</p>`
+        }, '')
+
+        new mapboxgl.Popup().setLngLat(coordinates).setHTML(html).addTo(map)
       })
 
       // Change the cursor to a pointer
