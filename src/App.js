@@ -71,6 +71,22 @@ class App extends Component {
           'circle-color': ['get', 'color']
         }
       });
+
+      // Add click event to schools layer
+      map.on('click', 'schools', (e) => {
+        let coordinates = e.features[0].geometry.coordinates.slice()
+        let schoolID = e.features[0].properties.id
+        new mapboxgl.Popup().setLngLat(coordinates).setHTML(`<strong>School ID</strong><p>${schoolID}</p>`).addTo(map)
+      })
+
+      // Change the cursor to a pointer
+      map.on('mouseenter', 'schools', (e) => {
+        map.getCanvas().style.cursor = 'pointer'
+      })
+
+      map.on('mouseleave', 'schools', (e) => {
+        map.getCanvas().style.cursor = ''
+      })
     });
   }
 
