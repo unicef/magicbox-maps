@@ -9,7 +9,9 @@
       },
       "properties": {
         "id": "001",
-        "color": [106, 30, 116]
+        "color": [106, 30, 116],
+        "speed_connectivity": 1,
+        "name": "Sample School 001"
       }
     },
     {
@@ -20,7 +22,9 @@
       },
       "properties": {
         "id": "002",
-        "color": [245, 166, 35]
+        "color": [245, 166, 35],
+        "speed_connectivity": 2,
+        "name": "Sample School 002"
       }
     },
     {
@@ -31,7 +35,9 @@
       },
       "properties": {
         "id": "003",
-        "color": [217, 83, 79]
+        "color": [217, 83, 79],
+        "speed_connectivity": 5,
+        "name": "Sample School 003"
       }
     }
   ]
