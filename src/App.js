@@ -13,10 +13,7 @@ class App extends Component {
       map: {},
       lng: -74.2973,
       lat: 4.5709,
-      zoom: 4.5,
-      // We'll replace the blank collection with actual data once the file has loaded.
-      regions: {"type":"FeatureCollection","features":[]},
-      schools: {"type":"FeatureCollection","features":[]},
+      zoom: 4.5
     };
   }
 
@@ -72,9 +69,6 @@ class App extends Component {
         }
       });
     });
-  }
-
-  componentDidUpdate(){
   }
 
   render() {
