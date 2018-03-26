@@ -78,11 +78,10 @@ class App extends Component {
   }
 
   render() {
-    // TODO: remove dependency on assembly.css
     return (
       <div className="App">
         <div>
-          <div ref={el => this.mapContainer = el} className="absolute top right left bottom" />
+          <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
       </div>
     );
