@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ControlPanel from './components/control-panel'
 
 import './App.css';
 
@@ -46,7 +47,9 @@ class App extends Component {
           type: 'geojson',
           data: '/data/mpio.json'
         },
-        layout: {},
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'fill-color': '#088',
           'fill-opacity': 0.8
@@ -60,6 +63,9 @@ class App extends Component {
           type: 'geojson',
           data: '/data/schools.json'
         },
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'circle-radius': {
             'base': 1.75,
@@ -71,12 +77,35 @@ class App extends Component {
     });
   }
 
+  controlPanelClickHandler(e) {
+    const nextState = {
+      visible: 'none',
+      none: 'visible'
+    }
+    let layerName = e.target.getAttribute('name')
+    let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
+    this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
+
+    if (nextState[currentStatus] === 'none') {
+      e.target.classList.remove('active')
+    } else {
+      e.target.classList.add('active')
+    }
+  }
+
   render() {
+    // TODO: remove dependency on assembly.css
+    let controls = {
+      schools: this.controlPanelClickHandler.bind(this),
+      regions: this.controlPanelClickHandler.bind(this)
+    }
+
     return (
       <div className="App">
         <div>
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
+        <ControlPanel controls={controls}/>
       </div>
     );
   }

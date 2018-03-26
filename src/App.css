@@ -5,3 +5,30 @@
   right: 0;
   bottom: 0;
 }
+
+.controlPanel {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background-color: #3887be;
+  border-radius: 3px;
+  border: 1px solid #000;
+  z-index: 1;
+}
+.controlButton {
+  color: #fff;
+  background-color: #404040;
+  display: block;
+  padding: .5rem;
+  width: 100%;
+  cursor: pointer;
+}
+.controlButton:hover {
+  background-color: #3074a4;
+}
+.controlButton + .controlButton {
+  border-top: 1px solid #000;
+}
+.active {
+  background-color: #3887be;
+}
