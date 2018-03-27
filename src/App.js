@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
+import Section from './components/section'
 
 import './App.css';
 
@@ -111,7 +112,15 @@ class App extends Component {
         <div>
           <div ref={el => this.mapContainer = el} className="absolute top right left bottom" />
         </div>
-        <ControlPanel controls={controls}/>
+        <ControlPanel>
+          <Section title="Region threats">
+            <a>link</a>
+          </Section>
+          <Section title="Region vulnerabilities">
+          </Section>
+          <Section title="School capabilities">
+          </Section>
+        </ControlPanel>
       </div>
     );
   }

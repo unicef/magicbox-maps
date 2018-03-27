@@ -1,26 +1,27 @@
 .controlPanel {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  background-color: #3887be;
-  border-radius: 3px;
-  border: 1px solid #000;
+  position: fixed;
+  height: 100%;
+  left: 0;
   z-index: 1;
+  background-color: #fff;
+  width: 20vw;
+  border-right: 1px solid #000;
 }
-.controlButton {
-  color: #fff;
-  background-color: #404040;
-  display: block;
-  padding: .5rem;
+.controlPanel__header {
+  height: 10vh;
   width: 100%;
+}
+.controlPanel__menu {
+  height: 90vh;
+  width: 100%;
+}
+.controlPanel__header__hamburger {
+  position: absolute;
+  right: 0;
   cursor: pointer;
+  background-color: red;
 }
-.controlButton:hover {
-  background-color: #3074a4;
-}
-.controlButton + .controlButton {
-  border-top: 1px solid #000;
-}
-.active {
-  background-color: #3887be;
+.disabled {
+  left: 1rem;
+  width: fit-content;
 }
