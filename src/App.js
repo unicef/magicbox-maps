@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
-
+import CheckPanel from './components/check-panel'
+import {calculate_index} from './helpers/helper-index-scores'
 import './App.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicmRlYmVhc2ktcmgiLCJhIjoiY2pkcWQ2YXVxMHJkczJxcWxtZHhoNGtmdSJ9.3XajiSFSZPwtB4_ncmmaHQ';
@@ -30,7 +31,16 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-
+    component.setState({indicator: 'population'})
+    fetch('/data/mpio-hdi-pop.json').then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      myJson.features = calculate_index(
+        myJson.features, 'population', 'pop'
+      )
+      component.setState({regions: myJson});
+    });
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
@@ -48,14 +58,12 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: '/data/mpio.json'
-        },
-        layout: {
-          visibility: 'none'
+          data: component.state.regions
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': 0.8
+          'fill-opacity': component.state.indicator === 'population' ?
+          0.0 : ['get', component.state.indicator]
         }
       });
       map.addLayer({
@@ -65,9 +73,6 @@ class App extends Component {
         source: {
           type: 'geojson',
           data: '/data/schools.json'
-        },
-        layout: {
-          visibility: 'none'
         },
         paint: {
           'circle-radius': {
@@ -81,29 +86,45 @@ class App extends Component {
   }
 
   componentDidUpdate(){
+
   }
 
-  controlPanelClickHandler(e) {
+  checkPanelClickHandler(e) {
     const nextState = {
-      visible: 'none',
-      none: 'visible'
+      show: false,
     }
-    let layerName = e.target.getAttribute('name')
-    let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
-    this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
+    let layerName = e.target.getAttribute('nombre')
 
-    if (nextState[currentStatus] === 'none') {
-      e.target.classList.remove('active')
+    let currentStatus = this.state.map.getLayer(layerName)
+    let currentOpacityValue = this.state.map.getPaintProperty('regions', 'fill-opacity')
+    console.log(e.target.checked, '!!!!')
+    if (!e.target.checked) {
+      this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
     } else {
-      e.target.classList.add('active')
+      if (currentOpacityValue === 0) {
+        this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+      } else {
+        if (currentOpacityValue[1] === layerName) {
+          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
+        } else {
+          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+        }
+      }
+
     }
   }
 
   render() {
-    // TODO: remove dependency on assembly.css
-    let controls = {
-      schools: this.controlPanelClickHandler.bind(this),
-      regions: this.controlPanelClickHandler.bind(this)
+
+    let checks = {
+      hdi: {
+        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
+        show: true
+      },
+      pop: {
+        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
+        show: false
+      }
     }
 
     return (
@@ -111,7 +132,7 @@ class App extends Component {
         <div>
           <div ref={el => this.mapContainer = el} className="absolute top right left bottom" />
         </div>
-        <ControlPanel controls={controls}/>
+        <CheckPanel checks={checks}/>
       </div>
     );
   }
