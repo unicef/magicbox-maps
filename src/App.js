@@ -45,14 +45,14 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: '/data/mpio.json'
+          data: '/data/mpio-hdi.json'
         },
         layout: {
           visibility: 'none'
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': 0.8
+          'fill-opacity': ['get', 'hdi']
         }
       });
       map.addLayer({
