@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ControlPanel from './components/control-panel'
 
 import './App.css';
 
@@ -46,7 +47,9 @@ class App extends Component {
           type: 'geojson',
           data: '/data/mpio.json'
         },
-        layout: {},
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'fill-color': '#088',
           'fill-opacity': 0.8
@@ -60,6 +63,9 @@ class App extends Component {
           type: 'geojson',
           data: '/data/schools.json'
         },
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'circle-radius': {
             'base': 1.75,
@@ -68,15 +74,62 @@ class App extends Component {
           'circle-color': ['get', 'color']
         }
       });
+
+      // Add click event to schools layer
+      map.on('click', 'schools', (e) => {
+        let coordinates = e.features[0].geometry.coordinates.slice()
+        let schoolProperties = e.features[0].properties
+
+        // output all properties besides color
+        let html = Object.keys(schoolProperties)
+          .filter((key) => key !== 'color')
+          .reduce((acc, key) => {
+          return acc + `<p><strong>${key}:</strong> ${schoolProperties[key]}</p>`
+        }, '')
+
+        new mapboxgl.Popup().setLngLat(coordinates).setHTML(html).addTo(map)
+      })
+
+      // Change the cursor to a pointer
+      map.on('mouseenter', 'schools', (e) => {
+        map.getCanvas().style.cursor = 'pointer'
+      })
+
+      map.on('mouseleave', 'schools', (e) => {
+        map.getCanvas().style.cursor = ''
+      })
     });
   }
 
+  controlPanelClickHandler(e) {
+    const nextState = {
+      visible: 'none',
+      none: 'visible'
+    }
+    let layerName = e.target.getAttribute('name')
+    let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
+    this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
+
+    if (nextState[currentStatus] === 'none') {
+      e.target.classList.remove('active')
+    } else {
+      e.target.classList.add('active')
+    }
+  }
+
   render() {
+    // TODO: remove dependency on assembly.css
+    let controls = {
+      schools: this.controlPanelClickHandler.bind(this),
+      regions: this.controlPanelClickHandler.bind(this)
+    }
+
     return (
       <div className="App">
         <div>
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
+        <ControlPanel controls={controls}/>
       </div>
     );
   }
