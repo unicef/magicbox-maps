@@ -9,7 +9,6 @@ export function calculate_index(features, source, destination) {
   let scores = get_scores(features.map(f => { return f.properties[source]}))
   features.forEach((f, i) => {
     f.properties[destination] = scores[i];
-    f.properties['trash'] = 0;
   })
   return features
 }

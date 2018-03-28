@@ -121,13 +121,13 @@ class App extends Component {
     let currentOpacityValue = this.state.map.getPaintProperty('regions', 'fill-opacity')
     console.log(e.target.checked, '!!!!')
     if (!e.target.checked) {
-      this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
+      this.state.map.setPaintProperty('regions', 'fill-opacity', 0.0)
     } else {
       if (currentOpacityValue === 0) {
         this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
       } else {
         if (currentOpacityValue[1] === layerName) {
-          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
+          this.state.map.setPaintProperty('regions', 'fill-opacity', 0.0)
         } else {
           this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
         }
