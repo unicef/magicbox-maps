@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+// Components
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
-import CheckboxGroup from './components/checkbox-group'
-import CheckPanel from './components/check-panel'
+import InputGroup from './components/input-group'
+
+// Helpers
 import {calculate_index} from './helpers/helper-index-scores'
 
+// Main style
 import './App.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicmRlYmVhc2ktcmgiLCJhIjoiY2pkcWQ2YXVxMHJkczJxcWxtZHhoNGtmdSJ9.3XajiSFSZPwtB4_ncmmaHQ';
@@ -66,6 +70,7 @@ class App extends Component {
           0.0 : ['get', component.state.indicator]
         }
       });
+
       map.addLayer({
         id: 'schools',
         type: 'circle',
@@ -110,9 +115,6 @@ class App extends Component {
   }
 
   checkPanelClickHandler(e) {
-    const nextState = {
-      show: false,
-    }
     let layerName = e.target.getAttribute('nombre')
 
     let currentStatus = this.state.map.getLayer(layerName)
@@ -134,8 +136,20 @@ class App extends Component {
     }
   }
 
-  render() {
+  displayLayerHandler(e) {
+    // layer name should be stored in element's value property
+    let layerName = e.target.getAttribute('value')
+    // will be 'visible' or 'none'
+    let currentState = e.target.checked ? 'visible' : 'none'
 
+    // Set layer visibility
+    this.state.map.setLayoutProperty(layerName, 'visibility', currentState)
+  }
+
+  changeRegionPaintPropertyHandler(e) {
+  }
+
+  render() {
     let checks = {
       hdi: {
         checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
@@ -154,25 +168,34 @@ class App extends Component {
         </div>
         <ControlPanel>
           <Section title="Region threats">
-            <CheckboxGroup name="region-threats" group={[
+            <InputGroup type="checkbox" name="region-threats" group={[
+              /*
               { value: 'natural-disasters',
                 label: 'Natural Disasters' },
               { value: 'violent-conflicts',
                 label: 'Violent Conflicts' }
+              */
             ]} onChange={(e) => console.log(e.target)} />
           </Section>
           <Section title="Region vulnerabilities">
-            <CheckboxGroup name="region-vulnerabilities" group={[
-              { value: 'regions',
+            <InputGroup type="radio" name="region-vulnerabilities" group={[
+              { value: 'hdi',
                 label: 'Human Development Index' },
+              { value: 'pop',
+                label: 'Population' }
+              /* ,
               { value: 'time-to-school',
                 label: 'Average Time to School' }
+              */
             ]} onChange={(e) => console.log(e.target)} />
           </Section>
           <Section title="School capabilities">
-            <CheckboxGroup name="school-capabilities" group={[
+            <InputGroup type="checkbox" name="school-capabilities" group={[
               { value: 'schools',
-                label: 'Connectivity' },
+                label: 'Connectivity',
+                onChange: this.displayLayerHandler.bind(this),
+                defaultChecked: 'checked' }
+              /* ,
               { value: 'electricity',
                 label: 'Electricity' },
               { value: 'mobile-coverage',
@@ -181,9 +204,9 @@ class App extends Component {
                 label: 'Distance to Roads' },
               { value: 'emergency-plan',
                 label: 'Emergency Plan' }
+              */
             ]} onChange={(e) => console.log(e.target)} />
           </Section>
-          <CheckPanel checks={checks}/>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
         </ControlPanel>
       </div>
