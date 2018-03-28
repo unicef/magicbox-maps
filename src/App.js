@@ -66,8 +66,7 @@ class App extends Component {
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': component.state.indicator === 'population' ?
-          0.0 : ['get', component.state.indicator]
+          'fill-opacity': 0.0
         }
       });
 
@@ -114,28 +113,6 @@ class App extends Component {
     });
   }
 
-  checkPanelClickHandler(e) {
-    let layerName = e.target.getAttribute('nombre')
-
-    let currentStatus = this.state.map.getLayer(layerName)
-    let currentOpacityValue = this.state.map.getPaintProperty('regions', 'fill-opacity')
-    console.log(e.target.checked, '!!!!')
-    if (!e.target.checked) {
-      this.state.map.setPaintProperty('regions', 'fill-opacity', 0.0)
-    } else {
-      if (currentOpacityValue === 0) {
-        this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
-      } else {
-        if (currentOpacityValue[1] === layerName) {
-          this.state.map.setPaintProperty('regions', 'fill-opacity', 0.0)
-        } else {
-          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
-        }
-      }
-
-    }
-  }
-
   displayLayerHandler(e) {
     // layer name should be stored in element's value property
     let layerName = e.target.getAttribute('value')
@@ -147,20 +124,11 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
+    let layerName = e.target.getAttribute('value')
+    this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
   }
 
   render() {
-    let checks = {
-      hdi: {
-        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
-        show: true
-      },
-      pop: {
-        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
-        show: false
-      }
-    }
-
     return (
       <div className="App">
         <div>
@@ -175,7 +143,7 @@ class App extends Component {
               { value: 'violent-conflicts',
                 label: 'Violent Conflicts' }
               */
-            ]} onChange={(e) => console.log(e.target)} />
+            ]} onChange={(e) => {}} />
           </Section>
           <Section title="Region vulnerabilities">
             <InputGroup type="radio" name="region-vulnerabilities" group={[
@@ -187,7 +155,7 @@ class App extends Component {
               { value: 'time-to-school',
                 label: 'Average Time to School' }
               */
-            ]} onChange={(e) => console.log(e.target)} />
+            ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="School capabilities">
             <InputGroup type="checkbox" name="school-capabilities" group={[
@@ -205,7 +173,7 @@ class App extends Component {
               { value: 'emergency-plan',
                 label: 'Emergency Plan' }
               */
-            ]} onChange={(e) => console.log(e.target)} />
+            ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
         </ControlPanel>
