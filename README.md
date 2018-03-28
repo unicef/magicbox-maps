@@ -1,4 +1,4 @@
-# Magic Box Maps 2.0 
+# Magic Box Maps 2.0
 
 ## Developing
 
