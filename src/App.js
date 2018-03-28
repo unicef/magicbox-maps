@@ -124,8 +124,16 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
+    var matches = document.querySelectorAll("input[name=region]:checked");
+    let atts_to_aggregate = ['+']
+    matches.forEach(t => {
+      atts_to_aggregate.push(
+        ['get', t.value]
+      )
+    })
+
     let layerName = e.target.getAttribute('value')
-    this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+    this.state.map.setPaintProperty('regions', 'fill-opacity', ['/', atts_to_aggregate, atts_to_aggregate.length-1])
   }
 
   render() {
@@ -136,7 +144,7 @@ class App extends Component {
         </div>
         <ControlPanel>
           <Section title="Region threats">
-            <InputGroup type="checkbox" name="region-threats" group={[
+            <InputGroup type="checkbox" name="region" group={[
               /*
               { value: 'natural-disasters',
                 label: 'Natural Disasters' },
@@ -146,7 +154,7 @@ class App extends Component {
             ]} onChange={(e) => {}} />
           </Section>
           <Section title="Region vulnerabilities">
-            <InputGroup type="radio" name="region-vulnerabilities" group={[
+            <InputGroup type="checkbox" name="region" group={[
               { value: 'hdi',
                 label: 'Human Development Index' },
               { value: 'pop',
@@ -158,12 +166,12 @@ class App extends Component {
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="School capabilities">
-            <InputGroup type="checkbox" name="school-capabilities" group={[
+            <InputGroup type="checkbox" name="school" group={[
               { value: 'schools',
                 label: 'Connectivity',
                 onChange: this.displayLayerHandler.bind(this),
-                defaultChecked: 'checked' }
-              /* ,
+                defaultChecked: 'checked' },
+
               { value: 'electricity',
                 label: 'Electricity' },
               { value: 'mobile-coverage',
@@ -172,7 +180,7 @@ class App extends Component {
                 label: 'Distance to Roads' },
               { value: 'emergency-plan',
                 label: 'Emergency Plan' }
-              */
+
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
