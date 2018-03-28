@@ -7,6 +7,15 @@
   border: 1px solid #000;
   z-index: 1;
 }
+.checkPanel {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background-color: #3887be;
+  border-radius: 3px;
+  border: 1px solid #000;
+  z-index: 1;
+}
 .controlButton {
   color: #fff;
   background-color: #404040;

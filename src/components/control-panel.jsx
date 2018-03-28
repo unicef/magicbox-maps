@@ -5,7 +5,7 @@ const ControlPanel = (props) => {
   return (
     <div className="controlPanel">
     {
-      Object.keys(props.controls).map((control, i) => {
+      Object.keys(props.check).map((control, i) => {
         return <Button name={control} onClick={props.controls[control]} key={i} />
       })
     }
