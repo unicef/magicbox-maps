@@ -31,7 +31,6 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-    component.setState({indicator: 'population'})
     fetch('/data/mpio-hdi-pop.json').then(function(response) {
       return response.json();
     })
@@ -62,8 +61,7 @@ class App extends Component {
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': component.state.indicator === 'population' ?
-          0.0 : ['get', component.state.indicator]
+          'fill-opacity': 0.0
         }
       });
       map.addLayer({
@@ -93,11 +91,12 @@ class App extends Component {
     const nextState = {
       show: false,
     }
-    let layerName = e.target.getAttribute('nombre')
+    // Name is either hdi or pop
+    let layerName = e.target.getAttribute('indexname')
 
     let currentStatus = this.state.map.getLayer(layerName)
+    // What feature property the opacity is pointed at.
     let currentOpacityValue = this.state.map.getPaintProperty('regions', 'fill-opacity')
-    console.log(e.target.checked, '!!!!')
     if (!e.target.checked) {
       this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
     } else {

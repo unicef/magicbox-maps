@@ -6,8 +6,9 @@ const CheckPanel = (props) => {
     <div className="checkPanel">
       <form>
     {
+      // check is hdi or pop
       Object.keys(props.checks).map((check, i) => {
-        return <Checkbox nombre={check} onClick={props.checks[check].checkPanelClickHandler} key={i} />
+        return <Checkbox indexname={check} onClick={props.checks[check].checkPanelClickHandler} key={i} />
       })
     }
     {props.children}
