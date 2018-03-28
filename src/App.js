@@ -131,9 +131,11 @@ class App extends Component {
         ['get', t.value]
       )
     })
-
-    let layerName = e.target.getAttribute('value')
-    this.state.map.setPaintProperty('regions', 'fill-opacity', ['/', atts_to_aggregate, atts_to_aggregate.length-1])
+    this.state.map.setPaintProperty(
+      'regions',
+      'fill-opacity',
+      ['/', atts_to_aggregate, atts_to_aggregate.length-1]
+    )
   }
 
   render() {
