@@ -124,8 +124,18 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
-    let layerName = e.target.getAttribute('value')
-    this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+    var matches = document.querySelectorAll("input[name=region]:checked");
+    let atts_to_aggregate = ['+']
+    matches.forEach(t => {
+      atts_to_aggregate.push(
+        ['get', t.value]
+      )
+    })
+    this.state.map.setPaintProperty(
+      'regions',
+      'fill-opacity',
+      ['/', atts_to_aggregate, atts_to_aggregate.length-1]
+    )
   }
 
   render() {
@@ -136,7 +146,7 @@ class App extends Component {
         </div>
         <ControlPanel>
           <Section title="Region threats">
-            <InputGroup type="checkbox" name="region-threats" group={[
+            <InputGroup type="checkbox" name="region" group={[
               /*
               { value: 'natural-disasters',
                 label: 'Natural Disasters' },
@@ -146,7 +156,7 @@ class App extends Component {
             ]} onChange={(e) => {}} />
           </Section>
           <Section title="Region vulnerabilities">
-            <InputGroup type="radio" name="region-vulnerabilities" group={[
+            <InputGroup type="checkbox" name="region" group={[
               { value: 'hdi',
                 label: 'Human Development Index' },
               { value: 'pop',
@@ -158,11 +168,11 @@ class App extends Component {
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="School capabilities">
-            <InputGroup type="checkbox" name="school-capabilities" group={[
+            <InputGroup type="checkbox" name="school" group={[
               { value: 'schools',
                 label: 'Connectivity',
                 onChange: this.displayLayerHandler.bind(this),
-                defaultChecked: 'checked' }
+                defaultChecked: 'checked' },
               /* ,
               { value: 'electricity',
                 label: 'Electricity' },
