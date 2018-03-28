@@ -171,7 +171,7 @@ class App extends Component {
                 label: 'Connectivity',
                 onChange: this.displayLayerHandler.bind(this),
                 defaultChecked: 'checked' },
-
+              /* ,
               { value: 'electricity',
                 label: 'Electricity' },
               { value: 'mobile-coverage',
@@ -180,7 +180,7 @@ class App extends Component {
                 label: 'Distance to Roads' },
               { value: 'emergency-plan',
                 label: 'Emergency Plan' }
-
+              */
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
