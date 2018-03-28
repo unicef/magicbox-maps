@@ -4,6 +4,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
 import CheckboxGroup from './components/checkbox-group'
+import CheckPanel from './components/check-panel'
+import {calculate_index} from './helpers/helper-index-scores'
 
 import './App.css';
 
@@ -29,7 +31,16 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-
+    component.setState({indicator: 'population'})
+    fetch('/data/mpio-hdi-pop.json').then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      myJson.features = calculate_index(
+        myJson.features, 'population', 'pop'
+      )
+      component.setState({regions: myJson});
+    });
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
@@ -47,14 +58,12 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: '/data/mpio-hdi.json'
-        },
-        layout: {
-          visibility: 'none'
+          data: component.state.regions
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': ['get', 'hdi']
+          'fill-opacity': component.state.indicator === 'population' ?
+          0.0 : ['get', component.state.indicator]
         }
       });
       map.addLayer({
@@ -64,9 +73,6 @@ class App extends Component {
         source: {
           type: 'geojson',
           data: '/data/schools.json'
-        },
-        layout: {
-          visibility: 'none'
         },
         paint: {
           'circle-radius': {
@@ -103,18 +109,44 @@ class App extends Component {
     });
   }
 
-  controlPanelClickHandler(e) {
+  checkPanelClickHandler(e) {
     const nextState = {
-      visible: 'none',
-      none: 'visible'
+      show: false,
     }
-    let layerName = e.target.getAttribute('value')
-    let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
-    this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
+    let layerName = e.target.getAttribute('nombre')
+
+    let currentStatus = this.state.map.getLayer(layerName)
+    let currentOpacityValue = this.state.map.getPaintProperty('regions', 'fill-opacity')
+    console.log(e.target.checked, '!!!!')
+    if (!e.target.checked) {
+      this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
+    } else {
+      if (currentOpacityValue === 0) {
+        this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+      } else {
+        if (currentOpacityValue[1] === layerName) {
+          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', 'trash'])
+        } else {
+          this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
+        }
+      }
+
+    }
   }
 
   render() {
-    // TODO: remove dependency on assembly.css
+
+    let checks = {
+      hdi: {
+        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
+        show: true
+      },
+      pop: {
+        checkPanelClickHandler: this.checkPanelClickHandler.bind(this),
+        show: false
+      }
+    }
+
     return (
       <div className="App">
         <div>
@@ -132,8 +164,7 @@ class App extends Component {
           <Section title="Region vulnerabilities">
             <CheckboxGroup name="region-vulnerabilities" group={[
               { value: 'regions',
-                label: 'Human Development Index',
-                onChange: this.controlPanelClickHandler.bind(this) },
+                label: 'Human Development Index' },
               { value: 'time-to-school',
                 label: 'Average Time to School' }
             ]} onChange={(e) => console.log(e.target)} />
@@ -141,8 +172,7 @@ class App extends Component {
           <Section title="School capabilities">
             <CheckboxGroup name="school-capabilities" group={[
               { value: 'schools',
-                label: 'Connectivity',
-                onChange: this.controlPanelClickHandler.bind(this) },
+                label: 'Connectivity' },
               { value: 'electricity',
                 label: 'Electricity' },
               { value: 'mobile-coverage',
@@ -153,6 +183,7 @@ class App extends Component {
                 label: 'Emergency Plan' }
             ]} onChange={(e) => console.log(e.target)} />
           </Section>
+          <CheckPanel checks={checks}/>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
         </ControlPanel>
       </div>
