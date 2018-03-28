@@ -8,6 +8,9 @@
   border-right: 1px solid #000;
   padding: 1rem;
 }
+.controlPanel--hide {
+  display: none;
+}
 .controlPanel__header {
   height: 10vh;
   width: 100%;
@@ -26,7 +29,7 @@
   color: #75cff0;
   transition: color .5s;
 }
-.controlPanel__header__toggleButton--disabled {
+.controlPanel__header__toggleButton--closed {
   left: 0;
   width: fit-content;
   background: rgba(255, 255, 255, .7);
