@@ -15,7 +15,7 @@ class ControlPanel extends Component {
         </a>
         <div className="controlPanel" ref={(el) => this.ControlPanel = el}>
           <div className="controlPanel__header">
-            {/* Unicef logo */}
+            <a href="unicef.org" alt="Unicef" className="controlPanel__header__logo">UNICEF</a>
             <a onClick={(e) => {
               this.ControlPanel.classList.add('controlPanel--hide')
             }} className="controlPanel__header__toggleButton">
