@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
+import Section from './components/section'
+import CheckboxGroup from './components/checkbox-group'
 
 import './App.css';
 
@@ -106,30 +108,53 @@ class App extends Component {
       visible: 'none',
       none: 'visible'
     }
-    let layerName = e.target.getAttribute('name')
+    let layerName = e.target.getAttribute('value')
     let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
     this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
-
-    if (nextState[currentStatus] === 'none') {
-      e.target.classList.remove('active')
-    } else {
-      e.target.classList.add('active')
-    }
   }
 
   render() {
     // TODO: remove dependency on assembly.css
-    let controls = {
-      schools: this.controlPanelClickHandler.bind(this),
-      regions: this.controlPanelClickHandler.bind(this)
-    }
-
     return (
       <div className="App">
         <div>
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
-        <ControlPanel controls={controls}/>
+        <ControlPanel>
+          <Section title="Region threats">
+            <CheckboxGroup name="region-threats" group={[
+              { value: 'natural-disasters',
+                label: 'Natural Disasters' },
+              { value: 'violent-conflicts',
+                label: 'Violent Conflicts' }
+            ]} onChange={(e) => console.log(e.target)} />
+          </Section>
+          <Section title="Region vulnerabilities">
+            <CheckboxGroup name="region-vulnerabilities" group={[
+              { value: 'regions',
+                label: 'Human Development Index',
+                onChange: this.controlPanelClickHandler.bind(this) },
+              { value: 'time-to-school',
+                label: 'Average Time to School' }
+            ]} onChange={(e) => console.log(e.target)} />
+          </Section>
+          <Section title="School capabilities">
+            <CheckboxGroup name="school-capabilities" group={[
+              { value: 'schools',
+                label: 'Connectivity',
+                onChange: this.controlPanelClickHandler.bind(this) },
+              { value: 'electricity',
+                label: 'Electricity' },
+              { value: 'mobile-coverage',
+                label: 'Mobile Coverage' },
+              { value: 'distance-to-roads',
+                label: 'Distance to Roads' },
+              { value: 'emergency-plan',
+                label: 'Emergency Plan' }
+            ]} onChange={(e) => console.log(e.target)} />
+          </Section>
+          <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
+        </ControlPanel>
       </div>
     );
   }
