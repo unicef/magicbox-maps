@@ -14,25 +14,30 @@ class ControlPanel extends Component {
   }
 
   render() {
-    let hamburgerButton = <a onClick={() => {
+    let toggleButtonClasses = ['controlPanel__header__toggleButton controlPanel__header__toggleButton']
+
+    // Add disabled class to toggle button
+    // if panel is not being displayed
+    if (!this.state.display) {
+      toggleButtonClasses.push('controlPanel__header__toggleButton--disabled')
+    }
+
+    let toggleButton = <a onClick={() => {
           this.setState({display: !this.state.display})
-          console.log('display', this.state.display)
-        }} className={'controlPanel__header__hamburger' +
-          (this.state.display ? '' : ' disabled')
-        }>CLICK</a>
+        }} className={toggleButtonClasses.join(' ')}><i className="fas fa-bars"></i></a>
 
     return this.state.display ? (
       <div className="controlPanel">
         <div className="controlPanel__header">
         {/* Unicef logo */}
-        {/* hamburger */}
-        {hamburgerButton}
+        {/* toggle button */}
+        {toggleButton}
         </div>
         <div className="controlPanel__menu">
           {this.props.children}
         </div>
       </div>
-    ) : hamburgerButton
+    ) : toggleButton
   }
 }
 
