@@ -1,3 +1,6 @@
+body {
+  color: #1f3349;
+}
 .mainMap {
   position: absolute;
   top: 0;
@@ -7,30 +10,84 @@
 }
 
 .controlPanel {
+  position: fixed;
+  height: 100%;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  width: 100%;
+  border-right: 1px solid #000;
+  padding: 1rem;
+  transition: left .5s;
+  box-sizing: border-box;
+}
+.controlPanel--hide {
+  left: -100%;
+}
+.controlPanel__header {
+  height: 10vh;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.controlPanel__menu {
+  height: 90vh;
+  width: 100%;
+}
+.controlPanel__header__toggleButton {
+  font-size: 1.5rem;
   position: absolute;
   right: 1rem;
   top: 1rem;
-  background-color: #3887be;
-  border-radius: 3px;
-  border: 1px solid #000;
-  z-index: 1;
-  box-sizing: border-box;
-}
-.controlButton {
-  color: #fff;
-  background-color: #404040;
-  display: block;
-  padding: .5rem;
-  width: 100%;
   cursor: pointer;
-  box-sizing: border-box;
 }
-.controlButton:hover {
-  background-color: #3074a4;
+.controlPanel__header__toggleButton:hover {
+  color: #75cff0;
+  transition: color .5s;
 }
-.controlButton + .controlButton {
-  border-top: 1px solid #000;
+.controlPanel__header__toggleButton--closed {
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, .7);
+  border-radius: 50%;
+  padding: .5em;
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
 }
-.active {
-  background-color: #3887be;
+.controlPanel__header__logo {
+  background-image: url("/unicef.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  width: calc(100% - 4rem);
+  min-width: 120px;
+  height: 100%;
+  color: rgba(0, 0, 0, 0);
 }
+.controlPanel__footerMessage {
+  font-size: 10px;
+  line-height: 1.5em;
+}
+.section {
+  margin-bottom: 2rem;
+}
+.section__header {
+  color: #636363;
+  font-size: 100%;
+  margin: 0;
+}
+.checkboxGroup__element {
+  display: block;
+  font-size: 90%;
+}
+
+@media (min-width: 600px) {
+  .controlPanel {
+    width: 20vw;
+  }
+  .controlPanel--hide {
+    left: -20vw;
+  }
+}
+

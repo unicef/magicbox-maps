@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
-import ControlPanel from './components/control-panel'
 
+// Components
+import ControlPanel from './components/control-panel'
+import Section from './components/section'
+import InputGroup from './components/input-group'
+
+// Helpers
+import {calculate_index} from './helpers/helper-index-scores'
+
+// Main style
 import './App.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicmRlYmVhc2ktcmgiLCJhIjoiY2pkcWQ2YXVxMHJkczJxcWxtZHhoNGtmdSJ9.3XajiSFSZPwtB4_ncmmaHQ';
@@ -27,7 +35,16 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-
+    component.setState({indicator: 'population'})
+    fetch('/data/mpio-hdi-pop.json').then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      myJson.features = calculate_index(
+        myJson.features, 'population', 'pop'
+      )
+      component.setState({regions: myJson});
+    });
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
@@ -45,16 +62,14 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: '/data/mpio-hdi.json'
-        },
-        layout: {
-          visibility: 'none'
+          data: component.state.regions
         },
         paint: {
           'fill-color': '#088',
-          'fill-opacity': ['get', 'hdi']
+          'fill-opacity': 0.0
         }
       });
+
       map.addLayer({
         id: 'schools',
         type: 'circle',
@@ -62,9 +77,6 @@ class App extends Component {
         source: {
           type: 'geojson',
           data: '/data/schools.json'
-        },
-        layout: {
-          visibility: 'none'
         },
         paint: {
           'circle-radius': {
@@ -101,35 +113,70 @@ class App extends Component {
     });
   }
 
-  controlPanelClickHandler(e) {
-    const nextState = {
-      visible: 'none',
-      none: 'visible'
-    }
-    let layerName = e.target.getAttribute('name')
-    let currentStatus = this.state.map.getLayoutProperty(layerName, 'visibility')
-    this.state.map.setLayoutProperty(layerName, 'visibility', nextState[currentStatus])
+  displayLayerHandler(e) {
+    // layer name should be stored in element's value property
+    let layerName = e.target.getAttribute('value')
+    // will be 'visible' or 'none'
+    let currentState = e.target.checked ? 'visible' : 'none'
 
-    if (nextState[currentStatus] === 'none') {
-      e.target.classList.remove('active')
-    } else {
-      e.target.classList.add('active')
-    }
+    // Set layer visibility
+    this.state.map.setLayoutProperty(layerName, 'visibility', currentState)
+  }
+
+  changeRegionPaintPropertyHandler(e) {
+    let layerName = e.target.getAttribute('value')
+    this.state.map.setPaintProperty('regions', 'fill-opacity', ['get', layerName])
   }
 
   render() {
-    // TODO: remove dependency on assembly.css
-    let controls = {
-      schools: this.controlPanelClickHandler.bind(this),
-      regions: this.controlPanelClickHandler.bind(this)
-    }
-
     return (
       <div className="App">
         <div>
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
-        <ControlPanel controls={controls}/>
+        <ControlPanel>
+          <Section title="Region threats">
+            <InputGroup type="checkbox" name="region-threats" group={[
+              /*
+              { value: 'natural-disasters',
+                label: 'Natural Disasters' },
+              { value: 'violent-conflicts',
+                label: 'Violent Conflicts' }
+              */
+            ]} onChange={(e) => {}} />
+          </Section>
+          <Section title="Region vulnerabilities">
+            <InputGroup type="radio" name="region-vulnerabilities" group={[
+              { value: 'hdi',
+                label: 'Human Development Index' },
+              { value: 'pop',
+                label: 'Population' }
+              /* ,
+              { value: 'time-to-school',
+                label: 'Average Time to School' }
+              */
+            ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
+          </Section>
+          <Section title="School capabilities">
+            <InputGroup type="checkbox" name="school-capabilities" group={[
+              { value: 'schools',
+                label: 'Connectivity',
+                onChange: this.displayLayerHandler.bind(this),
+                defaultChecked: 'checked' }
+              /* ,
+              { value: 'electricity',
+                label: 'Electricity' },
+              { value: 'mobile-coverage',
+                label: 'Mobile Coverage' },
+              { value: 'distance-to-roads',
+                label: 'Distance to Roads' },
+              { value: 'emergency-plan',
+                label: 'Emergency Plan' }
+              */
+            ]} onChange={(e) => {}} />
+          </Section>
+          <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
+        </ControlPanel>
       </div>
     );
   }
