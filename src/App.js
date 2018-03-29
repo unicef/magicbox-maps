@@ -41,7 +41,7 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-    component.setState({indicator: 'population'})
+
     fetch('/data/mpio-hdi-pop.json').then(function(response) {
       return response.json();
     })
