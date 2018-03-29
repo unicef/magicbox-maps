@@ -6,6 +6,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
 import InputGroup from './components/input-group'
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
+import createFilterOptions from 'react-select-fast-filter-options'
 
 // Helpers
 import {calculate_index} from './helpers/helper-index-scores'
@@ -22,7 +25,10 @@ class App extends Component {
       map: {},
       lng: -74.2973,
       lat: 4.5709,
-      zoom: 4.5
+      zoom: 4.5,
+      regionNames: [],
+      schoolNames: [],
+      searchValue: ''
     };
   }
 
@@ -35,7 +41,7 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-    component.setState({indicator: 'population'})
+
     fetch('/data/mpio-hdi-pop.json').then(function(response) {
       return response.json();
     })
@@ -44,7 +50,47 @@ class App extends Component {
         myJson.features, 'population', 'pop'
       )
       component.setState({regions: myJson});
-    });
+
+      return myJson
+    }).then((geojson) => {
+      let regionNames = geojson.features.map((feature) => {
+        // get all region names from geojson
+        return [
+          feature.properties.NOMBRE_D,
+          feature.properties.NOMBRE_M,
+          feature.properties.NOMBRE_C
+        ]
+      }).reduce((acc, el) => {
+        // join all names in the same array
+        return acc.concat(el)
+      }, []).filter((el, i, self) => {
+        // filter for unicity
+        return self.indexOf(el) === i
+      })
+
+      component.setState({regionNames})
+    })
+
+    fetch('/data/schools.json').then((response) => {
+      return response.json();
+    }).then((geojson) => {
+      // Store school data
+      this.setState({schools: geojson})
+
+      return geojson
+    }).then((geojson) => {
+      // Store school names
+      let schoolNames = geojson.features.map((feature) => {
+        // Get school name
+        return feature.properties.name
+      }).filter((name, i, self) => {
+        // Remove duplicates
+        return self.indexOf(name) === i
+      })
+
+      this.setState({schoolNames})
+    })
+
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
@@ -76,7 +122,7 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: '/data/schools.json'
+          data: component.state.schools
         },
         paint: {
           'circle-radius': {
@@ -137,22 +183,42 @@ class App extends Component {
   }
 
   render() {
+    // Join region and school names
+    const options = [].concat(this.state.regionNames, this.state.schoolNames).map(name => ({value: name, label: name}))
+
     return (
       <div className="App">
         <div>
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
         <ControlPanel>
-          <Section title="Region threats">
-            <InputGroup type="checkbox" name="region" group={[
-              /*
-              { value: 'natural-disasters',
-                label: 'Natural Disasters' },
-              { value: 'violent-conflicts',
-                label: 'Violent Conflicts' }
-              */
-            ]} onChange={(e) => {}} />
-          </Section>
+          <Select name="search" placeholder="School or municipality" multi={true} className="search" value={this.state.searchValue} onChange={(selectedOption) => {
+            let regionFilter = null
+            let schoolFilter = null
+
+            // Set current state
+            this.setState({searchValue: selectedOption})
+
+            if (selectedOption.length) {
+              // Create filter for regions to look into all 'NOMBRE's
+              regionFilter = ['any'].concat(...selectedOption.map((input) => {
+                  return [
+                    ['==', ['get', 'NOMBRE_C'], input.value],
+                    ['==', ['get', 'NOMBRE_D'], input.value],
+                    ['==', ['get', 'NOMBRE_M'], input.value]
+                  ]
+                }))
+
+              // Create filter for schools to look into every 'name'
+              schoolFilter = ['any'].concat(selectedOption.map((input) => {
+                return ['==', ['get', 'name'], input.value]
+              }))
+            }
+
+            // Set filters
+            this.state.map.setFilter('regions', regionFilter)
+            this.state.map.setFilter('schools', schoolFilter)
+          }} filterOptions={createFilterOptions({options})} options={options} arrowRenderer={() => <i className="fas fa-search" />} />
           <Section title="Region vulnerabilities">
             <InputGroup type="checkbox" name="region" group={[
               { value: 'hdi',

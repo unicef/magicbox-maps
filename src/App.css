@@ -27,7 +27,6 @@ body {
 .controlPanel__header {
   height: 10vh;
   width: 100%;
-  margin-bottom: 2rem;
 }
 .controlPanel__menu {
   height: 90vh;
@@ -80,6 +79,13 @@ body {
 .checkboxGroup__element {
   display: block;
   font-size: 90%;
+}
+.search {
+  margin-bottom: 2rem;
+}
+.search > .Select-control {
+  border-radius: 0;
+  border: 1px solid #000;
 }
 
 @media (min-width: 600px) {
