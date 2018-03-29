@@ -22,7 +22,9 @@ class App extends Component {
       map: {},
       lng: -74.2973,
       lat: 4.5709,
-      zoom: 4.5
+      zoom: 4.5,
+      regionNames: [],
+      searchValue: ''
     };
   }
 
@@ -44,7 +46,26 @@ class App extends Component {
         myJson.features, 'population', 'pop'
       )
       component.setState({regions: myJson});
-    });
+
+      return myJson
+    }).then((geojson) => {
+      let regionNames = geojson.features.map((feature) => {
+        // get all region names from geojson
+        return [
+          feature.properties.NOMBRE_D,
+          feature.properties.NOMBRE_M,
+          feature.properties.NOMBRE_C
+        ]
+      }).reduce((acc, el) => {
+        // join all names in the same array
+        return acc.concat(el)
+      }, []).filter((el, i, self) => {
+        // filter for unicity
+        return self.indexOf(el) === i
+      })
+
+      component.setState({regionNames})
+    })
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
