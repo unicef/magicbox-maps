@@ -36,13 +36,20 @@ class App extends Component {
     });
     component.setState({map: map});
     component.setState({indicator: 'population'})
-    fetch('/data/mpio-hdi-pop.json').then(function(response) {
+    fetch('/data/mpio-hdi-pop-threats-violence.json').then(function(response) {
       return response.json();
     })
     .then(function(myJson) {
       myJson.features = calculate_index(
         myJson.features, 'population', 'pop'
       )
+      myJson.features = calculate_index(
+        myJson.features, 'threats', 'threats_index'
+      )
+      myJson.features = calculate_index(
+        myJson.features, 'violence', 'violence_index'
+      )
+      console.log(myJson)
       component.setState({regions: myJson});
     });
     map.on('move', () => {
@@ -145,13 +152,17 @@ class App extends Component {
         <ControlPanel>
           <Section title="Region threats">
             <InputGroup type="checkbox" name="region" group={[
+              { value: 'threats_index',
+                label: 'Natural Disasters Index' },
+              { value: 'violence_index',
+                label: 'Violence Index' }
               /*
               { value: 'natural-disasters',
                 label: 'Natural Disasters' },
               { value: 'violent-conflicts',
                 label: 'Violent Conflicts' }
               */
-            ]} onChange={(e) => {}} />
+            ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="Region vulnerabilities">
             <InputGroup type="checkbox" name="region" group={[
@@ -159,6 +170,7 @@ class App extends Component {
                 label: 'Human Development Index' },
               { value: 'pop',
                 label: 'Population' }
+
               /* ,
               { value: 'time-to-school',
                 label: 'Average Time to School' }

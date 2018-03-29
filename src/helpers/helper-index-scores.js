@@ -6,7 +6,8 @@
  * @return {Array} features array
  */
 export function calculate_index(features, source, destination) {
-  let scores = get_scores(features.map(f => { return f.properties[source]}))
+  // In case no value (threats or violence), just use 0. (a temp hack :|)
+  let scores = get_scores(features.map(f => { return f.properties[source] || 0}))
   features.forEach((f, i) => {
     f.properties[destination] = scores[i];
   })
