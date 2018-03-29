@@ -124,13 +124,11 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
-    var matches = document.querySelectorAll("input[name=region]:checked");
-    let atts_to_aggregate = ['+']
-    matches.forEach(t => {
-      atts_to_aggregate.push(
-        ['get', t.value]
-      )
-    })
+    let matches = document.querySelectorAll("input[name=region]:checked");
+    let atts_to_aggregate = Array.prototype.slice.call(matches).reduce((a,t) => {
+      a.push(['get', t.value])
+      return a
+    }, ['+'])
     this.state.map.setPaintProperty(
       'regions',
       'fill-opacity',
