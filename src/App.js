@@ -6,6 +6,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
 import InputGroup from './components/input-group'
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
 
 // Helpers
 import {calculate_index} from './helpers/helper-index-scores'
@@ -164,16 +166,13 @@ class App extends Component {
           <div ref={el => this.mapContainer = el} className="mainMap" />
         </div>
         <ControlPanel>
-          <Section title="Region threats">
-            <InputGroup type="checkbox" name="region" group={[
-              /*
-              { value: 'natural-disasters',
-                label: 'Natural Disasters' },
-              { value: 'violent-conflicts',
-                label: 'Violent Conflicts' }
-              */
-            ]} onChange={(e) => {}} />
-          </Section>
+          <Select name="search" placeholder="School or municipality" className="search" value={this.state.searchValue} onChange={(selectedOption) => {
+            // Set current state
+            this.setState({searchValue: selectedOption})
+          }} options={
+            // TODO: add information about school names
+            this.state.regionNames.map(regionName => ({value: 'region', label: regionName}))
+          } arrowRenderer={() => <i className="fas fa-search" />} />
           <Section title="Region vulnerabilities">
             <InputGroup type="checkbox" name="region" group={[
               { value: 'hdi',
