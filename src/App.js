@@ -12,6 +12,7 @@ import createFilterOptions from 'react-select-fast-filter-options'
 
 // Helpers
 import {calculate_index} from './helpers/helper-index-scores'
+import apiConfig from './helpers/api-config'
 
 // Main style
 import './App.css';
@@ -42,7 +43,7 @@ class App extends Component {
     });
     component.setState({map: map});
     
-    fetch('/data/mpio-hdi-pop-threats-violence.json').then(function(response) {
+    fetch(apiConfig.shapes).then(function(response) {
       return response.json();
     })
     .then(function(myJson) {
@@ -78,7 +79,7 @@ class App extends Component {
       component.setState({regionNames})
     })
 
-    fetch('/data/schools.json').then((response) => {
+    fetch(apiConfig.schools).then((response) => {
       return response.json();
     }).then((geojson) => {
       // Store school data
