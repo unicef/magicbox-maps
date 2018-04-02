@@ -87,6 +87,36 @@ body {
   border-radius: 0;
   border: 1px solid #000;
 }
+.legend {
+  position: absolute;
+  bottom: 5vh;
+  left: 100vw;
+  background-color: #fff;
+  border: 1px solid #000;
+  width: 90vw;
+  padding: .3rem;
+  margin: 0 5vw;
+  box-sizing: border-box;
+  display: table;
+}
+.legend__text {
+  font-size: 14px;
+  width: 15%;
+  display: table-cell;
+  text-align: center;
+}
+.legend__bar {
+  vertical-align: middle;
+  display: table-cell;
+}
+.legend__bar__element {
+  float: left;
+  box-sizing: border-box;
+  border: 1px solid #000;
+}
+.legend__bar__element + .legend__bar__element {
+  border-left: none;
+}
 
 @media (min-width: 600px) {
   .controlPanel {
@@ -94,6 +124,10 @@ body {
   }
   .controlPanel--hide {
     left: -20vw;
+  }
+  .legend {
+    width: 30vw;
+    left: 25vw;
   }
 }
 

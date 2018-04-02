@@ -32,7 +32,7 @@ function get_scores(ary) {
   });
 
   return ary.map(function(e) {
-    return score(min, max, parseInt(e))
+    return score(min, max, parseInt(e, 10))
   })
 }
 

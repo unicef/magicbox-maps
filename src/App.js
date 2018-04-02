@@ -6,6 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
 import InputGroup from './components/input-group'
+import Legend from './components/legend'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import createFilterOptions from 'react-select-fast-filter-options'
@@ -273,6 +274,7 @@ class App extends Component {
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
+          <Legend hue={0} saturation={0} steps={10} leftText="Most Risk" rightText="Least Risk" />
         </ControlPanel>
       </div>
     );
