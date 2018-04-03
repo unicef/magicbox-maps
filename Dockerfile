@@ -17,6 +17,6 @@ RUN cd /root/code && \
 # Move build output into nginx path
 RUN cp -r /root/code/build/* /var/www/html
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

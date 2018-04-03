@@ -24,7 +24,7 @@ In the root of this project directory is a Dockerfile which can be built to depl
 `docker build -t unicef/magicbox-map .`
 
 With this image you can run it locally by running:
-`docker run -p 80:80 unicef/magicbox-map`
+`docker run -p 80:8080 unicef/magicbox-map`
 
 ### Building on a container platform
 
