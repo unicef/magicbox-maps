@@ -1,4 +1,6 @@
 FROM node:latest
+ARG REACT_APP_SCHOOLS_URL
+ARG REACT_APP_SHAPES_URL
 
 # Install nginx
 RUN apt update -y && \

@@ -9,12 +9,6 @@ To get started:
 
 For more information on getting started, see the  [create-react-app guide](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
-## Hosting
-1. Set the `REACT_APP_SCHOOLS_URL` and `REACT_APP_SHAPES_URL` environment variables on the system that will be used to build the application.
-  - To prevent data URLs from being made public, these should be "real" environment variables, not a `.env` file in the repo.
-2. Execute `npm run build` from your automation tool of choice (Jenkins, [this source-to-image builder](https://github.com/bigdelivery/s2i-create-react-app/), etc.)
-3. Host the `/build` directory as static files.
-
 ## Git Workflow
 
 We are using the `2.0_dev` branch as the main development branch for work on Magic Box Maps 2.0. Our development environment is deployed from this branch. Feature branches can be branched from `2.0_dev` and merged back up when ready.
@@ -31,3 +25,20 @@ In the root of this project directory is a Dockerfile which can be built to depl
 
 With this image you can run it locally by running:
 `docker run -p 80:80 unicef/magicbox-map`
+
+### Building on a container platform
+
+When building on a container platform, be sure to set the environment variables before building. You can set the environment variables in the build container, or you can pass the variables to the docker build command:
+
+```
+docker build -t unicef/magicbox-map . \
+--build-arg REACT_APP_SCHOOLS_URL=/data/schools.json \
+--build-arg REACT_APP_SHAPES_URL=/data/mpio-hdi-pop-threats-violence.json
+```
+
+When adding a new environment variable, remember to include it in:
+- The JavaScript file where it's actually used (probably `api-config.js`)
+- The Dockerfile
+- This readme
+
+To find out which environment variables are in use, see `.env.local.sample`.
