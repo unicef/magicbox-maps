@@ -2,8 +2,8 @@
 // with a longer-term storage solution in the future.
 
 const apiConfig = {
-  schools: 'https://teststorage3910.blob.core.windows.net/test/schools.json',
-  shapes: '/data/mpio-hdi-pop-threats-violence.json'
+  schools: process.env.REACT_APP_SCHOOLS_URL,
+  shapes: process.env.REACT_APP_SHAPES_URL
 }
 
 export default apiConfig;
