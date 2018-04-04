@@ -101,9 +101,11 @@ body {
 }
 .legend__text {
   font-size: 14px;
-  width: 15%;
+  width: 20%;
   display: table-cell;
   text-align: center;
+  vertical-align: middle;
+  padding: .1rem;
 }
 .legend__bar {
   vertical-align: middle;
