@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Components
+// Third-party React components
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
+import createFilterOptions from 'react-select-fast-filter-options'
+
+// Custom React components
 import ControlPanel from './components/control-panel'
 import Section from './components/section'
 import InputGroup from './components/input-group'
 import Legend from './components/legend'
-import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import createFilterOptions from 'react-select-fast-filter-options'
 
 // Helpers
 import {calculate_index} from './helpers/helper-index-scores'
@@ -43,7 +45,7 @@ class App extends Component {
       zoom: component.state.zoom
     });
     component.setState({map: map});
-    
+
     fetch(apiConfig.shapes).then(function(response) {
       return response.json();
     })
@@ -257,12 +259,6 @@ class App extends Component {
                 label: 'Natural Disasters Index' },
               { value: 'violence_index',
                 label: 'Violence Index' }
-              /*
-              { value: 'natural-disasters',
-                label: 'Natural Disasters' },
-              { value: 'violent-conflicts',
-                label: 'Violent Conflicts' }
-              */
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="Region vulnerabilities">
@@ -271,11 +267,6 @@ class App extends Component {
                 label: 'Human Development Index' },
               { value: 'pop',
                 label: 'Population' }
-
-              /* ,
-              { value: 'time-to-school',
-                label: 'Average Time to School' }
-              */
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="School capabilities">
@@ -283,17 +274,8 @@ class App extends Component {
               { value: 'schools',
                 label: 'Connectivity',
                 onChange: this.displayLayerHandler.bind(this),
-                defaultChecked: 'checked' },
-              /* ,
-              { value: 'electricity',
-                label: 'Electricity' },
-              { value: 'mobile-coverage',
-                label: 'Mobile Coverage' },
-              { value: 'distance-to-roads',
-                label: 'Distance to Roads' },
-              { value: 'emergency-plan',
-                label: 'Emergency Plan' }
-              */
+                defaultChecked: 'checked'
+              }
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
