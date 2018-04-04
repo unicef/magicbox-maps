@@ -118,9 +118,11 @@ class App extends Component {
           type: 'geojson',
           data: component.state.regions
         },
+        layout: {
+          visibility: 'none'
+        },
         paint: {
-          'fill-color': '#088',
-          'fill-opacity': 0.0
+          'fill-opacity': 0.5
         }
       });
 
@@ -178,15 +180,37 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
+    // lowest and highest color value
+    const [ lowerColor, higherColor ] = [ '#fff', '#088' ]
+
+    // Get all checked inputs for regions
     let matches = document.querySelectorAll("input[name=region]:checked");
+
+    // Change layer visibility if there are matches
+    this.state.map.setLayoutProperty('regions', 'visibility', matches.length ? 'visible' : 'none')
+
+    if (!matches.length) {
+      // no region selected
+      return
+    }
+
+    // build the aggregation query
     let atts_to_aggregate = Array.prototype.slice.call(matches).reduce((a,t) => {
       a.push(['get', t.value])
       return a
     }, ['+'])
+
+    // Set new paint property to color the map
     this.state.map.setPaintProperty(
       'regions',
-      'fill-opacity',
-      ['/', atts_to_aggregate, atts_to_aggregate.length-1]
+      'fill-color',
+      // linear interpolation for colors going from lowerColor to higherColor accordingly to aggregation value
+      ['interpolate',
+        ['linear'],
+        ['/', atts_to_aggregate, atts_to_aggregate.length-1],
+        0, lowerColor,
+        1, higherColor
+      ]
     )
   }
 
