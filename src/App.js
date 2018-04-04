@@ -57,7 +57,6 @@ class App extends Component {
       myJson.features = calculate_index(
         myJson.features, 'violence', 'violence_index'
       )
-      console.log(myJson)
       component.setState({regions: myJson});
 
       return myJson
