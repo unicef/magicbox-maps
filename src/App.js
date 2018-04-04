@@ -35,6 +35,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log('Component mounted')
     let component = this;
     const map = new mapboxgl.Map({
       container: this.mapContainer,
