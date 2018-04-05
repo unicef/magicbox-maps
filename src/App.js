@@ -78,7 +78,6 @@ class App extends Component {
       myJson.features = calculate_index(
         myJson.features, 'violence', 'violence_index'
       )
-      component.setState({regions: myJson});
 
       return myJson
     }).then((geojson) => {
@@ -131,7 +130,10 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: component.state.regions
+          data: {
+            type: "FeatureCollection",
+            features: []
+          }
         },
         layout: {
           visibility: 'none'
@@ -147,7 +149,10 @@ class App extends Component {
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: component.state.schools
+          data: {
+            type: "FeatureCollection",
+            features: []
+          }
         },
         paint: {
           'circle-radius': {
