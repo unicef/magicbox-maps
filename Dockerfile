@@ -1,6 +1,7 @@
 FROM node:latest
 ARG REACT_APP_SCHOOLS_URL
 ARG REACT_APP_SHAPES_URL
+ARG REACT_APP_MAPBOX_TOKEN
 
 # Install nginx
 RUN apt update -y && \
