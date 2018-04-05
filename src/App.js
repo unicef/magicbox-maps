@@ -66,6 +66,11 @@ class App extends Component {
       })
     })
 
+    // Set data for schools when regions and map are available
+    Promise.all([schoolsPromise, mapLoadPromise]).then(([geojson, map]) => {
+      map.getSource('schools').setData(geojson)
+    })
+
     // Handle shapes data
     shapesPromise.then(function(myJson) {
       // Calculate indexes
