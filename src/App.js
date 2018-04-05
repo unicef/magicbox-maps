@@ -18,7 +18,7 @@ import apiConfig from './helpers/api-config'
 // Main style
 import './App.css';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicmRlYmVhc2ktcmgiLCJhIjoiY2pkcWQ2YXVxMHJkczJxcWxtZHhoNGtmdSJ9.3XajiSFSZPwtB4_ncmmaHQ';
+mapboxgl.accessToken = apiConfig.mapboxToken
 
 class App extends Component {
   constructor(props: Props) {
