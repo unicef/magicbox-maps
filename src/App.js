@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import mapboxgl from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Third-party React components
-import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import createFilterOptions from 'react-select-fast-filter-options'
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import createFilterOptions from 'react-select-fast-filter-options';
 
 // Custom React components
-import ControlPanel from './components/control-panel'
-import Section from './components/section'
-import InputGroup from './components/input-group'
-import Legend from './components/legend'
+import ControlPanel from './components/control-panel';
+import Section from './components/section';
+import InputGroup from './components/input-group';
+import Legend from './components/legend';
+import ConnectivityChart from './components/connectivity-chart';
 
 // Helpers
-import {calculate_index} from './helpers/helper-index-scores'
-import apiConfig from './helpers/api-config'
+import {calculate_index} from './helpers/helper-index-scores';
+import apiConfig from './helpers/api-config';
 
 // Main style
 import './App.css';
@@ -280,6 +281,7 @@ class App extends Component {
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
           <Legend hue={0} saturation={0} steps={10} leftText="Most Risk" rightText="Least Risk" />
+          <ConnectivityChart></ConnectivityChart>
         </ControlPanel>
       </div>
     );
