@@ -18,6 +18,14 @@ import apiConfig from './helpers/api-config'
 // Main style
 import './App.css';
 
+// Map colors
+const mapColors = {
+  // higher color will be shown where indexes are 1
+  higher: '#0068EA',
+  // lower color will be shown where indexes are 0
+  lower: '#DCDCDC'
+}
+
 mapboxgl.accessToken = 'pk.eyJ1IjoicmRlYmVhc2ktcmgiLCJhIjoiY2pkcWQ2YXVxMHJkczJxcWxtZHhoNGtmdSJ9.3XajiSFSZPwtB4_ncmmaHQ';
 
 class App extends Component {
@@ -181,9 +189,6 @@ class App extends Component {
   }
 
   changeRegionPaintPropertyHandler(e) {
-    // lowest and highest color value
-    const [ lowerColor, higherColor ] = [ '#fff', '#088' ]
-
     // Get all checked inputs for regions
     let matches = document.querySelectorAll("input[name=region]:checked");
 
@@ -209,8 +214,8 @@ class App extends Component {
       ['interpolate',
         ['linear'],
         ['/', atts_to_aggregate, atts_to_aggregate.length-1],
-        0, lowerColor,
-        1, higherColor
+        0, mapColors.lower,
+        1, mapColors.higher
       ]
     )
   }
