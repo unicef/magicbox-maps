@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "color-convert": "^1.9.1",
     "husky": "^0.14.3",
     "mapbox-gl": "^0.44.1",
     "react": "^16.2.0",
