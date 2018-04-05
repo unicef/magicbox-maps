@@ -43,8 +43,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('Component mounted')
     let component = this;
+
     const map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v9',
@@ -53,10 +53,22 @@ class App extends Component {
     });
     component.setState({map: map});
     
-    fetch(apiConfig.shapes).then(function(response) {
-      return response.json();
+    // Promises
+    let shapesPromise  = fetch(apiConfig.shapes).then((response) => response.json())
+    let schoolsPromise = fetch(apiConfig.schools).then((response) => response.json())
+    let mapLoadPromise = new Promise((resolve, reject) => {
+      map.on('load', (e) => {
+        resolve(map)
+      })
+
+      map.on('error', (e) => {
+        reject(map)
+      })
     })
-    .then(function(myJson) {
+
+    // Handle shapes data
+    shapesPromise.then(function(myJson) {
+      // Calculate indexes
       myJson.features = calculate_index(
         myJson.features, 'population', 'pop'
       )
@@ -88,14 +100,8 @@ class App extends Component {
       component.setState({regionNames})
     })
 
-    fetch(apiConfig.schools).then((response) => {
-      return response.json();
-    }).then((geojson) => {
-      // Store school data
-      this.setState({schools: geojson})
-
-      return geojson
-    }).then((geojson) => {
+    // Handle school data
+    schoolsPromise.then((geojson) => {
       // Store school names
       let schoolNames = geojson.features.map((feature) => {
         // Get school name
