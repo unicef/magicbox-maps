@@ -33,7 +33,8 @@ When building on a container platform, be sure to set the environment variables 
 ```
 docker build -t unicef/magicbox-map . \
 --build-arg REACT_APP_SCHOOLS_URL=/data/schools.json \
---build-arg REACT_APP_SHAPES_URL=/data/mpio-hdi-pop-threats-violence.json
+--build-arg REACT_APP_SHAPES_URL=/data/mpio-hdi-pop-threats-violence.json \
+--build-arg REACT_APP_MAPBOX_TOKEN=change_me
 ```
 
 When adding a new environment variable, remember to include it in:
