@@ -43,15 +43,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    let component = this;
-
     const map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v9',
-      center: [component.state.lng, component.state.lat],
-      zoom: component.state.zoom
+      center: [this.state.lng, this.state.lat],
+      zoom: this.state.zoom
     });
-    component.setState({map: map});
+
+    this.setState({map});
     
     // Promises
     let shapesPromise  = fetch(apiConfig.shapes).then((response) => response.json())
@@ -106,7 +105,7 @@ class App extends Component {
         return self.indexOf(el) === i
       })
 
-      component.setState({regionNames})
+      this.setState({regionNames})
     })
 
     // Handle school data
@@ -126,7 +125,7 @@ class App extends Component {
     map.on('move', () => {
       const { lng, lat } = map.getCenter();
 
-      component.setState({
+      this.setState({
         lng: lng.toFixed(4),
         lat: lat.toFixed(4),
         zoom: map.getZoom().toFixed(2)
