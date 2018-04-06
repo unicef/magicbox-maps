@@ -17,6 +17,7 @@ import ConnectivityChart from './components/connectivity-chart';
 // Helpers
 import {calculate_index} from './helpers/helper-index-scores';
 import apiConfig from './helpers/api-config';
+import countConnectivity from './helpers/count-connectivity';
 
 // Main style
 import './App.css';
@@ -31,9 +32,12 @@ class App extends Component {
       lng: -74.2973,
       lat: 4.5709,
       zoom: 4.5,
+      connectivityTotals: {},
       regionNames: [],
       schoolNames: [],
-      searchValue: ''
+      searchValue: '',
+      schools: {},
+      regions: {}
     };
   }
 
@@ -86,8 +90,10 @@ class App extends Component {
       return response.json();
     }).then((geojson) => {
       // Store school data
-      this.setState({schools: geojson})
-
+      this.setState({
+        schools: geojson,
+        connectivityTotals: countConnectivity(geojson.features)
+      })
       return geojson
     }).then((geojson) => {
       // Store school names
@@ -280,9 +286,9 @@ class App extends Component {
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
-          <Legend hue={0} saturation={0} steps={10} leftText="Most Risk" rightText="Least Risk" />
-          <ConnectivityChart></ConnectivityChart>
+          <ConnectivityChart totals={this.state.connectivityTotals}></ConnectivityChart>
         </ControlPanel>
+        <Legend hue={0} saturation={0} steps={10} leftText="Most Risk" rightText="Least Risk" />
       </div>
     );
   }

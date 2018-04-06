@@ -20,6 +20,7 @@ body {
   padding: 1rem;
   transition: left .5s;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 .controlPanel--hide {
   left: -100%;
@@ -132,4 +133,3 @@ body {
     left: 25vw;
   }
 }
-
