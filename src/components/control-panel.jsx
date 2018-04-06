@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 
 /**
  * Simple wrapper to map functions
@@ -7,7 +7,7 @@ import React, {Component} from 'react'
 class ControlPanel extends Component {
   render() {
     return (
-      <div className="controlPanel__wrapper">
+      <Fragment>
         <a onClick={(e) => {
           this.ControlPanel.classList.remove('controlPanel--hide')
         }} className="controlPanel__header__toggleButton controlPanel__header__toggleButton--closed">
@@ -26,7 +26,7 @@ class ControlPanel extends Component {
             {this.props.children}
           </div>
         </div>
-      </div>
+      </Fragment>
     )
   }
 }

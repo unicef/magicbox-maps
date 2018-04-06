@@ -286,8 +286,11 @@ class App extends Component {
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
-          <ConnectivityChart totals={this.state.connectivityTotals}></ConnectivityChart>
+          <Section title="Connectivity Details">
+            <ConnectivityChart totals={this.state.connectivityTotals}></ConnectivityChart>
+          </Section>
         </ControlPanel>
+
         <Legend hue={0} saturation={0} steps={10} leftText="Most Risk" rightText="Least Risk" />
       </div>
     );
