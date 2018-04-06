@@ -21,7 +21,6 @@ import countConnectivity from './helpers/count-connectivity';
 
 // Main style
 import './App.css';
-
 // Map colors
 const mapColors = {
   // higher color will be shown where indexes are 1
