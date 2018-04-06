@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
 
-import connectivityColors from '../helpers/connectivity-colors';
-
 class ConnectivityChart extends Component {
   constructor(props: Props) {
     super(props);
@@ -20,10 +18,6 @@ class ConnectivityChart extends Component {
     ]
   }
 
-  arrayToRgb(array) {
-    return `rgb(${array[0]}, ${array[1]}, ${array[2]})`;
-  }
-
   render() {
     return (
       <canvas ref={el => this.canvasEl = el} width="400" height="400"></canvas>
@@ -39,10 +33,10 @@ class ConnectivityChart extends Component {
         datasets: [{
           data: totals,
           backgroundColor: [
-            this.arrayToRgb(connectivityColors.colorHigh),
-            this.arrayToRgb(connectivityColors.colorLow),
-            this.arrayToRgb(connectivityColors.colorNone),
-            this.arrayToRgb(connectivityColors.colorUnknown)
+            'rgb(92, 184, 92)',
+            'rgb(245, 166, 35)',
+            'rgb(217, 83, 79)',
+            'rgb(106, 30, 116)'
           ]
         }],
         labels: [
