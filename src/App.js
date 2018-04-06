@@ -32,7 +32,7 @@ class App extends Component {
       lng: -74.2973,
       lat: 4.5709,
       zoom: 4.5,
-      connectivityTotals: {},
+      connectivityTotals: null,
       regionNames: [],
       schoolNames: [],
       searchValue: '',
