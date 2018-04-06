@@ -45,7 +45,7 @@ body {
   cursor: pointer;
 }
 .controlPanel__header__toggleButton:hover {
-  color: #75cff0;
+  color: #00AEEF;
   transition: color .5s;
 }
 .controlPanel__header__toggleButton--closed {
