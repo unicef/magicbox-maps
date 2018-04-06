@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import mapboxgl from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Components
-import ControlPanel from './components/control-panel'
-import Section from './components/section'
-import InputGroup from './components/input-group'
-import Legend from './components/legend'
-import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import createFilterOptions from 'react-select-fast-filter-options'
+// Third-party React components
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import createFilterOptions from 'react-select-fast-filter-options';
+
+// Custom React components
+import ControlPanel from './components/control-panel';
+import Section from './components/section';
+import InputGroup from './components/input-group';
+import Legend from './components/legend';
+import ConnectivityChart from './components/connectivity-chart';
 
 // Helpers
-import {calculate_index} from './helpers/helper-index-scores'
-import apiConfig from './helpers/api-config'
+import {calculate_index} from './helpers/helper-index-scores';
+import apiConfig from './helpers/api-config';
+import countConnectivity from './helpers/count-connectivity';
 
 // Main style
 import './App.css';
-
 // Map colors
 const mapColors = {
   // higher color will be shown where indexes are 1
@@ -36,9 +39,12 @@ class App extends Component {
       lng: -74.2973,
       lat: 4.5709,
       zoom: 4.5,
+      connectivityTotals: null,
       regionNames: [],
       schoolNames: [],
-      searchValue: ''
+      searchValue: '',
+      schools: {},
+      regions: {}
     };
   }
 
@@ -51,7 +57,7 @@ class App extends Component {
     });
 
     this.setState({map});
-    
+
     // Promises
     let shapesPromise  = fetch(apiConfig.shapes).then((response) => response.json())
     let schoolsPromise = fetch(apiConfig.schools).then((response) => response.json())
@@ -119,7 +125,10 @@ class App extends Component {
         return self.indexOf(name) === i
       })
 
-      this.setState({schoolNames})
+      this.setState({
+        schoolNames,
+        connectivityTotals: countConnectivity(geojson.features)
+      })
     })
 
     map.on('move', () => {
@@ -283,12 +292,6 @@ class App extends Component {
                 label: 'Natural Disasters Index' },
               { value: 'violence_index',
                 label: 'Violence Index' }
-              /*
-              { value: 'natural-disasters',
-                label: 'Natural Disasters' },
-              { value: 'violent-conflicts',
-                label: 'Violent Conflicts' }
-              */
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="Region vulnerabilities">
@@ -297,11 +300,6 @@ class App extends Component {
                 label: 'Human Development Index' },
               { value: 'pop',
                 label: 'Population' }
-
-              /* ,
-              { value: 'time-to-school',
-                label: 'Average Time to School' }
-              */
             ]} onChange={this.changeRegionPaintPropertyHandler.bind(this)} />
           </Section>
           <Section title="School capabilities">
@@ -309,22 +307,16 @@ class App extends Component {
               { value: 'schools',
                 label: 'Connectivity',
                 onChange: this.displayLayerHandler.bind(this),
-                defaultChecked: 'checked' },
-              /* ,
-              { value: 'electricity',
-                label: 'Electricity' },
-              { value: 'mobile-coverage',
-                label: 'Mobile Coverage' },
-              { value: 'distance-to-roads',
-                label: 'Distance to Roads' },
-              { value: 'emergency-plan',
-                label: 'Emergency Plan' }
-              */
+                defaultChecked: 'checked'
+              }
             ]} onChange={(e) => {}} />
           </Section>
           <p className="controlPanel__footerMessage">The selected items will be considered when calculating the risk level of schools and areas.</p>
-          <Legend from={mapColors.higher} to={mapColors.lower} steps={10} leftText="Most Risk" rightText="Least Risk" />
+          <Section title="Connectivity Details">
+            <ConnectivityChart totals={this.state.connectivityTotals}></ConnectivityChart>
+          </Section>
         </ControlPanel>
+        <Legend from={mapColors.higher} to={mapColors.lower} steps={10} leftText="Most Risk" rightText="Least Risk" />
       </div>
     );
   }
