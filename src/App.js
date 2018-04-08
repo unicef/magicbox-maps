@@ -126,7 +126,7 @@ class App extends Component {
       })
 
       this.setState({
-        schoolNames,
+        // schoolNames,
         connectivityTotals: countConnectivity(geojson.features)
       })
     })
