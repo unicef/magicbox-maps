@@ -42,8 +42,7 @@ class App extends Component {
       lat: 4.5709,
       zoom: 4.5,
       connectivityTotals: null,
-      regionNames: [],
-      schoolNames: [],
+      options: [],
       searchValue: '',
       schools: {},
       regions: {}
@@ -97,39 +96,36 @@ class App extends Component {
       )
 
       return myJson
-    }).then((geojson) => {
-      let regionNames = geojson.features.map((feature) => {
-        // get all region names from geojson
-        return [
-          feature.properties.NOMBRE_D,
-          feature.properties.NOMBRE_M,
-          feature.properties.NOMBRE_C
-        ]
-      }).reduce((acc, el) => {
-        // join all names in the same array
-        return acc.concat(el)
-      }, []).filter((el, i, self) => {
-        // filter for unicity
-        return self.indexOf(el) === i
-      })
-
-      this.setState({regionNames})
     })
 
     // Handle school data
     schoolsPromise.then((geojson) => {
-      // Store school names
-      let schoolNames = geojson.features.map((feature) => {
-        // Get school name
-        return feature.properties.name
-      }).filter((name, i, self) => {
-        // Remove duplicates
-        return self.indexOf(name) === i
-      })
-
       this.setState({
-        schoolNames,
         connectivityTotals: countConnectivity(geojson.features)
+      })
+    })
+
+    // When data arrives, process them in the background
+    // to build a list of names for the search component
+    Promise.all([schoolsPromise, shapesPromise]).then(([schoolsGeojson, shapesGeojson]) => {
+      return new Promise((resolve, reject) => {
+        let webWorker = new Worker('ww-process-names.js')
+
+        webWorker.onmessage = (event) => {
+          resolve(event.data)
+        }
+
+        webWorker.onerror = (err) => {
+          reject(err)
+        }
+
+        // send geojsons to worker
+        webWorker.postMessage([schoolsGeojson, shapesGeojson])
+      })
+    }).then((options) => {
+      this.setState({
+        options,
+        filter: createFilterOptions({options})
       })
     })
 
@@ -252,9 +248,6 @@ class App extends Component {
   }
 
   render() {
-    // Join region and school names
-    const options = [].concat(this.state.regionNames, this.state.schoolNames).map(name => ({value: name, label: name}))
-
     return (
       <div className="App">
         <div>
@@ -287,7 +280,7 @@ class App extends Component {
             // Set filters
             this.state.map.setFilter('regions', regionFilter)
             this.state.map.setFilter('schools', schoolFilter)
-          }} filterOptions={createFilterOptions({options})} options={options} arrowRenderer={() => <i className="fas fa-search" />} />
+          }} filterOptions={this.state.filter} options={this.state.options} arrowRenderer={() => <i className="fas fa-search" />} />
           <Section title="Region threats">
             <InputGroup type="checkbox" name="region" group={[
               { value: 'threats_index',
