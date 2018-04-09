@@ -141,3 +141,6 @@ body {
     left: 5vw;
   }
 }
+.search__option {
+  font-size: 12px;
+}
