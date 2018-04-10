@@ -4,12 +4,14 @@ magicbox-maps
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/unicef/magicbox-maps.svg?branch=master)](https://travis-ci.org/unicef/magicbox-maps)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6e0b31f2b387d1527164/maintainability)](https://codeclimate.com/github/unicef/magicbox-maps/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6e0b31f2b387d1527164/test_coverage)](https://codeclimate.com/github/unicef/magicbox-maps/test_coverage)
 
 Map mobility data in a NodeJS + React front-end application with data served by
 magicbox-open-api
 
 ![screenshot](./public/screenshot.png)
+
+**Education for emergencies**:
+![School mapping example](./public/screenshot-schools.png)
 
 ## What is it?
 
