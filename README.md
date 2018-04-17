@@ -2,6 +2,7 @@ magicbox-maps
 =============
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Chat on Gitter](https://badges.gitter.im/unicef-innovation-dev/Lobby.png)](https://gitter.im/unicef-innovation-dev/Lobby)
 [![Build Status](https://travis-ci.org/unicef/magicbox-maps.svg?branch=master)](https://travis-ci.org/unicef/magicbox-maps)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6e0b31f2b387d1527164/maintainability)](https://codeclimate.com/github/unicef/magicbox-maps/maintainability)
 
