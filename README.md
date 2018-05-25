@@ -11,9 +11,6 @@ magicbox-open-api
 
 ![screenshot](./public/screenshot.png)
 
-**Education for emergencies**:
-![School mapping example](./public/screenshot-schools.png)
-
 ## What is it?
 
 magicbox-maps is a [React](https://reactjs.org/) front-end application that
