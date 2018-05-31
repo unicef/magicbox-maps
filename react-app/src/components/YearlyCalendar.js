@@ -73,7 +73,7 @@ function mapStateToProps(state) {
   return {
     dates: state.dates.dateArray,
     date: state.date,
-    visibility: state.dates.visibility,
+    visibility: 'hidden', //state.dates.visibility,
     activeCountry: state.activeCountry
   }
 }
