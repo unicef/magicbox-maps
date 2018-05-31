@@ -5,7 +5,7 @@ const config = require('../react-app/src/config.js')
 const magicboxUrl = config.magicbox_url; // Magic box API url
 
 // Mobility data
-const mobilityData = '/mobility/sources/acme/series/santiblanko/countries/'
+const mobilityData = '/mobility/sources/worldpop/series/gadm2-8/countries/'
 // Base url
 const baseUrl = `${magicboxUrl}${mobilityData}`
 
