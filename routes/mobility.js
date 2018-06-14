@@ -4,24 +4,28 @@ const helper = require('./helper-router')
 const config = require('../react-app/src/config.js')
 const magicboxUrl = config.magicbox_url; // Magic box API url
 
-// Mobility data
-const mobilityData = '/mobility/sources/worldpop/series/gadm2-8/countries/'
-// Base url
-const baseUrl = `${magicboxUrl}${mobilityData}`
-
 router.get('/countries', helper.cache_response(300), (req, res, next) => {
-  helper.forward_request_to_url(res, baseUrl)
+  helper.forward_request_to_url(res, magicboxUrl + 'mobility/countries')
 })
 
-router.get('/countries/:country', helper.cache_response(300),
-           (req, res, next) => {
-             const url = `${baseUrl}${req.params.country}`;
-             helper.forward_request_to_url(res, url)
-           })
+router.get(
+  '/sources/:source/series/:series/countries/:country',
+  helper.cache_response(300),
+  (req, res, next) => {
+    const url = `${magicboxUrl}mobility/sources/` +
+    req.params.source +
+    '/series/' + req.params.series +
+    '/countries/' + req.params.country
+    helper.forward_request_to_url(res, url)
+  })
 
-router.get('/countries/:country/:filename',
+router.get('/sources/:source/series/:series/countries/:country/:filename',
            helper.cache_response(300), (req, res, next) => {
-             const url = `${baseUrl}${req.params.country}/${req.params.filename}`;
+             const url = `${magicboxUrl}mobility/sources/` +
+             req.params.source +
+             '/series/' + req.params.series +
+             '/countries/' + req.params.country +
+             '/' + req.params.filename
              helper.forward_request_to_url(res, url)
            })
 

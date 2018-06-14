@@ -17,7 +17,7 @@ export function adminStyle(props) {
       fillColor: 'red',
       fillOpacity: scores ?
         (scores[admin_index[admin_id]]
-        || 0.4)
+        || 0)
         : 0 // Math.random()
       // stroke: true
     }

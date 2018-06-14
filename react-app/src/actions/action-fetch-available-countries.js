@@ -15,10 +15,14 @@ const fetchAvailableCountries = function() {
         alert('There was an error trying to do the initial fetch')
       })
       .then(response => {
+        let country_data_paths = response.data.reduce((h, obj) => {
+          h[obj.country] = obj.path
+          return h
+        }, {})
         dispatch({
           type: 'INITIAL_LOAD',
           payload: {
-            availableCountries: response.data.properties
+            availableCountries: country_data_paths
           }
         })
 

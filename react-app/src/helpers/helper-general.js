@@ -4,16 +4,20 @@ const config = require('../config')
 /**
  * Fetch mobility for date
  *
- * @param {object} country object
+ * @param {object} country_data_path object
  * @param {object} date object
  * @return {promise} fulfilled when data is found for given date
  */
-export function fetchMobilityForDate(country, date) {
+export function fetchMobilityForDate(country_data_path, date) {
   return new Promise((resolve, reject) => {
-    axios.get(window.location.origin + '/' +
-        config.initial_url_key[config.mode] + '/countries/' +
-        country + '/' + date.filename)
+    let url = window.location.origin + '/' +
+      config.initial_url_key[config.mode] +
+        country_data_path +
+        '/' + date.filename
+
+    axios.get(url)
       .catch(err => {
+        console.log(err)
         alert('There was an error trying to do the initial fetch')
       })
       .then(res => {

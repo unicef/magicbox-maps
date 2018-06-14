@@ -76,9 +76,7 @@ class MyMap extends Component {
       didUpdate: false,
       loading: false,
       onHover: false,
-
     }
-
   }
 
   /**
@@ -180,7 +178,9 @@ class MyMap extends Component {
             data={this.props.allCountries}
             style={countryStyle(this.props)}
             onEachFeature={onEachCountryFeature(
-              this, this.props.sliderValues.sliderVal
+              this,
+              this.props.sliderValues.sliderVal,
+              this.props.availableCountyPaths
             )}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
@@ -206,7 +206,8 @@ class MyMap extends Component {
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
   return {
-    availableCountries: state.availableCountries.availableCountries,
+    availableCountries: Object.keys(state.availableCountries.availableCountries),
+    availableCountyPaths: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged,
