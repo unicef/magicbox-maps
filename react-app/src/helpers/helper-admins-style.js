@@ -13,7 +13,7 @@ export function adminStyle(props) {
     const displayCountry = {
       fill: true,
       color: 'yellow',
-      weight: '0.1',
+      weight: '0.3',
       fillColor: 'red',
       fillOpacity: scores ?
         (scores[admin_index[admin_id]]

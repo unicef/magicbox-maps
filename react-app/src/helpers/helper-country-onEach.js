@@ -7,7 +7,7 @@ const config = require('../config.js')
  * @param {number} sliderVal value
  * @return {function} function
  */
-export function onEachCountryFeature(myMapObj, sliderVal, availableCountyPaths) {
+export function onEachCountryFeature(myMapObj, sliderVal, availableCountryPaths) {
   return (feature, layer) => {
     layer.on({
       'mouseover': (e) => {
@@ -31,7 +31,7 @@ export function onEachCountryFeature(myMapObj, sliderVal, availableCountyPaths) 
           myMapObj.props.selectCountry(
             e.target.feature,
             sliderVal,
-            availableCountyPaths[e.target.feature.id.toLowerCase()]
+            availableCountryPaths[e.target.feature.id.toLowerCase()]
           );
         } else {
           myMapObj.props.selectCountry(e.target.feature.id, sliderVal);

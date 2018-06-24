@@ -180,7 +180,7 @@ class MyMap extends Component {
             onEachFeature={onEachCountryFeature(
               this,
               this.props.sliderValues.sliderVal,
-              this.props.availableCountyPaths
+              this.props.availableCountryPaths
             )}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
@@ -207,7 +207,7 @@ class MyMap extends Component {
 function mapStateToProps(state) {
   return {
     availableCountries: Object.keys(state.availableCountries.availableCountries),
-    availableCountyPaths: state.availableCountries.availableCountries,
+    availableCountryPaths: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged,

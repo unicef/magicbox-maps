@@ -37,9 +37,10 @@ function get_shapefile(country) {
  */
 function fetch_dates(country_data_path) {
   return new Promise((resolve, reject) => {
-    axios.get(window.location.origin + '/' +
-      config.initial_url_key[config.mode] +
-      country_data_path)
+    let url = window.location.origin + '/' +
+      // config.initial_url_key[config.mode] +
+      country_data_path
+    axios.get(url)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
@@ -48,7 +49,6 @@ function fetch_dates(country_data_path) {
           // csv filename follows the format: YYYY-MM-DD^JOURNEYS-PEOPLE.csv
           let pattern = /^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/
           let matches = csvFilename.match(pattern)
-
           // ignore elements not matching pattern
           if (!matches) {
             return null

@@ -10,11 +10,11 @@ const config = require('../config')
  */
 export function fetchMobilityForDate(country_data_path, date) {
   return new Promise((resolve, reject) => {
-    let url = window.location.origin + '/' +
-      config.initial_url_key[config.mode] +
+    // let url = window.location.origin + '/' +
+    let url = window.location.origin +
+      // config.initial_url_key[config.mode] +
         country_data_path +
         '/' + date.filename
-
     axios.get(url)
       .catch(err => {
         console.log(err)

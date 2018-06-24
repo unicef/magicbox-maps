@@ -9,8 +9,9 @@ const fetchAvailableCountries = function() {
   return function(dispatch) {
     dispatch({type: 'REQUEST_DATA'})
     // Fetch all countries for which we have data for schools (mobility later)
-    axios.get(window.location.origin + '/' +
-        config.initial_url_key[mode] + '/countries/')
+    let url = window.location.origin + '/' +
+        config.initial_url_key[mode] + '/countries/'
+    axios.get(url)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
