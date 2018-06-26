@@ -64,7 +64,6 @@ MagicBox in production.
 * Running instance of
   [magicbox-open-api](https://github.com/unicef/magicbox-open-api)
 
-
 ### Installation
 
 **Clone repo, copy sample config**:
@@ -163,4 +162,3 @@ don't receive any feedback, please follow up with a new comment!
 
 This project is licensed under the [BSD 3-Clause
 License](https://opensource.org/licenses/BSD-3-Clause).
-
