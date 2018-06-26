@@ -21,6 +21,23 @@ export function adminStyle(props) {
         : 0 // Math.random()
       // stroke: true
     }
+    // For testing mobility data viz.
+    // let score = scores ? ((scores[admin_index[admin_id]] ? 1 : 0) || 0) : 1
+    //
+    // // let score = scores ?
+    // //   (scores[admin_index[admin_id]]
+    // //   || 0)
+    // //   : 0
+    // const displayCountry = {
+    //   fill: true,
+    //   color: score ? 'yellow' : 'aqua',
+    //   weight: '0.9',
+    //   fillColor: score ? 'red' : 'black',
+    //   fillOpacity: 1// Math.random()
+    //   // stroke: true
+    // }
+
+
     // console.log(admin_id, '****');
     if (selected_admins) {
       if (selected_admins[admin_id]) {
