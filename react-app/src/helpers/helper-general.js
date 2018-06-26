@@ -57,7 +57,9 @@ export function combine_vectors(admin_index, matrix, selected_admins) {
 export function get_diagonal(matrix) {
   let mmm = matrix.reduce((a, e, i) => {
     a[i] = matrix[i][i] || 0
-    // console.log(a.length,i, matrix[i][i], '****')
+    // In case not enough diagonal values
+    // return sum of vector
+    // a[i] = matrix[i].reduce((s, v) => { s = s + v; return s}, 0) || 0
     return a
   }, []);
   return mmm
