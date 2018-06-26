@@ -146,7 +146,6 @@ cd magicbox-maps/react-app
 npm start
 ```
 
-
 ## Contributing
 
 Interested in contributing? Read our [contribution
