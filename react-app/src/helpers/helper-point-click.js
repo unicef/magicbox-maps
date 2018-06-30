@@ -4,7 +4,7 @@ import popUpString from './helper-popup-string';
 /**
  * pointClick - makes point to layer
  *
- * @param  {Number} school_id
+ * @param  {Obj} feature
  * @param  {Obj} map
  * @param  {String} fetch_url
  */

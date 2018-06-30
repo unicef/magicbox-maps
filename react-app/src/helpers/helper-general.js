@@ -1,5 +1,4 @@
 import axios from 'axios';
-const config = require('../config')
 
 /**
  * Fetch mobility for date
