@@ -205,8 +205,12 @@ class MyMap extends Component {
 
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
+  let availableCountries = state.availableCountries.availableCountries
   return {
-    availableCountries: Object.keys(state.availableCountries.availableCountries),
+    // Countries comes as array for schools
+    // they come as object as mobility
+    availableCountries: Array.isArray(availableCountries) ? availableCountries
+    : Object.keys(availableCountries),
     availableCountryPaths: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
