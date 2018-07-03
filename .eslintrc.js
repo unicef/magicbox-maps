@@ -10,6 +10,8 @@ module.exports = {
     "react"
   ],
   'rules': {
+    'linebreak-style': 0,
+    'global-require': 0,
     "arrow-parens": 0,
     "react/jsx-uses-vars": [2],
     // need to keep as it's known issue with a dependency of airbnb standards
