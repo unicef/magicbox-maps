@@ -12,21 +12,30 @@ router.get(
   '/sources/:source/series/:series/countries/:country',
   helper.cache_response(300),
   (req, res, next) => {
-    const url = `${magicboxUrl}/mobility/sources/` +
-    req.params.source +
-    '/series/' + req.params.series +
-    '/countries/' + req.params.country
+    let url = construct_request(req)
     helper.forward_request_to_url(res, url)
   })
 
 router.get('/sources/:source/series/:series/countries/:country/:filename',
-           helper.cache_response(300), (req, res, next) => {
-             const url = `${magicboxUrl}/mobility/sources/` +
-             req.params.source +
-             '/series/' + req.params.series +
-             '/countries/' + req.params.country +
+           helper.cache_response(300),
+           (req, res, next) => {
+             let url = construct_request(req) +
              '/' + req.params.filename
              helper.forward_request_to_url(res, url)
            })
+
+/**
+* construct_request
+*
+* @param  {Object} req request object
+* @return {String} url fragment
+*/
+function construct_request(req) {
+  let url = `${magicboxUrl}/mobility/sources/` +
+  req.params.source +
+  '/series/' + req.params.series +
+  '/countries/' + req.params.country
+  return url
+}
 
 module.exports = router;
