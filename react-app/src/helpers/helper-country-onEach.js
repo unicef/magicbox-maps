@@ -5,9 +5,14 @@ const config = require('../config.js')
  *
  * @param {object} myMapObj
  * @param {number} sliderVal value
+ * @param {object} availableCountryPaths
  * @return {function} function
  */
-export function onEachCountryFeature(myMapObj, sliderVal, availableCountryPaths) {
+export function onEachCountryFeature(
+  myMapObj,
+  sliderVal,
+  availableCountryPaths
+) {
   return (feature, layer) => {
     layer.on({
       'mouseover': (e) => {

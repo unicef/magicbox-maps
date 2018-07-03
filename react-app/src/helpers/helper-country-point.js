@@ -1,7 +1,7 @@
-import axios from 'axios';
-import popUpString from './helper-popup-string';
-const config = require('../config.js')
-const mode = config.mode
+// import axios from 'axios';
+// import popUpString from './helper-popup-string';
+// const config = require('../config.js')
+// const mode = config.mode
 
 
 /**
