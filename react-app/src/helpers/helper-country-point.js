@@ -1,3 +1,7 @@
+// import axios from 'axios';
+// import popUpString from './helper-popup-string';
+// const config = require('../config.js')
+// const mode = config.mode
 /**
  * assign_speed_value - sets style for dot
  *
