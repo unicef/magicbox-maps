@@ -1,19 +1,23 @@
 import axios from 'axios';
-const config = require('../config')
+// const config = require('../config')
 
 /**
  * Fetch mobility for date
  *
- * @param {object} country object
+ * @param {object} country_data_path object
  * @param {object} date object
  * @return {promise} fulfilled when data is found for given date
  */
-export function fetchMobilityForDate(country, date) {
+export function fetchMobilityForDate(country_data_path, date) {
   return new Promise((resolve, reject) => {
-    axios.get(window.location.origin + '/' +
-        config.initial_url_key[config.mode] + '/countries/' +
-        country + '/' + date.filename)
+    // let url = window.location.origin + '/' +
+    let url = window.location.origin +
+      // config.initial_url_key[config.mode] +
+        country_data_path +
+        '/' + date.filename
+    axios.get(url)
       .catch(err => {
+        console.log(err)
         alert('There was an error trying to do the initial fetch')
       })
       .then(res => {
@@ -53,7 +57,9 @@ export function combine_vectors(admin_index, matrix, selected_admins) {
 export function get_diagonal(matrix) {
   let mmm = matrix.reduce((a, e, i) => {
     a[i] = matrix[i][i] || 0
-    // console.log(a.length,i, matrix[i][i], '****')
+    // In case not enough diagonal values
+    // return sum of vector
+    // a[i] = matrix[i].reduce((s, v) => { s = s + v; return s}, 0) || 0
     return a
   }, []);
   return mmm

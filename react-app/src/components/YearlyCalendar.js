@@ -61,7 +61,7 @@ class YearlyCalendar extends React.Component {
           chartEvents={this.chartEvents}
           legend_toggle
           chartEvents={this.chartEvents}
-          width={isMobile ? "80vw" : "400px"}
+          width={isMobile ? "80vw" : "800px"}
           height="200px"
         />
       </div>

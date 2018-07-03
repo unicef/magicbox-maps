@@ -37,7 +37,8 @@ class PopupContentMobility extends React.Component {
                   <li>respond to natural disasters.</li>
                 </ul>
                 <p>
-                  <strong>We created this prototype to visualize mobility for Colombia given to us by Telefonica. For:</strong>
+                  <strong>We created this prototype to visualize human mobility within the Democratic Republic of Congo.
+The current prototype shows internal displacements as estimated by <a href='http://www.worldpop.org.uk/about_our_work/projects/index.php?sheet=Internal%20migration'>WorldPop</a>.</strong>
                 </p>
                 <ul>
                   <li>background on this particular app, please read <a href='https://medium.com/@mikefabrikant/the-project-f1f90c2a29b7'>this</a>.</li>
@@ -64,10 +65,6 @@ class PopupContentMobility extends React.Component {
               </Col>
             </Row>
           </Grid>
-          <strong>DISCLAIMER:</strong> The data displayed here is fake, and not what Telefonica provides.
-          <p>
-            <strong>We are always looking for more partners</strong> to validate (and add!) to our existing datasets. Please contact <a href={this.props.email}>this</a> person to learn more.
-          </p>
         </div>
       );
     } else {
