@@ -143,7 +143,6 @@ cd magicbox-maps/react-app
 npm start
 ```
 
-
 ## Contributing
 
 Interested in contributing? Read our [contribution
@@ -161,4 +160,3 @@ don't receive any feedback, please follow up with a new comment!
 
 This project is licensed under the [BSD 3-Clause
 License](https://opensource.org/licenses/BSD-3-Clause).
-

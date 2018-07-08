@@ -5,9 +5,14 @@ const config = require('../config.js')
  *
  * @param {object} myMapObj
  * @param {number} sliderVal value
+ * @param {object} availableCountryPaths
  * @return {function} function
  */
-export function onEachCountryFeature(myMapObj, sliderVal) {
+export function onEachCountryFeature(
+  myMapObj,
+  sliderVal,
+  availableCountryPaths
+) {
   return (feature, layer) => {
     layer.on({
       'mouseover': (e) => {
@@ -28,7 +33,11 @@ export function onEachCountryFeature(myMapObj, sliderVal) {
           // this.props.fetchDates()
         }
         if (config.mode != 'schools') {
-          myMapObj.props.selectCountry(e.target.feature, sliderVal);
+          myMapObj.props.selectCountry(
+            e.target.feature,
+            sliderVal,
+            availableCountryPaths[e.target.feature.id.toLowerCase()]
+          );
         } else {
           myMapObj.props.selectCountry(e.target.feature.id, sliderVal);
           myMapObj.setState({

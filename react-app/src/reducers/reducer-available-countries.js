@@ -1,5 +1,5 @@
 const initialstate = {
-  availableCountries: []
+  availableCountries: {}
 }
 /**
  * Calls initialLoad which loads initial data

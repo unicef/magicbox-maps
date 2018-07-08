@@ -76,9 +76,7 @@ class MyMap extends Component {
       didUpdate: false,
       loading: false,
       onHover: false,
-
     }
-
   }
 
   /**
@@ -180,7 +178,9 @@ class MyMap extends Component {
             data={this.props.allCountries}
             style={countryStyle(this.props)}
             onEachFeature={onEachCountryFeature(
-              this, this.props.sliderValues.sliderVal
+              this,
+              this.props.sliderValues.sliderVal,
+              this.props.availableCountryPaths
             )}
             filter={this.geoFilter.bind(this)}
           ></GeoJSON>
@@ -205,8 +205,13 @@ class MyMap extends Component {
 
 /* eslint-disable require-jsdoc*/
 function mapStateToProps(state) {
+  let availableCountries = state.availableCountries.availableCountries
   return {
-    availableCountries: state.availableCountries.availableCountries,
+    // Countries comes as array for schools
+    // they come as object as mobility
+    availableCountries: Array.isArray(availableCountries) ? availableCountries
+    : Object.keys(availableCountries),
+    availableCountryPaths: state.availableCountries.availableCountries,
     allCountries: state.allCountries,
     activeCountry: state.activeCountry,
     sliderValues: state.sliderChanged,

@@ -8,6 +8,9 @@ module.exports = {
   email_contact_mobility: process.env.email_contact_mobility || '',
   email_contact_schools: process.env.email_contact_schools || '',
 
+  auth_client_id: process.env.REACT_APP_AUTH_CLIENT_ID || 'client_id',
+  auth_callback_url: process.env.REACT_APP_AUTH_CALLBACK_URL || 'auth callback url',
+
   // Endpoints configured for magicbox-open-api by default
   initial_url_key: {
     mobility: process.env.REACT_APP_MOBILITY_ENDPOINT || 'mobility',
@@ -15,10 +18,11 @@ module.exports = {
   },
 
   // Require login?
-  login_required: (process.env.REACT_APP_LOGIN_REQUIRED==='true'),
+  login_required: (process.env.REACT_APP_LOGIN_REQUIRED==='false'),
 
   // Address of magicbox-open-api back-end
-  magicbox_url: process.env.MAGICBOX_URL || 'MAGICBOX_API_URL',
+  // MAKE SURE DOES NOT HAVE TRAILING FORWARD SLASH
+  magicbox_url: process.env.MAGICBOX_URL || 'http://localhost:8000/api/v1',
 
   // Tokens needed to access private data (e.g. school mappings)
   rfUrl: process.env.RF_URL || 'REFRESH_TOKEN_URL',

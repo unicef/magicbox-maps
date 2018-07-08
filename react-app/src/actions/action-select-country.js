@@ -32,14 +32,15 @@ function get_shapefile(country) {
 /**
  * fetch_dates - Fetch dates for which we have mobility data for country
  *
- * @param  {Object} data description
+ * @param  {Object} country_data_path description
  * @return {Array}
  */
-function fetch_dates(data) {
+function fetch_dates(country_data_path) {
   return new Promise((resolve, reject) => {
-    axios.get(window.location.origin + '/' +
-      config.initial_url_key[config.mode] +
-      '/countries/' + data.id.toLowerCase())
+    let url = window.location.origin + '/' +
+      // config.initial_url_key[config.mode] +
+      country_data_path
+    axios.get(url)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
       })
@@ -48,7 +49,6 @@ function fetch_dates(data) {
           // csv filename follows the format: YYYY-MM-DD^JOURNEYS-PEOPLE.csv
           let pattern = /^(\d{4})-(\d{2})-(\d{2})\^(\d+)-(\d+)\.csv$/
           let matches = csvFilename.match(pattern)
-
           // ignore elements not matching pattern
           if (!matches) {
             return null
@@ -70,15 +70,16 @@ function fetch_dates(data) {
  *
  * @param  {String} country description
  * @param  {Number} sliderVal selected slider value
+ * @param  {String} country_data_path selected slider value
  * @return {object} style
  */
-export const selectCountry = (country, sliderVal) => {
+export const selectCountry = (country, sliderVal, country_data_path) => {
   console.log('You selected', country);
   if (mode !== 'schools') {
     return function(dispatch) {
       dispatch({type: 'REQUEST_DATA'})
       Promise.all(
-        [get_shapefile(country), fetch_dates(country)]
+        [get_shapefile(country), fetch_dates(country_data_path)]
       ).then(function(values) {
         let dates = values[1]
         dispatch({
@@ -91,8 +92,9 @@ export const selectCountry = (country, sliderVal) => {
           payload: dates
         })
         let most_recent_date = dates[dates.length-1]
-        fetchMobilityForDate(country.id.toLowerCase(), most_recent_date)
+        fetchMobilityForDate(country_data_path, most_recent_date)
           .then(payload => {
+            console.log(payload, 'pppp')
             dispatch({
               type: 'DATE_SELECTED',
               payload: {

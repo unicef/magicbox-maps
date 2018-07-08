@@ -68,7 +68,7 @@ function getResponseError(url, token, res) {
  * @param  {type} res   responce
  */
 function getResponse(url, token, res) {
-  console.log('In GetR');
+  console.log('In GetR', url);
   Request
     .get(url)
     .set('Token', 'Bearer ' + token)
@@ -111,7 +111,7 @@ exports.forward_get = (req, res, next) => {
   const url = `${magicbox_url}${req.originalUrl}`
   axios.get(url)
     .catch(err => {
-      console.log('There was an error trying to get initial load BE');
+      console.log(err);
     })
     .then(response => {
       res.json(response.data);
@@ -126,7 +126,7 @@ exports.forward_get = (req, res, next) => {
 exports.forward_request_to_url = (res, url) => {
   axios.get(url)
     .catch(err => {
-      console.log('There was an error trying to get initial load BE');
+      console.log(err);
     })
     .then(response => {
       res.json(response.data);
