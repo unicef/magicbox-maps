@@ -34,8 +34,8 @@ const handleAuthentication = ({location}) => {
   }
 }
 const store = createStore(allReducers, applyMiddleware(thunk));
-console.log(config, 'auth')
-if (config.login_required) {
+
+if (parseInt(config.login_required)) {
   console.log('I am rendering auth version')
   ReactDOM.render(
     <Provider store={store}>
