@@ -36,6 +36,7 @@ const handleAuthentication = ({location}) => {
 const store = createStore(allReducers, applyMiddleware(thunk));
 console.log(config, 'auth')
 if (config.login_required) {
+  console.log('I am rendering auth version')
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history}>
@@ -53,6 +54,7 @@ if (config.login_required) {
     </Provider>,
     document.getElementById('root'));
 } else {
+  console.log('I am AUTH FREE')
   ReactDOM.render(
     <Provider store={store}>
       <App />
