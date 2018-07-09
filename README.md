@@ -1,7 +1,6 @@
 magicbox-maps
 =============
 
-
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Chat on Gitter](https://badges.gitter.im/unicef-innovation-dev/Lobby.png)](https://gitter.im/unicef-innovation-dev/Lobby)
 [![Build Status](https://travis-ci.org/unicef/magicbox-maps.svg?branch=master)](https://travis-ci.org/unicef/magicbox-maps)
