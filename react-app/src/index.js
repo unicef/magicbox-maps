@@ -34,7 +34,7 @@ const handleAuthentication = ({location}) => {
   }
 }
 const store = createStore(allReducers, applyMiddleware(thunk));
-
+console.log(config, 'auth')
 if (config.login_required) {
   ReactDOM.render(
     <Provider store={store}>
