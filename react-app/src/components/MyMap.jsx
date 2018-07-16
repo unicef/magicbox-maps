@@ -157,7 +157,6 @@ class MyMap extends Component {
     const position = [this.state.lat, this.state.lng]
     return (
       <div>
-        <UnicefNav></UnicefNav>
         <Docker  className="dockerClass" didUpdate={this.state.didUpdate} buttonHover={this.state.onHover}></Docker>
 
         <Map center={position}
