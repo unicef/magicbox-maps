@@ -1,7 +1,7 @@
 // eslint-disable-next-line new-cap
 const router = require('express').Router();
 const helper = require('./helper-router')
-const config = require('../react-app/src/config.js')
+const config = require('../config.js')
 const magicboxUrl = config.magicbox_url; // Magic box API url
 
 router.get('/countries', helper.cache_response(300), (req, res, next) => {

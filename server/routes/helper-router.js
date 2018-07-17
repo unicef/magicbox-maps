@@ -1,5 +1,5 @@
 const mcache = require('memory-cache')
-const config = require('../react-app/src/config.js')
+const config = require('../config.js')
 const axios = require('axios');
 let acToken = 'KE0GE1Zg1hPaE6AR'; // Initial  Access Token
 const Request = require('superagent');

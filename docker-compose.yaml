@@ -1,0 +1,15 @@
+front:
+  build: react-app
+  volumes:
+  - "./react-app:/opt/react"
+  ports:
+  - "8080:3000"
+  links:
+  - api
+
+api:
+  build: ./server
+  volumes:
+  - "./server:/opt/api"
+  ports:
+  - "5000"
