@@ -22,7 +22,7 @@ class YearlyCalendar extends React.Component {
     let country = this.props.activeCountry.polygons.properties.alpha3.toLowerCase()
 
     if (index !== undefined) {
-      this.props.selectDate(country, this.props.dates[index])
+      this.props.selectDate(this.props.activeCountry.country_data_path, this.props.dates[index])
     }
   }
 

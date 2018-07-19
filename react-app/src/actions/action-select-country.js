@@ -85,7 +85,10 @@ export const selectCountry = (country, sliderVal, country_data_path) => {
         dispatch({
           type: 'COUNTRY_SELECTED',
           // Not used  as using mode now
-          payload: values[0]
+          payload: {
+            shapefile: values[0],
+            country_data_path: country_data_path
+          }
         })
         dispatch({
           type: 'FETCH_DATES',
@@ -94,7 +97,6 @@ export const selectCountry = (country, sliderVal, country_data_path) => {
         let most_recent_date = dates[dates.length-1]
         fetchMobilityForDate(country_data_path, most_recent_date)
           .then(payload => {
-            console.log(payload, 'pppp')
             dispatch({
               type: 'DATE_SELECTED',
               payload: {

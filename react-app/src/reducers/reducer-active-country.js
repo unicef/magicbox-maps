@@ -48,18 +48,20 @@ let initial_state = {
 function activeCountryReducer(state = initial_state, action) {
   switch (action.type) {
     case 'COUNTRY_SELECTED':
+      // If mode is mobility...
       if (config.mode !== 'schools') {
-        country_admins = action.payload
+        country_admins = action.payload.shapefile
         let admin_index = country_admins.features.reduce((h, f, i) => {
           h[f.properties.admin_id] = i;
           return h;
         }, {});
         return Object.assign({}, state, {
-          polygons: action.payload,
-          admin_index: admin_index
+          polygons: action.payload.shapefile,
+          admin_index: admin_index,
+          country_data_path: action.payload.country_data_path
         })
       } else {
-        return Object.assign(action.payload, {
+        return Object.assign(action.payload.shapefile, {
           polygons: geojson
         })
       }
