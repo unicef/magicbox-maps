@@ -75,12 +75,14 @@ cp react-app/src/config-sample.js react-app/src/config.js
 **Install dependencies for server back-end**:
 
 ```bash
+cd server/
 npm install
 ```
 
 **Install dependencies for React front-end**:
 
 ```bash
+cd .. // go back to the root directory if needed
 cd react-app/
 npm install
 ```
@@ -132,7 +134,7 @@ running at the same time.
 **Run the server**:
 
 ```bash
-cd magicbox-maps/
+cd magicbox-maps/server
 npm start
 ```
 
