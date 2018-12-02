@@ -61,7 +61,7 @@ function activeCountryReducer(state = initial_state, action) {
           country_data_path: action.payload.country_data_path
         })
       } else {
-        return Object.assign(action.payload.shapefile, {
+        return Object.assign(action.payload, {
           polygons: geojson
         })
       }
