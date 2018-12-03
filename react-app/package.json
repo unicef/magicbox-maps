@@ -21,7 +21,7 @@
     "leaflet": "^1.2.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react": "^16.2.0",
+    "react": "^16.6.3",
     "react-bootstrap": "^0.32.0",
     "react-calendar-heatmap": "^1.6.2",
     "react-center": "^1.1.1",
@@ -52,7 +52,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://server:5000",
+      "target": "http://localhost:5000",
       "secure": false
     }
   },
