@@ -51,7 +51,7 @@
     "eject": "react-scripts eject"
   },
   "proxy": {
-    "/": {
+    "/api": {
       "target": "http://server:5000",
       "secure": false
     }

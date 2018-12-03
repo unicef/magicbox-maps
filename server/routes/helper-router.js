@@ -96,7 +96,8 @@ function getResponse(url, token, res) {
  */
 exports.forward_get_with_token = (req, res, next) => {
   console.log('forward_get_with_token');
-  const url = `${magicbox_url}${req.originalUrl}`
+  const url = `${magicbox_url}${req.originalUrl.replace(/\/api\//, '/')}`
+  console.log(url, '111')
   getResponse(url, acToken, res);
 }
 
@@ -108,7 +109,8 @@ exports.forward_get_with_token = (req, res, next) => {
  * @param  {type} next  next
  */
 exports.forward_get = (req, res, next) => {
-  const url = `${magicbox_url}${req.originalUrl}`
+  const url = `${magicbox_url}${req.originalUrl.replace(/\/api\//, '/')}`
+  console.log(url, '222')
   axios.get(url)
     .catch(err => {
       console.log(err);

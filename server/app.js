@@ -24,9 +24,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(`${__dirname}/react-app/build`));
 // app.use('/', index);
-app.use('/schools', schools);
-app.use('/mobility', mobility);
-app.use('/shapefiles', shapefiles);
+app.use('/api/schools', schools);
+app.use('/api/mobility', mobility);
+app.use('/api/shapefiles', shapefiles);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   let err = new Error('Not Found');

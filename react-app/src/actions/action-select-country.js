@@ -37,7 +37,7 @@ function get_shapefile(country) {
  */
 function fetch_dates(country_data_path) {
   return new Promise((resolve, reject) => {
-    let url = window.location.origin + '/' +
+    let url = window.location.origin + '/api/' +
       // config.initial_url_key[config.mode] +
       country_data_path
     axios.get(url)
@@ -112,7 +112,7 @@ export const selectCountry = (country, sliderVal, country_data_path) => {
   // Schools
   return function(dispatch) {
     dispatch({type: 'REQUEST_DATA'})
-    axios.get(window.location.origin + '/' +
+    axios.get(window.location.origin + '/api/' +
         config.initial_url_key[mode] + '/countries/' + country)
       .catch(err => {
         alert('There was an error trying to do the initial fetch')
