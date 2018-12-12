@@ -8,7 +8,7 @@ module.exports = {
   email_contact_mobility: process.env.email_contact_mobility || '',
   email_contact_schools: process.env.email_contact_schools || '',
 
-  auth_client_id: process.env.REACT_APP_AUTH_CLIENT_ID || 'client_id',
+  auth_client_id: process.env.REACT_APP_AUTH_CLIENT_ID || 'client-id',
   auth_callback_url: process.env.REACT_APP_AUTH_CALLBACK_URL || 'auth callback url',
 
   // Endpoints configured for magicbox-open-api by default
