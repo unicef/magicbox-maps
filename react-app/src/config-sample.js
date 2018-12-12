@@ -1,5 +1,5 @@
 module.exports = {
-  countries_with_school_connectivity: process.env.countries_with_school_connectivity || '{"COL": 1, "BRA": 1, "MRT": 1}',
+  countries_with_school_connectivity: process.env.countries_with_school_connectivity || '{"COL": 1, "BRA": 1, "KGZ": 1, "MRT": 1,  "COD": 1, "SLE": 1}',
 
   // 'schools' or 'mobility'
   mode: process.env.REACT_APP_MODE || 'mobility',
