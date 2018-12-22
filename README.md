@@ -32,9 +32,9 @@ provided by various sources, like [GADM](http://gadm.org/).
 The UNICEF Office of Innovation uses magicbox-maps for two purposes:
 
 1. Mapping schools globally
-   ([demo](http://school-mapping-development.azurewebsites.net/))
+   ([demo](http://school-mapping.azurewebsites.net/))
 2. Mapping mobility of people globally
-   ([demo](http://magicbox-maps-development.azurewebsites.net/))
+   ([demo](http://magicbox-maps.azurewebsites.net/))
 
 Mapping schools helps us understand… <!-- What are we trying to understand and
 do with school mappings? Why do they matter? -->
