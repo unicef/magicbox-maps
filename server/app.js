@@ -8,6 +8,7 @@ const schools = require('./routes/schools');
 const mobility = require('./routes/mobility');
 const shapefiles = require('./routes/shapefiles');
 const app = express();
+const apiPrefix = require('./config').apiPrefix
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,9 +25,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(`${__dirname}/react-app/build`));
 // app.use('/', index);
-app.use('/api/schools', schools);
-app.use('/api/mobility', mobility);
-app.use('/api/shapefiles', shapefiles);
+console.log(apiPrefix + '/schools', '!!!')
+app.use(apiPrefix + '/schools', schools);
+app.use(apiPrefix + '/mobility', mobility);
+app.use(apiPrefix + '/shapefiles', shapefiles);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   let err = new Error('Not Found');

@@ -6,14 +6,14 @@ services:
     - ./react-app:/opt/react
     - /opt/react/node_modules
     ports:
-    - 8080:3000
+    - 3000:3000
     links:
-    - server
+    - api
 
-  server:
+  api:
     build: ./server
     volumes:
     - "./server:/opt/api"
     - /opt/api/node_modules
     ports:
-    - 5000
+    - 5000:5000

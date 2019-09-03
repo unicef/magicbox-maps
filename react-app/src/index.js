@@ -34,28 +34,8 @@ const handleAuthentication = ({location}) => {
   }
 }
 const store = createStore(allReducers, applyMiddleware(thunk));
-
-if (config.login_required) {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router history={history}>
-        <div>
-          <Route path='/' render={(props) =>
-            <Shield auth={auth} {...props} />} />
-          <Route path='/home' render={(props) =>
-            <Home auth={auth} {...props} />} />
-          <Route path='/authorization/callback' render={(props) => {
-            handleAuthentication(props);
-            return <Callback {...props} />
-          }}/>
-        </div>
-      </Router>
-    </Provider>,
-    document.getElementById('root'));
-} else {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root'));
-}
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));

@@ -45,10 +45,13 @@ import Docker from './Dock'
 import UnicefNav from './UnicefNav';
 import LoadingSpinner from './LoadingSpinner'
 import pointClick from '../helpers/helper-point-click'
-const fetch_url = window.location.origin + '/' +
+console.log(config)
+const apiPrefix = config.apiPrefix
+const fetch_url = window.location.origin + apiPrefix +
     'schools' + '/school/';
 const _ = require('lodash');
 const mode = config.mode
+
 
 /**
  * My map class

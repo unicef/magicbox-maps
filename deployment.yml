@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: projectconnect
+    name: projectconnect-service
+  spec:
+    type: NodePort
+    ports:
+    - name: front
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+      # nodePort: 30010
+    - name: back
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+      # nodePort: 30001
+    selector:
+      app: projectconnect
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: projectconnect
+    labels:
+      app: projectconnect
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: projectconnect
+    template:
+      metadata:
+        labels:
+          app: projectconnect
+      spec:
+        containers:
+        - name: front
+          image: mikefab/projectconnect-front:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+          env:
+          - name: DANGEROUSLY_DISABLE_HOST_CHECK
+            value: "true"
+          - name: REACT_APP_COUNTRIES_WITH_SCHOOL_CONNECTIVITY
+            value: '{"COL": 1, "BRA": 1, "KGZ": 1, "MRT": 1,  "COD":
+1, "SLE": 1, "RWA": 1, "HND":1, "PHL":1}'
+          - name: REACT_APP_MODE
+            value: "schools"
+          - name: email_contact_mobility
+            value: ""
+          - name: email_contact_schools
+            value: ""
+          - name: REACT_APP_AUTH_CLIENT_ID
+            value: "client_id"
+          - name: REACT_APP_AUTH_CALLBACK_URL
+            value: 'auth callback url'
+          - name: REACT_APP_MOBILITY_ENDPOINT
+            value: "mobility"
+          - name: REACT_APP_SCHOOLS_ENDPOINT
+            value: "schools"
+          - name: REACT_APP_LOGIN_REQUIRED
+            value: "false"
+          - name: REACT_APP_API_PREFIX
+            value: "/api/"
+
+        - name: back
+          image: mikefab/projectconnect-back:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5000
+          env:
+          - name: MAGICBOX_URL
+            value: 'http://magicboxopenapi.azurewebsites.net/api/v1'
+          - name: REFRESH_TOKEN
+            value: 'REFRESH_TOKEN'
+          - name: RF_URL
+            value:
+'http://magicboxopenapi.azurewebsites.net/api/v1/refresh_token/'
+          - name: apiPrefix
+            value: ''
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: projectconnect-ingress
+  namespace: projectconnect
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+spec:
+  rules:
+  - host: projectconnect.unicef.io
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: projectconnect-service
+            servicePort: 3000
+        - path: /api
+          backend:
+            serviceName: projectconnect-service
+            servicePort: 5000
+  tls:
+  - hosts:
+    - projectconnect.unicef.io
+    secretName: star-unicef-io

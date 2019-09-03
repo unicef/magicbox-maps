@@ -1,8 +1,8 @@
 module.exports = {
-  countries_with_school_connectivity: process.env.countries_with_school_connectivity ||  '{"COL": 1, "BRA": 1, "KGZ": 1, "MRT": 1}',
-
+  countries_with_school_connectivity: process.env.REACT_APP_COUNTRIES_WITH_SCHOOL_CONNECTIVITY ||  '{"COL": 1, "BRA": 1, "KGZ": 1, "MRT": 1}',
+  apiPrefix: process.env.REACT_APP_API_PREFIX || '/api/',
   // 'schools' or 'mobility'
-  mode: process.env.REACT_APP_MODE || 'mobility',
+  mode: process.env.REACT_APP_MODE || 'schools',
 
   // Email contact info for map types
   email_contact_mobility: process.env.email_contact_mobility || '',
@@ -18,13 +18,5 @@ module.exports = {
   },
 
   // Require login?
-  login_required: (process.env.REACT_APP_LOGIN_REQUIRED === 'true'),
-
-  // Address of magicbox-open-api back-end
-  // MAKE SURE DOES NOT HAVE TRAILING FORWARD SLASH
-  magicbox_url: process.env.MAGICBOX_URL || 'http://localhost:8000/api/v1',
-
-  // Tokens needed to access private data (e.g. school mappings)
-  rfUrl: process.env.RF_URL || 'REFRESH_TOKEN_URL',
-  refreshToken: process.env.REFRESH_TOKEN || 'REFRESH_TOKEN'
+  login_required: (process.env.REACT_APP_LOGIN_REQUIRED === 'false'),
 }
