@@ -136,7 +136,7 @@ class Docker extends Component {
     };
     if (!this.props.activeCountry.usingSpeed) {
       data['labels'] = [
-        '3G',
+        '3G and above',
         '2G',
         'Zero Connectivity',
         'No Data'
