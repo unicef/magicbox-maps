@@ -12,6 +12,7 @@
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
     "comma-number": "^2.0.0",
+    "dotenv": "^8.2.0",
     "geojson": "^0.5.0",
     "google": "^2.1.0",
     "halogenium": "^2.2.3",
@@ -50,7 +51,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://api:5000",
+  "proxy": "http://localhost:5000",
   "browserslist": [
     ">0.2%",
     "not dead",
