@@ -9,7 +9,8 @@ const mobility = require('./routes/mobility');
 const shapefiles = require('./routes/shapefiles');
 const app = express();
 const apiPrefix = require('./config').apiPrefix
-
+console.log('config!!')
+console.log(require('./config'))
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(`${__dirname}/react-app/build`));
 // app.use('/', index);
-console.log(apiPrefix + '/schools', '!!!')
+console.log('zzz', apiPrefix, '/schools', '!!!')
 app.use(apiPrefix + '/schools', schools);
 app.use(apiPrefix + '/mobility', mobility);
 app.use(apiPrefix + '/shapefiles', shapefiles);

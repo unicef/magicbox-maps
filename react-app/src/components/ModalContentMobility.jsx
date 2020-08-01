@@ -55,13 +55,13 @@ The current prototype shows internal displacements as estimated by <a href='http
                   <strong>How do I read this map?</strong>
                 </p>
                 <ul>
-                  <li>This map is sorted by administrative boundaries. Read more about administrative boundaries <a href="https://magicbox.readthedocs.io/en/latest/administrative-boundaries.html" target="_blank">here</a>.</li>
+                  <li>This map is sorted by administrative boundaries. Read more about administrative boundaries <a href="https://magicbox.readthedocs.io/en/latest/administrative-boundaries.html" target="_blank" rel="noopener noreferrer">here</a>.</li>
                   <li>Click on an administrative boundary to see traffic <em>from</em> that area <em>to</em> another. Click on multiple boundaries to see traffic from those areas collectively.</li>
                   <li>Blue regions are the areas you selected. The shaded red areas show the movement of people traveling to that area from where you selected.</li>
                 </ul>
               </Col>
               <Col xs={1} md={6}>
-                <iframe width="300" src="https://www.youtube.com/embed/alvUiktZNyI"></iframe>
+                <iframe width="300" src="https://www.youtube.com/embed/alvUiktZNyI" title=""></iframe>
               </Col>
             </Row>
           </Grid>
@@ -94,12 +94,12 @@ The current prototype shows internal displacements as estimated by <a href='http
                 </ul>
                 </p>
 
-                <img src='https://media.giphy.com/media/pb1onNOMlkkrIOXMRJ/giphy.gif' style={gif_style}></img>
+                <img src='https://media.giphy.com/media/pb1onNOMlkkrIOXMRJ/giphy.gif' style={gif_style} alt=""></img>
                 <p>
                   <strong>How do I read this map?</strong>
                 </p>
                 <ul style={ul_style}>
-                  <li>This map is sorted by administrative boundaries. Read more about administrative boundaries <a href="https://magicbox.readthedocs.io/en/latest/administrative-boundaries.html" target="_blank">here</a>.</li>
+                  <li>This map is sorted by administrative boundaries. Read more about administrative boundaries <a href="https://magicbox.readthedocs.io/en/latest/administrative-boundaries.html" target="_blank" el="noopener noreferrer">here</a>.</li>
                   <li>Click on an administrative boundary to see traffic <em>from</em> that area <em>to</em> another. Click on multiple boundaries to see traffic from those areas collectively.</li>
                   <li>Blue regions are the areas you selected. The shaded red areas show the movement of people traveling to that area from where you selected.</li>
                 </ul>

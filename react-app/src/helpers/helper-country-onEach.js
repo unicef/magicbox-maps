@@ -32,7 +32,7 @@ export function onEachCountryFeature(
           // Fetch dates for country
           // this.props.fetchDates()
         }
-        if (config.mode != 'schools') {
+        if (config.mode !== 'schools') {
           myMapObj.props.selectCountry(
             e.target.feature,
             sliderVal,

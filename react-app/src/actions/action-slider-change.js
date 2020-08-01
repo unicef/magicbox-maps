@@ -7,7 +7,7 @@ const SliderChange = function(geojson, sliderVal) {
     for (let i = 0; i < geojson.features.length; i++) {
       let speed = geojson.features[i].properties.speed_connectivity;
       if (speed !== null) {
-        if (speed == 0) {
+        if (speed === 0) {
           zeroT++;
         } else if (speed < sliderVal) {
           belowT++;

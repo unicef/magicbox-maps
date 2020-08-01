@@ -77,7 +77,7 @@ function activeCountryReducer(state = initial_state, action) {
       // If there are no selected admins
       // return scores: null
       // Admin styles will default to diagonal
-      if (Object.keys(selected_admins).length == 0) {
+      if (Object.keys(selected_admins).length === 0) {
         diagonal = state.diagonal
         scores = get_scores(diagonal)
         return Object.assign({}, state, {

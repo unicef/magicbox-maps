@@ -142,7 +142,7 @@ export const selectCountry = (country, sliderVal, country_data_path) => {
           if (response.data.result[i][3] !== null) {
             speedschools += response.data.result[i][3];
             nschools++;
-            if (response.data.result[i][3] == 0) {
+            if (response.data.result[i][3] === 0) {
               zeroT++;
             } else if (response.data.result[i][3] < sliderVal) {
               belowT++;
