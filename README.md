@@ -159,4 +159,4 @@ don't receive any feedback, please follow up with a new comment!
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 This project is licensed under the [BSD 3-Clause
-License](https://opensource.org/licenses/BSD-3-Clause).
+License](LICENSE).
