@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "alasql": "^0.4.4",
-    "auth0-js": "^9.0.2",
+    "auth0-js": "^9.13.2",
     "axios": "^0.21.1",
     "bootstrap": "^3.4.1",
     "chart.js": "^2.7.1",
